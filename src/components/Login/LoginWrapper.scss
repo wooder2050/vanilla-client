@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR|Roboto&display=swap");
+$color1: #ffb838;
+$color2: #fee5a5;
+$color3: #f7f6ee;
+$color4: #486d87;
+$color5: #789db7;
+::-webkit-input-placeholder {
+  color: $color5;
+}
+:-ms-input-placeholder {
+  color: $color5;
+}
+::placeholder {
+  color: $color5;
+}
+.body-wrapper {
+  position: relative;
+  z-index: 999;
+  background: #ffffff;
+  width: 100%;
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
+}
+.login-wrapper {
+  width: 1024px;
+  margin: 0 auto;
+}
+.login-wrapper::after {
+  content: "";
+  display: block;
+  clear: both;
+}

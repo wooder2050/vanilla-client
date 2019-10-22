@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR|Roboto&display=swap");
+$color1: #ffb838;
+$color2: #fee5a5;
+$color3: #f7f6ee;
+$color4: #486d87;
+$color5: #789db7;
+
+.story-wrapper {
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
+  width: 100%;
+  margin: 20px 0;
+  color: $color4;
+  padding: 0 0 20px 0;
+  border-radius: 5px;
+  background: $color3;
+  .story-header-wrapper {
+    box-sizing: border-box;
+    padding: 10px;
+    .story-header-title {
+      float: left;
+      font-size: 16px;
+      color: $color4;
+      font-weight: bold;
+    }
+    .story-header-view-all {
+      float: right;
+      cursor: pointer;
+      padding: 3px 0 0 0;
+      font-size: 12px;
+      color: $color4;
+      font-weight: 200;
+    }
+  }
+  .story-header-wrapper::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .story-content-wrapper {
+    width: 100%;
+    .story-content {
+      cursor: pointer;
+      width: 100%;
+      padding: 0 10px;
+      margin: 10px 0;
+      .story-profile-photo-wrapper {
+        float: left;
+        width: 40px;
+        opacity: 0.5;
+        border-radius: 20px;
+        .story-profile-photo {
+          width: 100%;
+        }
+      }
+      .story-profile-info-wrapper {
+        float: left;
+        width: 100px;
+        text-align: left;
+        box-sizing: border-box;
+        padding: 10px 10px;
+        font-size: 10px;
+      }
+    }
+    .story-content::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+  }
+}

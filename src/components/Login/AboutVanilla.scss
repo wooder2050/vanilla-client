@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR|Roboto&display=swap");
+$color1: #ffb838;
+$color2: #fee5a5;
+$color3: #f7f6ee;
+$color4: #486d87;
+$color5: #789db7;
+.about-vanilla {
+  width: 50%;
+  height: 100vh;
+  float: left;
+  background: $color4;
+  .about-vanilla-header {
+    text-align: left;
+    padding: 0 50px;
+    margin: 250px 0 0 0;
+    .about-vanilla-header-greet {
+      color: $color1;
+      margin: 0 0 40px 0;
+      font-size: 32px;
+    }
+    .about-vanilla-header-info {
+      color: $color2;
+      margin: 0 0 15px 0;
+      font-size: 20px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      opacity: 0.5;
+    }
+  }
+  .line-border {
+    border: 0.5px solid $color3;
+    width: 80%;
+    margin: 50px auto 0 auto;
+    opacity: 0.5;
+  }
+  .about-vanilla-content {
+    padding: 0 50px;
+    text-align: left;
+    .about-vanilla-text-wrapper {
+      margin: 20px 0 0 0;
+      .about-vanilla-title {
+        color: $color1;
+        font-size: 20px;
+        letter-spacing: 1px;
+        font-weight: 500;
+        padding: 0;
+        margin: 0;
+      }
+      .about-vanilla-text {
+        color: $color2;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        padding: 0;
+        margin: 5px 0 10px 0;
+      }
+    }
+  }
+}

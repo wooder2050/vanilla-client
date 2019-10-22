@@ -1,0 +1,351 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR|Roboto&display=swap");
+$color1: #ffb838;
+$color2: #fee5a5;
+$color3: #f7f6ee;
+$color4: #486d87;
+$color5: #789db7;
+::-webkit-input-placeholder {
+  color: $color5;
+}
+:-ms-input-placeholder {
+  color: $color5;
+}
+::placeholder {
+  color: $color5;
+}
+.body-wrapper {
+  width: 100%;
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
+}
+.modal-body {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
+  background: $color5;
+  opacity: 0.9;
+  z-index: 999;
+  .modal-modify-profile-wrapper {
+    width: 1024px;
+    height: 100%;
+    position: relative;
+    margin: 0 auto;
+    .modal-modify-profile {
+      width: 500px;
+      height: 500px;
+      position: absolute;
+      top: 250px;
+      left: 250px;
+      border-radius: 10px;
+      padding: 10px;
+      background: $color3;
+      .close-modal {
+        position: absolute;
+        z-index: 999;
+        top: 10px;
+        left: 470px;
+        font-size: 24px;
+        font-weight: bold;
+        color: $color4;
+        cursor: pointer;
+      }
+      .current-profile {
+        margin: 20px auto 10px auto;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        .current-profile-photo {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          margin: 0 0 10px 0;
+        }
+      }
+      .profile-photo-wrapper {
+        text-align: center;
+        position: relative;
+        width: 80%;
+        margin: 0 auto;
+        opacity: 0.7;
+        padding: 0 0 10px 0;
+        border-bottom: 1px solid $color5;
+        .input-profile-photo-form {
+          opacity: 0;
+          width: 150px;
+          position: absolute;
+          cursor: pointer;
+          z-index: 999;
+          top: -10px;
+          left: 120px;
+        }
+        .input-profile-photo-label {
+          color: $color5;
+          font-weight: 600;
+          font-size: 16px;
+          cursor: pointer;
+        }
+      }
+      .profile-wrapper {
+        margin: 10px auto;
+        width: 100%;
+        padding: 0 40px;
+        .input-profile-label {
+          float: left;
+          font-size: 16px;
+          font-weight: bold;
+          color: $color5;
+          padding: 7px 0 0 0;
+          width: 90px;
+        }
+        .input-profile-form {
+          float: right;
+          padding: 0;
+          padding: 0 0 0 20px;
+          margin: 0 15px 0 0;
+          width: 250px;
+          color: #000000;
+          background: $color3;
+          transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+          line-height: 36px;
+          font-size: 16px;
+          border: none;
+          border-bottom: 1px solid $color5;
+          outline: none;
+          box-sizing: border-box;
+          cursor: inherit;
+          font-style: inherit;
+          font-variant: inherit;
+          font-weight: 500;
+          font-stretch: inherit;
+          font-family: inherit;
+          opacity: 0.7;
+          -webkit-tap-highlight-color: rgba(0, 221, 221, 0);
+          height: unset;
+          letter-spacing: 1px;
+        }
+      }
+      .profile-wrapper::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .input-errorr {
+        text-align: center;
+        color: red;
+      }
+      .input-profile-btn-wrapper {
+        margin: 30px auto;
+        width: 100px;
+        .input-profile-btn {
+          width: 90px;
+          height: 35px;
+          color: $color3;
+          font-size: 16px;
+          margin: 0 auto;
+          border-radius: 10px;
+          cursor: pointer;
+          outline: none;
+          font-family: "Noto Sans KR", sans-serif;
+          background: $color5;
+          border: none;
+          font-weight: 500;
+        }
+        .input-profile-btn:hover {
+          background: $color4;
+        }
+      }
+    }
+  }
+}
+.main-feed-wrapper {
+  width: 1024px;
+  text-align: center;
+  margin: 0 auto;
+  .mypage-main-content-wrapper {
+    width: 100%;
+    height: 100vh;
+    padding: 100px 0 0 120px;
+    color: $color4;
+    .mypage-main-content-header-wrapper {
+      width: 850px;
+      height: 300px;
+      .mypage-main-content-header-photo-wrapper {
+        float: left;
+        width: 300px;
+        .matching-point {
+          font-size: 20px;
+          font-weight: bold;
+          text-align: right;
+          margin: -10px 50px 0 0;
+          .arrow {
+            width: 20px;
+            margin: 0 0 5px 3px;
+          }
+        }
+        .mypage-main-content-header-photo-border {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          margin: 30px 0 0 30px;
+          .ant-progress {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            top: -7px;
+            left: -7px;
+            z-index: -1;
+            .ant-progress-text {
+              opacity: 0;
+            }
+          }
+          .mypage-main-content-header-photo {
+            position: absolute;
+            width: 185px;
+            height: 185px;
+            overflow: hidden;
+            margin: 5px 0 0 5px;
+            .mypage-main-content-header-photo-img {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+              cursor: pointer;
+            }
+            .mypage-main-content-header-photo-img:hover {
+              opacity: 0.7;
+            }
+          }
+        }
+      }
+      .mypage-main-content-header-info-wrapper {
+        float: right;
+        width: 500px;
+        height: 250px;
+        padding: 20px;
+        .mypage-main-content-header-info-id {
+          width: 100%;
+          color: $color4;
+          margin: 0 0 10px 0;
+          text-align: left;
+          font-size: 30px;
+          font-weight: bold;
+        }
+        .mypage-main-content-header-info-number-wrapper {
+          width: 80%;
+          .mypage-main-content-header-info-number-cover {
+            float: left;
+            width: 33%;
+            .mypage-main-content-header-info-title {
+              float: left;
+              width: 50%;
+              font-weight: 300;
+              font-size: 16px;
+            }
+            .mypage-main-content-header-info-number {
+              float: left;
+              width: 50%;
+              text-align: left;
+              font-weight: 300;
+              font-size: 16px;
+            }
+          }
+          .mypage-main-content-header-info-number-cover::after {
+            content: "";
+            display: block;
+            clear: both;
+          }
+        }
+        .mypage-main-content-header-info-number-wrapper::after {
+          content: "";
+          display: block;
+          clear: both;
+        }
+        .mypage-main-content-header-info-name-wrapper {
+          width: 100%;
+          margin: 10px 0 5px 0;
+          font-size: 20px;
+          font-weight: 100;
+          .mypage-main-content-header-info-name {
+            float: left;
+            color: $color4;
+          }
+          .mypage-main-content-header-info-job {
+            float: left;
+            margin: 0 0 0 10px;
+            color: $color5;
+          }
+        }
+        .mypage-main-content-header-info-name-wrapper::after {
+          content: "";
+          display: block;
+          clear: both;
+        }
+        .mypage-main-content-header-info-text-wrapper {
+          text-align: left;
+          font-size: 16px;
+        }
+        .mypage-main-content-header-info-detail-wrapper {
+          font-size: 16px;
+          font-weight: bold;
+          text-align: left;
+          margin: 10px 0 0 0;
+          .arrow {
+            width: 15px;
+            margin: 0 0 5px 3px;
+          }
+        }
+        .mypage-main-content-header-info-modify-wrapper {
+          width: 100%;
+          margin: 20px 0;
+          .mypage-main-content-header-info-modify-btn {
+            width: 250px;
+            margin: 0 auto;
+            padding: 5px 0;
+            border-radius: 5px;
+            border: 1px solid $color4;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            .arrow {
+              width: 15px;
+              margin: 0 0 5px 5px;
+            }
+          }
+          .mypage-main-content-header-info-modify-btn:hover {
+            background: $color5;
+            color: $color3;
+          }
+        }
+      }
+      .mypage-main-content-header-wrapper::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+    }
+    .mypage-main-content-cover {
+      border-top: 1px solid $color4;
+      width: 850px;
+      height: 300px;
+      .mypage-main-content-header-wrapper {
+        width: 100%;
+        margin: 10px 0;
+        font-size: 24px;
+        font-weight: bold;
+        .mypage-main-content-header {
+          float: left;
+          width: 33%;
+          cursor: pointer;
+        }
+      }
+      .mypage-main-content-header-wrapper::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+    }
+  }
+}
