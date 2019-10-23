@@ -147,8 +147,9 @@ $color5: #789db7;
         float: left;
         width: 300px;
         height: 300px;
+        overflow: hidden;
         box-sizing: border-box;
-        margin: 0 4px;
+        margin: 0 2px;
         padding: 10px;
         cursor: pointer;
         .search-page-content {

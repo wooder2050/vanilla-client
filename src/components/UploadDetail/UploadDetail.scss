@@ -69,19 +69,58 @@ $color5: #789db7;
           float: left;
           width: 350px;
           height: 350px;
-          .upload-detail-main-content {
-            padding: 0;
-            width: 80%;
-          }
           .upload-detail-main-content-text {
             margin: 10px 0 0 0;
             color: $color4;
             font-size: 24px;
             font-weight: bold;
           }
-          .upload-detail-main-content-cover {
-            padding: 0;
-            width: 80%;
+          .content-wrapper-video {
+            margin: 0 auto;
+            width: 280px;
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+            .upload-audio-cover {
+              display: block;
+              width: 220px;
+              height: 220px;
+              border-radius: 50%;
+              margin: 0 auto;
+            }
+            .cover-play {
+              animation: spin 5s linear infinite;
+            }
+            @keyframes spin {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+            .toggle {
+              width: 50px;
+              height: 40px;
+              top: 225px;
+              left: 0;
+              cursor: pointer;
+              position: absolute;
+            }
+          }
+          .content-wrapper {
+            margin: 0 auto;
+            width: 280px;
+            height: 280px;
+            overflow: hidden;
+            .upload-detail-main-content {
+              padding: 0;
+              width: 280px;
+            }
+            .upload-detail-main-content-cover {
+              padding: 0;
+              width: 280px;
+            }
           }
         }
       }

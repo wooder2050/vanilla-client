@@ -330,7 +330,7 @@ $color5: #789db7;
       border-top: 1px solid $color4;
       width: 850px;
       height: 300px;
-      .mypage-main-content-header-wrapper {
+      .mypage-main-content-inner-header-wrapper {
         width: 100%;
         margin: 10px 0;
         font-size: 24px;
@@ -338,14 +338,45 @@ $color5: #789db7;
         .mypage-main-content-header {
           float: left;
           width: 33%;
+          box-sizing: border-box;
+          padding: 0 10px 10px 10px;
           cursor: pointer;
         }
+        .border-bottom {
+          border-bottom: 1px solid $color4;
+        }
       }
-      .mypage-main-content-header-wrapper::after {
+      .mypage-main-content-inner-header-wrapper::after {
         content: "";
         display: block;
         clear: both;
       }
+      .mypost-cover {
+        width: 100%;
+        margin: 20px 0 0 0;
+        .mypost-wrapper {
+          float: left;
+          cursor: pointer;
+          width: 270px;
+          height: 270px;
+          margin: 0 13px 0 0;
+          overflow: hidden;
+          .mypost {
+            box-sizing: border-box;
+            border: 1px solid #f7f6ee;
+            padding: 5px;
+            width: 100%;
+          }
+          .mypost:hover {
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+    .mypage-main-content-cover::after {
+      content: "";
+      display: block;
+      clear: both;
     }
   }
 }

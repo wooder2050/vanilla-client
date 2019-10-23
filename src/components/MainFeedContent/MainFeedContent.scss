@@ -66,6 +66,16 @@ $color5: #789db7;
     display: block;
     clear: both;
   }
+  .posting-content-video-cover {
+    margin: 10px auto 0 auto;
+    width: 500px;
+    height: 300px;
+    overflow: hidden;
+    .posting-content-video {
+      width: 100%;
+    }
+  }
+
   .posting-content-cover {
     margin: 10px auto 0 auto;
     width: 500px;

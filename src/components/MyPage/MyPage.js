@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./MyPage.scss";
 import { Progress } from "antd";
+import profile from "../../images/profile.png";
 import arrow from "../../images/arrow.png";
 import "antd/dist/antd.css";
 
@@ -98,14 +98,21 @@ class MyPage extends Component {
             <div className="mypage-main-content-header-photo-wrapper">
               <div className="mypage-main-content-header-photo-border">
                 <div className="mypage-main-content-header-photo">
-                  <img
-                    className="mypage-main-content-header-photo-img"
-                    src={
-                      this.state.user_info
-                        ? this.state.user_info.profile_url
-                        : this.props.user.profile_url
-                    }
-                  />
+                  {this.props.user.profile_url ? (
+                    <img
+                      className="mypage-main-content-header-photo-img"
+                      src={
+                        this.state.user_info
+                          ? this.state.user_info.profile_url
+                          : this.props.user.profile_url
+                      }
+                    />
+                  ) : (
+                    <img
+                      className="mypage-main-content-header-photo-img"
+                      src={profile}
+                    />
+                  )}
                 </div>
                 <Progress
                   type="circle"
@@ -124,11 +131,17 @@ class MyPage extends Component {
               </div>
             </div>
             <div className="mypage-main-content-header-info-wrapper">
-              <div className="mypage-main-content-header-info-id">
-                {this.state.user_info
-                  ? this.state.user_info.user_display_name
-                  : this.props.user.user_display_name}
-              </div>
+              {this.state.user_info ? (
+                <div className="mypage-main-content-header-info-id">
+                  {this.state.user_info.user_display_name
+                    ? this.state.user_info.user_display_name
+                    : this.props.user.email}
+                </div>
+              ) : (
+                <div className="mypage-main-content-header-info-id">
+                  {this.props.user.email}
+                </div>
+              )}
               <div className="mypage-main-content-header-info-number-wrapper">
                 <div className="mypage-main-content-header-info-number-cover">
                   <div className="mypage-main-content-header-info-title">
@@ -186,29 +199,86 @@ class MyPage extends Component {
             </div>
           </div>
           <div className="mypage-main-content-cover">
-            <div className="mypage-main-content-header-wrapper">
+            <div className="mypage-main-content-inner-header-wrapper">
               <div
-                className="mypage-main-content-header"
+                className={
+                  this.state.veiw === "photo"
+                    ? "mypage-main-content-header border-bottom"
+                    : "mypage-main-content-header"
+                }
                 onClick={this.clickPhoto.bind(this)}
               >
                 사진
               </div>
               <div
-                className="mypage-main-content-header"
+                className={
+                  this.state.veiw === "music"
+                    ? "mypage-main-content-header border-bottom"
+                    : "mypage-main-content-header"
+                }
                 onClick={this.clickMusic.bind(this)}
               >
                 곡
               </div>
               <div
-                className="mypage-main-content-header"
+                className={
+                  this.state.veiw === "video"
+                    ? "mypage-main-content-header border-bottom"
+                    : "mypage-main-content-header"
+                }
                 onClick={this.clickVideo.bind(this)}
               >
                 영상
               </div>
             </div>
-            {this.state.veiw === "photo" ? <div>사진</div> : <div></div>}
-            {this.state.veiw === "music" ? <div>음악</div> : <div></div>}
-            {this.state.veiw === "video" ? <div>영상 </div> : <div></div>}
+            {this.state.veiw === "photo" ? (
+              <div className="mypost-cover">
+                {this.props.myPosts &&
+                  this.props.myPosts.map((post, i) => {
+                    if (post.post_type === "photo") {
+                      return (
+                        <div key={i} className="mypost-wrapper">
+                          <img className="mypost" src={post.cover_url} />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            ) : (
+              <div></div>
+            )}
+            {this.state.veiw === "music" ? (
+              <div className="mypost-cover">
+                {this.props.myPosts &&
+                  this.props.myPosts.map((post, i) => {
+                    if (post.post_type === "music") {
+                      return (
+                        <div key={i} className="mypost-wrapper">
+                          <img className="mypost" src={post.cover_url} />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            ) : (
+              <div></div>
+            )}
+            {this.state.veiw === "video" ? (
+              <div className="mypost-cover">
+                {this.props.myPosts &&
+                  this.props.myPosts.map((post, i) => {
+                    if (post.post_type === "video") {
+                      return (
+                        <div key={i} className="mypost-wrapper">
+                          <img className="mypost" src={post.cover_url} />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
 

@@ -10,10 +10,10 @@ class MainFeedContent extends Component {
       <>
         {this.props.authenticated ? (
           <>
-            {this.props.posts &&
-              this.props.posts.map((post, i) => {
+            {this.props.followingPosts &&
+              this.props.followingPosts.map((post, i) => {
                 return (
-                  <div className="main-feed-content-wrapper">
+                  <div key={i} className="main-feed-content-wrapper">
                     {this.props.posts && (
                       <>
                         <div className="posting-header-wrapper">
@@ -37,12 +37,25 @@ class MainFeedContent extends Component {
                             <div className="postion-option"></div>
                           </div>
                         </div>
-                        <div className="posting-content-cover">
-                          <img
-                            className="posting-content"
-                            src={post.cover_url}
-                          />
-                        </div>
+                        {post.post_type === "video" ? (
+                          <div className="posting-content-video-cover">
+                            <video
+                              className="posting-content-video"
+                              src={post.post_url}
+                              width="500"
+                              height="300"
+                              controls
+                            ></video>
+                          </div>
+                        ) : (
+                          <div className="posting-content-cover">
+                            <img
+                              className="posting-content"
+                              src={post.cover_url}
+                            />
+                          </div>
+                        )}
+
                         <div className="posting-like-comments-wrapper">
                           <div className="posting-like-wrapper">
                             <img className="posting-like" src={like} />

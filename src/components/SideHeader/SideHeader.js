@@ -29,7 +29,7 @@ class SideHeader extends Component {
           <div className="side-icon-text">UPLOAD</div>
         </div>
         <div className="icon-wrapper">
-          <Link to={`/mypage/${this.props.user._id}`}>
+          <Link to="/mypage">
             <img src={myPage} className="icon" />
           </Link>
           <div className="side-icon-text">MY PAGE</div>

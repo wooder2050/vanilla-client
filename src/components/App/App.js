@@ -9,6 +9,7 @@ import Upload from "../Upload/Upload";
 import UploadDetail from "../UploadDetail/UploadDetail";
 import Search from "../Search/Search";
 import UserPage from "../UserPage/UserPage";
+import MusicPlayer from "../MusicPlayer/MusicPlayer";
 import "./App.scss";
 
 class App extends Component {
@@ -22,7 +23,10 @@ class App extends Component {
       emailError: null,
       assets: null,
       myPosts: null,
-      newPosts: null
+      newPosts: null,
+      followingPosts: null,
+      followingUsers: null,
+      veiw: "photo"
     };
   }
 
@@ -121,6 +125,48 @@ class App extends Component {
         });
       })
       .catch(error => {});
+
+    fetch("http://localhost:5000/onload/followingposts", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      }
+    })
+      .then(response => {
+        if (response.status === 200 || response.status === 401)
+          return response.json();
+        throw new Error("failed to onload post");
+      })
+      .then(responseJson => {
+        this.setState({
+          followingPosts: responseJson.followingPosts
+        });
+      })
+      .catch(error => {});
+
+    fetch("http://localhost:5000/onload/followingusers", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      }
+    })
+      .then(response => {
+        if (response.status === 200 || response.status === 401)
+          return response.json();
+        throw new Error("failed to onload post");
+      })
+      .then(responseJson => {
+        this.setState({
+          followingUsers: responseJson.followingUsers
+        });
+      })
+      .catch(error => {});
   }
 
   logout() {
@@ -141,6 +187,21 @@ class App extends Component {
           authenticated: responseJson.authenticated
         });
       });
+  }
+  clickPhoto() {
+    this.setState({
+      veiw: "photo"
+    });
+  }
+  clickMusic() {
+    this.setState({
+      veiw: "music"
+    });
+  }
+  clickVideo() {
+    this.setState({
+      veiw: "video"
+    });
   }
   render() {
     return (
@@ -168,12 +229,13 @@ class App extends Component {
                   )}
                 ></Route>
                 <Route
-                  path="/mypage/:id"
+                  path="/mypage"
                   render={routeProps => (
                     <MyPage
                       routeProps={routeProps}
                       user={this.state.user}
                       authenticated={this.state.authenticated}
+                      myPosts={this.state.myPosts}
                     />
                   )}
                 />
@@ -181,6 +243,10 @@ class App extends Component {
                   path="/upload/:assetId"
                   render={routeProps => (
                     <UploadDetail
+                      veiw={this.state.veiw}
+                      clickPhoto={this.clickPhoto.bind(this)}
+                      clickMusic={this.clickMusic.bind(this)}
+                      clickVideo={this.clickVideo.bind(this)}
                       routeProps={routeProps}
                       user={this.state.user}
                       authenticated={this.state.authenticated}
@@ -189,6 +255,10 @@ class App extends Component {
                 ></Route>
                 <Route path="/upload">
                   <Upload
+                    veiw={this.state.veiw}
+                    clickPhoto={this.clickPhoto.bind(this)}
+                    clickMusic={this.clickMusic.bind(this)}
+                    clickVideo={this.clickVideo.bind(this)}
                     user={this.state.user}
                     authenticated={this.state.authenticated}
                     assets={this.state.assets}
@@ -206,12 +276,15 @@ class App extends Component {
                 />
                 <Route eaxct path="/">
                   <MainFeed
+                    followingUsers={this.state.followingUsers}
+                    followingPosts={this.state.followingPosts}
                     user={this.state.user}
                     authenticated={this.state.authenticated}
                     posts={this.state.myPosts}
                   />
                 </Route>
               </Switch>
+              <MusicPlayer/>
             </div>
           </div>
         </div>

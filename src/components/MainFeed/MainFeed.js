@@ -7,12 +7,12 @@ import MainFeedContent from "../MainFeedContent/MainFeedContent";
 
 class MainFeed extends Component {
   render() {
-    console.log(this.props.posts);
     return (
       <>
         <div className="main-feed-component-wrapper">
           <div className="main-feed-component-scroll">
             <MainFeedContent
+              followingPosts={this.props.followingPosts}
               posts={this.props.posts}
               authenticated={this.props.authenticated}
             />
@@ -21,7 +21,10 @@ class MainFeed extends Component {
         {this.props.authenticated ? (
           <div className="side-feed-content-wrapper">
             <Profile user={this.props.user} />
-            <StoryFeed user={this.props.user} />
+            <StoryFeed
+              user={this.props.user}
+              followingUsers={this.props.followingUsers}
+            />
             <RecommendFeed user={this.props.user} />
           </div>
         ) : (

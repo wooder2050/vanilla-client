@@ -7,7 +7,6 @@ class UploadDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      veiw: "photo",
       modal: false,
       assets: null,
       select_asset: null,
@@ -50,7 +49,6 @@ class UploadDetail extends Component {
     for (var i = 0; i < tagsArray.length; i++) {
       if (tagsArray[i][0] !== "#") notTags = false;
     }
-
     if (
       notTags &&
       postDescription !== null &&
@@ -70,9 +68,10 @@ class UploadDetail extends Component {
         },
         body: JSON.stringify({
           email: this.props.user.email,
-          user_display_name:this.props.user.user_display_name,
+          _id: this.props.user._id,
+          user_display_name: this.props.user.user_display_name,
           profile_url: this.props.user.profile_url,
-          post_type: this.state.veiw,
+          post_type: this.props.veiw,
           assetId: this.props.routeProps.match.params.assetId,
           description: postDescription,
           maker: postMaker,
@@ -88,22 +87,12 @@ class UploadDetail extends Component {
       });
     }
   }
+  play() {
+    this.setState({
+      play: !this.state.play
+    });
+  }
 
-  clickPhoto() {
-    this.setState({
-      veiw: "photo"
-    });
-  }
-  clickMusic() {
-    this.setState({
-      veiw: "music"
-    });
-  }
-  clickVideo() {
-    this.setState({
-      veiw: "video"
-    });
-  }
   clickModal() {
     this.setState({
       modal: !this.state.modal
@@ -115,7 +104,7 @@ class UploadDetail extends Component {
     });
   }
   render() {
-    console.log(this.props.user);
+    console.log(this.props.veiw);
     return (
       <>
         <div className="body-upload-detail-wrapper">
@@ -131,32 +120,96 @@ class UploadDetail extends Component {
               </div>
             </div>
             <div className="upload-detail-main-content-wrapper">
-              <div className="upload-detail-main-content-cover">
-                <div className="upload-detail-main-content-cover-wrapper">
-                  {this.state.select_asset ? (
-                    <img
-                      className="upload-detail-main-content"
-                      src={this.state.select_asset[0].url}
-                    />
-                  ) : (
-                    <div></div>
-                  )}
-                  <div className="upload-detail-main-content-text">
-                    메인 컨텐츠
+              {this.props.veiw === "photo" ? (
+                <div className="upload-detail-main-content-cover">
+                  <div className="upload-detail-main-content-cover-wrapper">
+                    {this.state.select_asset ? (
+                      <div className="content-wrapper">
+                        <img
+                          className="upload-detail-main-content"
+                          src={this.state.select_asset[0].url}
+                        />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <div className="upload-detail-main-content-text">
+                      메인 컨텐츠
+                    </div>
+                  </div>
+                  <div className="upload-detail-main-content-cover-wrapper">
+                    {this.state.select_asset ? (
+                      <div className="content-wrapper">
+                        <img
+                          className="upload-detail-main-content-cover"
+                          src={this.state.select_asset[0].cover_url}
+                        />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <div className="upload-detail-main-content-text">커버</div>
                   </div>
                 </div>
-                <div className="upload-detail-main-content-cover-wrapper">
-                  {this.state.select_asset ? (
-                    <img
-                      className="upload-detail-main-content-cover"
-                      src={this.state.select_asset[0].cover_url}
-                    />
-                  ) : (
-                    <div></div>
-                  )}
-                  <div className="upload-detail-main-content-text">커버</div>
+              ) : (
+                <div className="upload-detail-main-content-cover">
+                  <div className="upload-detail-main-content-cover-wrapper">
+                    {this.state.select_asset ? (
+                      <div className="content-wrapper-video">
+                        {this.props.veiw === "video" ? (
+                          <video
+                            src={this.state.select_asset[0].url}
+                            width="280"
+                            height="280"
+                            autoPlay
+                            controls
+                          ></video>
+                        ) : (
+                          <>
+                            <img
+                              className={
+                                this.state.play
+                                  ? "upload-audio-cover cover-play"
+                                  : "upload-audio-cover"
+                              }
+                              src={this.state.select_asset[0].cover_url}
+                            />
+                            <audio
+                              src={this.state.select_asset[0].url}
+                              width="250"
+                              type="audio/mp3"
+                              controls
+                            ></audio>
+                            <div
+                              className="toggle"
+                              onClick={this.play.bind(this)}
+                            ></div>
+                          </>
+                        )}
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <div className="upload-detail-main-content-text">
+                      메인 컨텐츠
+                    </div>
+                  </div>
+                  <div className="upload-detail-main-content-cover-wrapper">
+                    {this.state.select_asset ? (
+                      <div className="content-wrapper">
+                        <img
+                          className="upload-detail-main-content-cover"
+                          src={this.state.select_asset[0].cover_url}
+                        />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <div className="upload-detail-main-content-text">커버</div>
+                  </div>
                 </div>
-              </div>
+              )}
+
               <div className="upload-detail-main-content-input-form-cover">
                 <div className="input-error">{this.state.input_error}</div>
                 <form onSubmit={this.posting.bind(this)}>

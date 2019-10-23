@@ -13,7 +13,6 @@ class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      veiw: "photo",
       modal: false,
       assets: null,
       inputError: null,
@@ -27,7 +26,7 @@ class Upload extends Component {
     const formData = new FormData();
     formData.append("imgfile", postContent);
     formData.append("imgfile", postCover);
-    if (postContent & postCover) {
+    if (postContent && postCover) {
       fetch("http://localhost:5000/upload/multi", {
         method: "POST",
         body: formData
@@ -40,6 +39,7 @@ class Upload extends Component {
         .then(responseJosn => {
           const postContentURL = responseJosn.post_url;
           const coverURL = responseJosn.cover_url;
+          console.log(postContentURL, coverURL);
           fetch("http://localhost:5000/upload/databasepost", {
             method: "POST",
             headers: {
@@ -51,7 +51,7 @@ class Upload extends Component {
               post_url: postContentURL,
               cover_url: coverURL,
               email: this.props.user.email,
-              post_type: this.state.veiw
+              post_type: this.props.veiw
             })
           })
             .then(response => {
@@ -59,6 +59,7 @@ class Upload extends Component {
               throw new Error("failed to upload");
             })
             .then(responseJosn => {
+              console.log(responseJosn.assets);
               this.setState({
                 assets: responseJosn.assets
               });
@@ -72,21 +73,6 @@ class Upload extends Component {
         inputError: "Please be sure to enter all items."
       });
     }
-  }
-  clickPhoto() {
-    this.setState({
-      veiw: "photo"
-    });
-  }
-  clickMusic() {
-    this.setState({
-      veiw: "music"
-    });
-  }
-  clickVideo() {
-    this.setState({
-      veiw: "video"
-    });
   }
   clickModal() {
     this.setState({
@@ -106,31 +92,31 @@ class Upload extends Component {
             <div className="upload-header-content-header-wrapper">
               <div
                 className={
-                  this.state.veiw === "photo"
+                  this.props.veiw === "photo"
                     ? "upload-header-content-header border-bottom"
                     : "upload-header-content-header"
                 }
-                onClick={this.clickPhoto.bind(this)}
+                onClick={this.props.clickPhoto.bind(this)}
               >
                 사진
               </div>
               <div
                 className={
-                  this.state.veiw === "music"
+                  this.props.veiw === "music"
                     ? "upload-header-content-header border-bottom"
                     : "upload-header-content-header"
                 }
-                onClick={this.clickMusic.bind(this)}
+                onClick={this.props.clickMusic.bind(this)}
               >
                 곡
               </div>
               <div
                 className={
-                  this.state.veiw === "video"
+                  this.props.veiw === "video"
                     ? "upload-header-content-header border-bottom"
                     : "upload-header-content-header"
                 }
-                onClick={this.clickVideo.bind(this)}
+                onClick={this.props.clickVideo.bind(this)}
               >
                 영상
               </div>
@@ -164,7 +150,7 @@ class Upload extends Component {
             {!this.state.assets &&
               this.props.assets &&
               this.props.assets.map((asset, i) => {
-                if (asset.type === this.state.veiw) {
+                if (asset.type === this.props.veiw) {
                   return (
                     <div
                       key={i}
@@ -180,7 +166,7 @@ class Upload extends Component {
                         className="upload-post-content"
                         src={asset.cover_url}
                       />
-                      {this.state.veiw !== "photo" ? (
+                      {this.props.veiw !== "photo" ? (
                         <div className="player-btn-wrapper">
                           <img className="player-btn-wrapper" src={play} />
                         </div>
@@ -193,7 +179,7 @@ class Upload extends Component {
               })}
             {this.state.assets &&
               this.state.assets.map((asset, i) => {
-                if (asset.type === this.state.veiw) {
+                if (asset.type === this.props.veiw) {
                   return (
                     <div
                       key={i}
@@ -209,7 +195,7 @@ class Upload extends Component {
                         className="upload-post-content"
                         src={asset.cover_url}
                       />
-                      {this.state.veiw !== "photo" ? (
+                      {this.props.veiw !== "photo" ? (
                         <div className="player-btn-wrapper">
                           <img className="player-btn-wrapper" src={play} />
                         </div>

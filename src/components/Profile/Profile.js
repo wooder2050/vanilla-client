@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./Profile.scss";
 import myPage from "../../images/myPage2.png";
 
@@ -8,11 +7,28 @@ class Profile extends Component {
     return (
       <div className="user-profile-wrapper">
         <div className="user-profile-photo-wrapper">
-          <img className="user-profile-photo" src={myPage} />
+          {this.props.user ? (
+            <img
+              className="user-profile-photo"
+              src={
+                this.props.user.profile_url
+                  ? this.props.user.profile_url
+                  : myPage
+              }
+            />
+          ) : (
+            <img className="user-profile-photo" src={myPage} />
+          )}
         </div>
         <div className="user-profile-info-wrapper">
-          <div>{this.props.user.email}</div>
-          <div>{this.props.user.user_name}</div>
+          <div className="user-profile-info-text">
+            {this.props.user.user_display_name
+              ? this.props.user.user_display_name
+              : this.props.user.email}
+          </div>
+          <div className="user-profile-info-name">
+            {this.props.user.user_name}
+          </div>
         </div>
       </div>
     );

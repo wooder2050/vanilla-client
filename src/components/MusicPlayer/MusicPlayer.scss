@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR|Roboto&display=swap");
+$color1: #ffb838;
+$color2: #fee5a5;
+$color3: #f7f6ee;
+$color4: #486d87;
+$color5: #789db7;
+.player-background {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  background: $color5;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+  z-index: 998;
+}
+.player-content-wrapper {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  .player-wrapper {
+    margin: 250px auto;
+    background: $color3;
+    border: 1px solid $color4;
+    border-radius: 10px;
+    height: 500px;
+    width: 400px;
+    .cover {
+      width: 100%;
+      position: relative;
+      .ant-progress {
+        position: absolute;
+        top: 85px;
+        left: 80px;
+        z-index: 998;
+        .ant-progress-text {
+          opacity: 0;
+        }
+      }
+      .cover-img {
+        position: absolute;
+        top: 100px;
+        right: 100px;
+        display: block;
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+      }
+      .cover-play {
+        animation: spin 5s linear infinite;
+      }
+    }
+  }
+}
+
+.playtime {
+  width: 220px;
+  height: 220px;
+  top: 90px;
+  right: 90px;
+  border-radius: 110px;
+  position: absolute;
+  border: 4px solid black;
+}
+.play-bar {
+  position: absolute;
+  top: 350px;
+  left: 100px;
+  width: 200px;
+  height: 10px;
+  background: black;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

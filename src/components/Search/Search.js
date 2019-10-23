@@ -89,30 +89,29 @@ class Search extends Component {
                 : "search-page-result-wraper"
             }
           >
-            {this.state.users.length &&
-              this.state.users.map((user, i) => {
-                return (
-                  <NavLink
-                    className="search-page-result-user-wrapper"
-                    to={`${user._id}`}
-                  >
-                    <div className="search-page-result-user-profile-wrapper">
-                      <img
-                        className="search-page-result-user-profile"
-                        src={user.profile_url ? user.profile_url : profile}
-                      />
-                    </div>
-                    <div className="search-page-result-user-text-wrapper">
-                      <strong className="search-page-result-user-id">
-                        {user.user_display_name
-                          ? user.user_display_name
-                          : user.email}
-                      </strong>
-                      {user.user_name}
-                    </div>
-                  </NavLink>
-                );
-              })}
+            {this.state.users.map((user, i) => {
+              return (
+                <NavLink
+                  className="search-page-result-user-wrapper"
+                  to={`${user._id}`}
+                >
+                  <div className="search-page-result-user-profile-wrapper">
+                    <img
+                      className="search-page-result-user-profile"
+                      src={user.profile_url ? user.profile_url : profile}
+                    />
+                  </div>
+                  <div className="search-page-result-user-text-wrapper">
+                    <strong className="search-page-result-user-id">
+                      {user.user_display_name
+                        ? user.user_display_name
+                        : user.email}
+                    </strong>
+                    {user.user_name}
+                  </div>
+                </NavLink>
+              );
+            })}
           </div>
           <div className="search-page-content-cover">
             {this.props.newPosts ? (

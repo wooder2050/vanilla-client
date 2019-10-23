@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./UserPage.scss";
 import { Progress } from "antd";
 import arrow from "../../images/arrow.png";
+import profile from "../../images/profile.png";
 import "antd/dist/antd.css";
 
 class UserPage extends Component {
@@ -10,13 +10,12 @@ class UserPage extends Component {
     super(props);
     this.state = {
       veiw: "photo",
-      modal: false,
       user_info: null,
-      inputError: null
+      userPosts: null,
+      following: false
     };
   }
   componentDidMount() {
-    console.log(this.props.routeProps.match.params.id);
     fetch(
       `http://localhost:5000/onload/userpage/${this.props.routeProps.match.params.id}`,
       {
@@ -27,15 +26,27 @@ class UserPage extends Component {
           "Access-Control-Allow-Credentials": true
         }
       }
-    ).then(response => {
-      console.log(response);
-      if (response.status === 200) return response.json();
-    });
-    // .then(responseJson => {
-    //   this.setState({
-    //     user_info: responseJson.pageUser
-    //   });
-    // });
+    )
+      .then(response => {
+        if (response.status === 200) return response.json();
+      })
+      .then(responseJson => {
+        console.log(responseJson.pageUser[0]);
+        this.setState({
+          user_info: responseJson.pageUser[0],
+          userPosts: responseJson.pageUserPosts
+        });
+        if (this.props.user) {
+          for (var i = 0; i < this.props.user.following.length; i++) {
+            console.log(this.props.user.following[i], this.state.user_info._id);
+            if (this.props.user.following[i] === this.state.user_info._id) {
+              this.setState({
+                following: true
+              });
+            }
+          }
+        }
+      });
   }
   clickPhoto() {
     this.setState({
@@ -52,27 +63,57 @@ class UserPage extends Component {
       veiw: "video"
     });
   }
-  clickModal() {
-    this.setState({
-      modal: !this.state.modal
-    });
+  clickFollow() {
+    fetch("http://localhost:5000/upload/follow", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      },
+      body: JSON.stringify({
+        following: this.props.user._id,
+        followed: this.state.user_info._id
+      })
+    })
+      .then(response => {
+        if (response.status === 200 || response.status === 401)
+          return response.json();
+        throw new Error("failed to authenticate user");
+      })
+      .then(responseJson => {
+        console.log(
+          "팔로워 성공 ",
+          responseJson.follower,
+          responseJson.followee
+        );
+      })
+      .catch(error => {});
   }
   render() {
+    console.log(this.props.user.following, this.state.user_info);
     return (
       <>
-        <div className="mypage-main-content-wrapper">
-          <div className="mypage-main-content-header-wrapper">
-            <div className="mypage-main-content-header-photo-wrapper">
-              <div className="mypage-main-content-header-photo-border">
-                <div className="mypage-main-content-header-photo">
-                  <img
-                    className="mypage-main-content-header-photo-img"
-                    src={
-                      this.state.user_info
-                        ? this.state.user_info.profile_url
-                        : this.props.user.profile_url
-                    }
-                  />
+        <div className="userpage-main-content-wrapper">
+          <div className="userpage-main-content-header-wrapper">
+            <div className="userpage-main-content-header-photo-wrapper">
+              <div className="userpage-main-content-header-photo-border">
+                <div className="userpage-main-content-header-photo">
+                  {this.state.user_info ? (
+                    <img
+                      className="userpage-main-content-header-photo-img"
+                      src={
+                        this.state.user_info.profile_url
+                          ? this.state.user_info.profile_url
+                          : profile
+                      }
+                    />
+                  ) : (
+                    <img
+                      className="userpage-main-content-header-photo-img"
+                      src={profile}
+                    />
+                  )}
                 </div>
                 <Progress
                   type="circle"
@@ -90,91 +131,156 @@ class UserPage extends Component {
                 <img className="arrow" src={arrow} />
               </div>
             </div>
-            <div className="mypage-main-content-header-info-wrapper">
-              <div className="mypage-main-content-header-info-id">
-                {this.state.user_info
-                  ? this.state.user_info.user_display_name
-                  : this.props.user.user_display_name}
-              </div>
-              <div className="mypage-main-content-header-info-number-wrapper">
-                <div className="mypage-main-content-header-info-number-cover">
-                  <div className="mypage-main-content-header-info-title">
+            <div className="userpage-main-content-header-info-wrapper">
+              {this.state.user_info ? (
+                <div className="userpage-main-content-header-info-id">
+                  {this.state.user_info.user_display_name
+                    ? this.state.user_info.user_display_name
+                    : this.state.user_info.email}
+                </div>
+              ) : (
+                <div className="userpage-main-content-header-info-id">
+                  {this.state.user_info ? this.state.user_info.email : ""}
+                </div>
+              )}
+              <div className="userpage-main-content-header-info-number-wrapper">
+                <div className="userpage-main-content-header-info-number-cover">
+                  <div className="userpage-main-content-header-info-title">
                     게시물
                   </div>
-                  <div className="mypage-main-content-header-info-number">
+                  <div className="userpage-main-content-header-info-number">
                     0
                   </div>
                 </div>
-                <div className="mypage-main-content-header-info-number-cover">
-                  <div className="mypage-main-content-header-info-title">
+                <div className="userpage-main-content-header-info-number-cover">
+                  <div className="userpage-main-content-header-info-title">
                     팔로워
                   </div>
-                  <div className="mypage-main-content-header-info-number">
+                  <div className="userpage-main-content-header-info-number">
                     0
                   </div>
                 </div>
-                <div className="mypage-main-content-header-info-number-cover">
-                  <div className="mypage-main-content-header-info-title">
+                <div className="userpage-main-content-header-info-number-cover">
+                  <div className="userpage-main-content-header-info-title">
                     팔로잉
                   </div>
-                  <div className="mypage-main-content-header-info-number">
+                  <div className="userpage-main-content-header-info-number">
                     0
                   </div>
                 </div>
               </div>
-              <div className="mypage-main-content-header-info-name-wrapper">
-                <div className="mypage-main-content-header-info-name">
-                  {this.props.user.user_name}
+              <div className="userpage-main-content-header-info-name-wrapper">
+                <div className="userpage-main-content-header-info-name">
+                  {this.state.user_info ? this.state.user_info.user_name : ""}
                 </div>
-                <div className="mypage-main-content-header-info-job">
-                  {this.state.user_info
-                    ? this.state.user_info.user_job
-                    : this.props.user.user_job}
+                <div className="userpage-main-content-header-info-job">
+                  {this.state.user_info ? this.state.user_info.user_job : ""}
                 </div>
               </div>
-              <div className="mypage-main-content-header-info-text-wrapper">
-                {this.state.user_info
-                  ? this.state.user_info.info
-                  : this.props.user.info}
+              <div className="userpage-main-content-header-info-text-wrapper">
+                {this.state.user_info ? this.state.user_info.info : ""}
               </div>
-              <div className="mypage-main-content-header-info-detail-wrapper">
+              <div className="userpage-main-content-header-info-detail-wrapper">
                 상세정보
                 <img className="arrow" src={arrow} />
               </div>
-              <div className="mypage-main-content-header-info-modify-wrapper">
-                <div
-                  className="mypage-main-content-header-info-modify-btn"
-                  onClick={this.clickModal.bind(this)}
-                >
-                  팔로우
-                </div>
+              <div className="userpage-main-content-header-info-modify-wrapper">
+                {this.state.following ? (
+                  <div className="userpage-main-content-header-info-modify-btn-following">
+                    팔로잉
+                  </div>
+                ) : (
+                  <div
+                    className="userpage-main-content-header-info-modify-btn"
+                    onClick={this.clickFollow.bind(this)}
+                  >
+                    팔로우
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className="mypage-main-content-cover">
-            <div className="mypage-main-content-header-wrapper">
+          <div className="userpage-main-content-cover">
+            <div className="userpage-main-content-inner-header-wrapper">
               <div
-                className="mypage-main-content-header"
+                className={
+                  this.state.veiw === "photo"
+                    ? "userpage-main-content-header border-bottom"
+                    : "userpage-main-content-header"
+                }
                 onClick={this.clickPhoto.bind(this)}
               >
                 사진
               </div>
               <div
-                className="mypage-main-content-header"
+                className={
+                  this.state.veiw === "music"
+                    ? "userpage-main-content-header border-bottom"
+                    : "userpage-main-content-header"
+                }
                 onClick={this.clickMusic.bind(this)}
               >
                 곡
               </div>
               <div
-                className="mypage-main-content-header"
+                className={
+                  this.state.veiw === "video"
+                    ? "userpage-main-content-header border-bottom"
+                    : "userpage-main-content-header"
+                }
                 onClick={this.clickVideo.bind(this)}
               >
                 영상
               </div>
             </div>
-            {this.state.veiw === "photo" ? <div>사진</div> : <div></div>}
-            {this.state.veiw === "music" ? <div>음악</div> : <div></div>}
-            {this.state.veiw === "video" ? <div>영상 </div> : <div></div>}
+            {this.state.veiw === "photo" ? (
+              <div className="userpost-cover">
+                {this.state.userPosts &&
+                  this.state.userPosts.map((post, i) => {
+                    if (post.post_type === "photo") {
+                      return (
+                        <div className="userpost-wrapper">
+                          <img className="userpost" src={post.cover_url} />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            ) : (
+              <div></div>
+            )}
+            {this.state.veiw === "music" ? (
+              <div className="userpost-cover">
+                {this.state.userPosts &&
+                  this.state.userPosts.map((post, i) => {
+                    if (post.post_type === "music") {
+                      return (
+                        <div className="userpost-wrapper">
+                          <img className="userpost" src={post.cover_url} />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            ) : (
+              <div></div>
+            )}
+            {this.state.veiw === "video" ? (
+              <div className="userpost-cover">
+                {this.state.userPosts &&
+                  this.state.userPosts.map((post, i) => {
+                    if (post.post_type === "video") {
+                      return (
+                        <div className="userpost-wrapper">
+                          <img className="userpost" src={post.cover_url} />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       </>
