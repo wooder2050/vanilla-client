@@ -15,6 +15,8 @@ class MainFeed extends Component {
               followingPosts={this.props.followingPosts}
               posts={this.props.posts}
               authenticated={this.props.authenticated}
+              startMusicPlayer={this.props.startMusicPlayer}
+              clickPost={this.props.clickPost}
             />
           </div>
         </div>

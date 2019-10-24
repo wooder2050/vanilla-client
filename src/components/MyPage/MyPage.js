@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./MyPage.scss";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import { Progress } from "antd";
 import profile from "../../images/profile.png";
 import arrow from "../../images/arrow.png";
@@ -12,6 +13,9 @@ class MyPage extends Component {
       veiw: "photo",
       modal: false,
       user_info: null,
+      followState: false,
+      listTitle: null,
+      currentFollowList: null,
       inputError: null
     };
   }
@@ -23,7 +27,7 @@ class MyPage extends Component {
     const userJob = event.target.user_job.value;
     const formData = new FormData();
     formData.append("imgfile", profilePhoto);
-    if (profilePhoto & userDisplayName & info & userJob) {
+    if (profilePhoto && userDisplayName && info && userJob) {
       fetch("http://localhost:5000/upload/single", {
         method: "POST",
         body: formData
@@ -90,7 +94,15 @@ class MyPage extends Component {
       modal: !this.state.modal
     });
   }
+  clickFollowState(list, name) {
+    this.setState({
+      followState: !this.state.followState,
+      currentFollowList: list,
+      listTitle: name
+    });
+  }
   render() {
+    console.log(this.props.followingUsers, this.props.followedUsers);
     return (
       <>
         <div className="mypage-main-content-wrapper">
@@ -139,7 +151,9 @@ class MyPage extends Component {
                 </div>
               ) : (
                 <div className="mypage-main-content-header-info-id">
-                  {this.props.user.email}
+                  {this.props.user.user_display_name
+                    ? this.props.user.user_display_name
+                    : this.props.user.email}
                 </div>
               )}
               <div className="mypage-main-content-header-info-number-wrapper">
@@ -148,23 +162,41 @@ class MyPage extends Component {
                     게시물
                   </div>
                   <div className="mypage-main-content-header-info-number">
-                    0
+                    {this.props.myPosts ? this.props.myPosts.length : 0}
                   </div>
                 </div>
-                <div className="mypage-main-content-header-info-number-cover">
+                <div
+                  onClick={this.clickFollowState.bind(
+                    this,
+                    this.props.followedUsers,
+                    "팔로워"
+                  )}
+                  className="mypage-main-content-header-info-number-cover"
+                >
                   <div className="mypage-main-content-header-info-title">
                     팔로워
                   </div>
                   <div className="mypage-main-content-header-info-number">
-                    0
+                    {this.props.user.follower
+                      ? this.props.user.follower.length
+                      : 0}
                   </div>
                 </div>
-                <div className="mypage-main-content-header-info-number-cover">
+                <div
+                  onClick={this.clickFollowState.bind(
+                    this,
+                    this.props.followingUsers,
+                    "팔로잉"
+                  )}
+                  className="mypage-main-content-header-info-number-cover"
+                >
                   <div className="mypage-main-content-header-info-title">
                     팔로잉
                   </div>
                   <div className="mypage-main-content-header-info-number">
-                    0
+                    {this.props.user.following
+                      ? this.props.user.following.length
+                      : 0}
                   </div>
                 </div>
               </div>
@@ -238,7 +270,7 @@ class MyPage extends Component {
                     if (post.post_type === "photo") {
                       return (
                         <div key={i} className="mypost-wrapper">
-                          <img className="mypost" src={post.cover_url} />
+                          <img className="mypost" src={post.post_url} />
                         </div>
                       );
                     }
@@ -253,7 +285,11 @@ class MyPage extends Component {
                   this.props.myPosts.map((post, i) => {
                     if (post.post_type === "music") {
                       return (
-                        <div key={i} className="mypost-wrapper">
+                        <div
+                          key={i}
+                          onClick={this.props.startMusicPlayer.bind(this, post)}
+                          className="mypost-wrapper"
+                        >
                           <img className="mypost" src={post.cover_url} />
                         </div>
                       );
@@ -281,6 +317,44 @@ class MyPage extends Component {
             )}
           </div>
         </div>
+        {this.state.followState ? (
+          <>
+            <div
+              onClick={this.clickFollowState.bind(this)}
+              className="followList-background"
+            ></div>
+            <div className="followList-wrapper">
+              <div className="title">{this.state.listTitle}</div>
+              {this.state.currentFollowList.map((user, i) => {
+                return (
+                  <>
+                    <NavLink
+                      className="followList-user-wrapper"
+                      to={`${user._id}`}
+                    >
+                      <div className="followList-user-profile-wrapper">
+                        <img
+                          className="followList-user-profile"
+                          src={user.profile_url ? user.profile_url : profile}
+                        />
+                      </div>
+                      <div className="followList-user-text-wrapper">
+                        <strong className="followList-user-id">
+                          {user.user_display_name
+                            ? user.user_display_name
+                            : user.email}
+                        </strong>
+                        {user.user_name}
+                      </div>
+                    </NavLink>
+                  </>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div></div>
+        )}
 
         {this.state.modal ? (
           <div className="modal-body">

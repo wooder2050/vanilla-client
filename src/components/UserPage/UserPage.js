@@ -12,7 +12,9 @@ class UserPage extends Component {
       veiw: "photo",
       user_info: null,
       userPosts: null,
-      following: false
+      following: false,
+      followingNumber: 0,
+      followerNumber: 0
     };
   }
   componentDidMount() {
@@ -34,9 +36,11 @@ class UserPage extends Component {
         console.log(responseJson.pageUser[0]);
         this.setState({
           user_info: responseJson.pageUser[0],
-          userPosts: responseJson.pageUserPosts
+          userPosts: responseJson.pageUserPosts,
+          followerNumber: responseJson.pageUser[0].follower.length,
+          followingNumber: responseJson.pageUser[0].following.length
         });
-        if (this.props.user) {
+        if (this.props.user && this.props.user.following) {
           for (var i = 0; i < this.props.user.following.length; i++) {
             console.log(this.props.user.following[i], this.state.user_info._id);
             if (this.props.user.following[i] === this.state.user_info._id) {
@@ -82,11 +86,19 @@ class UserPage extends Component {
         throw new Error("failed to authenticate user");
       })
       .then(responseJson => {
-        console.log(
-          "팔로워 성공 ",
-          responseJson.follower,
-          responseJson.followee
-        );
+        if (responseJson.followUdate) {
+          console.log(
+            "팔로워 성공 ",
+            responseJson.follower,
+            responseJson.followee
+          );
+        } else {
+          console.log(
+            "팔로워 실패 ",
+            responseJson.follower,
+            responseJson.followee
+          );
+        }
       })
       .catch(error => {});
   }
@@ -149,7 +161,7 @@ class UserPage extends Component {
                     게시물
                   </div>
                   <div className="userpage-main-content-header-info-number">
-                    0
+                    {this.state.userPosts ? this.state.userPosts.length : 0}
                   </div>
                 </div>
                 <div className="userpage-main-content-header-info-number-cover">
@@ -157,7 +169,7 @@ class UserPage extends Component {
                     팔로워
                   </div>
                   <div className="userpage-main-content-header-info-number">
-                    0
+                    {this.state.followerNumber}
                   </div>
                 </div>
                 <div className="userpage-main-content-header-info-number-cover">
@@ -165,7 +177,7 @@ class UserPage extends Component {
                     팔로잉
                   </div>
                   <div className="userpage-main-content-header-info-number">
-                    0
+                    {this.state.followingNumber}
                   </div>
                 </div>
               </div>
@@ -239,8 +251,8 @@ class UserPage extends Component {
                   this.state.userPosts.map((post, i) => {
                     if (post.post_type === "photo") {
                       return (
-                        <div className="userpost-wrapper">
-                          <img className="userpost" src={post.cover_url} />
+                        <div key={i} className="userpost-wrapper">
+                          <img className="userpost" src={post.post_url} />
                         </div>
                       );
                     }
@@ -255,7 +267,11 @@ class UserPage extends Component {
                   this.state.userPosts.map((post, i) => {
                     if (post.post_type === "music") {
                       return (
-                        <div className="userpost-wrapper">
+                        <div
+                          key={i}
+                          onClick={this.props.startMusicPlayer.bind(this, post)}
+                          className="userpost-wrapper"
+                        >
                           <img className="userpost" src={post.cover_url} />
                         </div>
                       );

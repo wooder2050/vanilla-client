@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import "./MainFeedContent.scss";
 import like from "../../images/like.png";
 import comment from "../../images/comment.png";
@@ -25,7 +26,12 @@ class MainFeedContent extends Component {
                           </div>
                           <div className="posting-text-wrapper">
                             <div className="posting-user-id">
-                              {post.user_display_name}
+                              <NavLink
+                                className="posting-user-id-inner"
+                                to={`${post.poster_id}`}
+                              >
+                                {post.user_display_name}
+                              </NavLink>
                             </div>
                             <div className="posting-location-date">
                               {post.location}, {post.post_date}
@@ -49,10 +55,22 @@ class MainFeedContent extends Component {
                           </div>
                         ) : (
                           <div className="posting-content-cover">
-                            <img
-                              className="posting-content"
-                              src={post.cover_url}
-                            />
+                            {post.post_type === "music" ? (
+                              <img
+                                onClick={this.props.startMusicPlayer.bind(
+                                  this,
+                                  post
+                                )}
+                                className="posting-content"
+                                src={post.cover_url}
+                              />
+                            ) : (
+                              <img
+                                onClick={this.props.clickPost.bind(this, post)}
+                                className="posting-content"
+                                src={post.post_url}
+                              />
+                            )}
                           </div>
                         )}
 

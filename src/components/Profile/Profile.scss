@@ -9,6 +9,8 @@ $color5: #789db7;
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   width: 100%;
   cursor: pointer;
+  display: block;
+  text-decoration: none;
   .user-profile-photo-wrapper {
     float: left;
     width: 60px;

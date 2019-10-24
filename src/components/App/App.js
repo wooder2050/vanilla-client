@@ -10,6 +10,7 @@ import UploadDetail from "../UploadDetail/UploadDetail";
 import Search from "../Search/Search";
 import UserPage from "../UserPage/UserPage";
 import MusicPlayer from "../MusicPlayer/MusicPlayer";
+import PostDetail from "../PostDetail/PostDetail";
 import "./App.scss";
 
 class App extends Component {
@@ -26,12 +27,16 @@ class App extends Component {
       newPosts: null,
       followingPosts: null,
       followingUsers: null,
-      veiw: "photo"
+      followedUsers: null,
+      veiw: "photo",
+      musicPlayState: "off",
+      currentMusic: null,
+      currentPost: null,
+      postViewState: "off"
     };
   }
 
   componentDidMount() {
-    console.log("componentDidMount ", this.state.authenticated);
     fetch("http://localhost:5000/login/success", {
       method: "GET",
       credentials: "include",
@@ -163,7 +168,8 @@ class App extends Component {
       })
       .then(responseJson => {
         this.setState({
-          followingUsers: responseJson.followingUsers
+          followingUsers: responseJson.followingUsers,
+          followedUsers: responseJson.followedUsers
         });
       })
       .catch(error => {});
@@ -203,7 +209,44 @@ class App extends Component {
       veiw: "video"
     });
   }
+  startMusicPlayer(music) {
+    this.setState({
+      musicPlayState: "bodyPlay",
+      currentMusic: music
+    });
+  }
+  closeMusicPlayer() {
+    this.setState({
+      musicPlayState: "off",
+      currentMusic: null
+    });
+  }
+  changePlayMode(state) {
+    if (state === "bodyPlay") {
+      this.setState({
+        musicPlayState: "footPlay"
+      });
+    } else {
+      this.setState({
+        musicPlayState: "bodyPlay"
+      });
+    }
+  }
+  clickPost(post) {
+    this.setState({
+      currentPost: post,
+      postViewState: "on"
+    });
+  }
+  closePost() {
+    this.setState({
+      currentPost: null,
+      postViewState: "off"
+    });
+  }
+
   render() {
+    console.log(this.state.followingUsers);
     return (
       <Router>
         <div className="App">
@@ -225,6 +268,8 @@ class App extends Component {
                       user={this.state.user}
                       newPosts={this.state.newPosts}
                       authenticated={this.state.authenticated}
+                      startMusicPlayer={this.startMusicPlayer.bind(this)}
+                      clickPost={this.clickPost.bind(this)}
                     />
                   )}
                 ></Route>
@@ -236,6 +281,10 @@ class App extends Component {
                       user={this.state.user}
                       authenticated={this.state.authenticated}
                       myPosts={this.state.myPosts}
+                      startMusicPlayer={this.startMusicPlayer.bind(this)}
+                      clickPost={this.clickPost.bind(this)}
+                      followingUsers={this.state.followingUsers}
+                      followedUsers={this.state.followedUsers}
                     />
                   )}
                 />
@@ -271,6 +320,8 @@ class App extends Component {
                       routeProps={routeProps}
                       user={this.state.user}
                       authenticated={this.state.authenticated}
+                      startMusicPlayer={this.startMusicPlayer.bind(this)}
+                      clickPost={this.clickPost.bind(this)}
                     />
                   )}
                 />
@@ -281,10 +332,22 @@ class App extends Component {
                     user={this.state.user}
                     authenticated={this.state.authenticated}
                     posts={this.state.myPosts}
+                    startMusicPlayer={this.startMusicPlayer.bind(this)}
+                    clickPost={this.clickPost.bind(this)}
                   />
                 </Route>
               </Switch>
-              <MusicPlayer/>
+              <MusicPlayer
+                musicPlayState={this.state.musicPlayState}
+                currentMusic={this.state.currentMusic}
+                closeMusicPlayer={this.closeMusicPlayer.bind(this)}
+                changePlayMode={this.changePlayMode.bind(this)}
+              />
+              <PostDetail
+                currentPost={this.state.currentPost}
+                postViewState={this.state.postViewState}
+                closePost={this.closePost.bind(this)}
+              />
             </div>
           </div>
         </div>

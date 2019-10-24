@@ -21,7 +21,7 @@ $color5: #789db7;
   color: $color4;
   .userpage-main-content-header-wrapper {
     width: 850px;
-    height: 300px;
+    height: 350px;
     .userpage-main-content-header-photo-wrapper {
       float: left;
       width: 300px;
@@ -191,9 +191,10 @@ $color5: #789db7;
   .userpage-main-content-cover {
     border-top: 1px solid $color4;
     width: 850px;
-    height: 300px;
+    height: 400px;
     .userpage-main-content-inner-header-wrapper {
       width: 100%;
+      float: left;
       margin: 10px 0;
       font-size: 24px;
       font-weight: bold;

@@ -87,6 +87,63 @@ class UploadDetail extends Component {
       });
     }
   }
+
+  postingMusic(event) {
+    event.preventDefault();
+    const postDescription = event.target.description.value;
+    const postMaker = event.target.maker.value;
+    const postSinger = event.target.singer.value;
+    const postTitle = event.target.title.value;
+    const postLocation = event.target.location.value;
+    const postTags = event.target.tags.value;
+    var tagsArray = postTags.split(",");
+    var notTags = true;
+    for (var i = 0; i < tagsArray.length; i++) {
+      if (tagsArray[i][0] !== "#") notTags = false;
+    }
+    if (
+      notTags &&
+      postDescription !== null &&
+      postMaker !== null &&
+      postSinger !== null &&
+      postTitle !== null &&
+      postLocation !== null &&
+      tagsArray.length !== 0
+    ) {
+      this.setState({
+        input_error: null
+      });
+      fetch("http://localhost:5000/upload/posting", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true
+        },
+        body: JSON.stringify({
+          email: this.props.user.email,
+          _id: this.props.user._id,
+          user_display_name: this.props.user.user_display_name,
+          profile_url: this.props.user.profile_url,
+          post_type: this.props.veiw,
+          assetId: this.props.routeProps.match.params.assetId,
+          description: postDescription,
+          maker: postMaker,
+          singer: postSinger,
+          title: postTitle,
+          location: postLocation,
+          tags: tagsArray
+        })
+      }).then(response => {
+        this.props.routeProps.history.push("/");
+      });
+    } else {
+      this.setState({
+        input_error: "Please enter all items."
+      });
+    }
+  }
+
   play() {
     this.setState({
       play: !this.state.play
@@ -137,7 +194,7 @@ class UploadDetail extends Component {
                       메인 컨텐츠
                     </div>
                   </div>
-                  <div className="upload-detail-main-content-cover-wrapper">
+                  {/* <div className="upload-detail-main-content-cover-wrapper">
                     {this.state.select_asset ? (
                       <div className="content-wrapper">
                         <img
@@ -149,7 +206,7 @@ class UploadDetail extends Component {
                       <div></div>
                     )}
                     <div className="upload-detail-main-content-text">커버</div>
-                  </div>
+                  </div> */}
                 </div>
               ) : (
                 <div className="upload-detail-main-content-cover">
@@ -180,10 +237,6 @@ class UploadDetail extends Component {
                               type="audio/mp3"
                               controls
                             ></audio>
-                            <div
-                              className="toggle"
-                              onClick={this.play.bind(this)}
-                            ></div>
                           </>
                         )}
                       </div>
@@ -209,70 +262,161 @@ class UploadDetail extends Component {
                   </div>
                 </div>
               )}
-
-              <div className="upload-detail-main-content-input-form-cover">
-                <div className="input-error">{this.state.input_error}</div>
-                <form onSubmit={this.posting.bind(this)}>
-                  <div className="input-cover-wrapper">
-                    <div className="text-wrapper">
-                      <label className="text">설명</label>
+              {this.props.veiw === "music" ? (
+                <div className="upload-detail-main-content-input-form-cover">
+                  <div className="input-error">{this.state.input_error}</div>
+                  <form onSubmit={this.postingMusic.bind(this)}>
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">설명</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <textarea
+                          className="input-description-form"
+                          type="text"
+                          name="description"
+                          placeholder="문구 입력..."
+                        />
+                      </div>
                     </div>
-                    <div className="input-wrapper">
-                      <textarea
-                        className="input-description-form"
-                        type="text"
-                        name="description"
-                        placeholder="문구 입력..."
-                      />
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">가수</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="singer"
+                          placeholder="가수를 입력해주세요."
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="input-cover-wrapper">
-                    <div className="text-wrapper">
-                      <label className="text">컨텐츠 제작자</label>
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">노래 제목</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="title"
+                          placeholder="노래 제목을 입력해주세요."
+                        />
+                      </div>
                     </div>
-                    <div className="input-wrapper">
-                      <input
-                        className="input-description-form"
-                        type="text"
-                        name="maker"
-                        placeholder="이름을 입력해주세요."
-                      />
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">컨텐츠 제작자</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="maker"
+                          placeholder="이름을 입력해주세요."
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="input-cover-wrapper">
-                    <div className="text-wrapper">
-                      <label className="text">장소</label>
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">장소</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="location"
+                          placeholder="ex)상상마당, 언플러그드"
+                        />
+                      </div>
                     </div>
-                    <div className="input-wrapper">
-                      <input
-                        className="input-description-form"
-                        type="text"
-                        name="location"
-                        placeholder="ex)상상마당, 언플러그드"
-                      />
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">태그</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="tags"
+                          placeholder="ex)#김수영, #1집"
+                        />
+                        {this.state.tags}
+                      </div>
                     </div>
-                  </div>
-                  <div className="input-cover-wrapper">
-                    <div className="text-wrapper">
-                      <label className="text">태그</label>
+                    <div className="input-btn-wrapper">
+                      <button type="submit" className="input-btn">
+                        공유하기
+                      </button>
                     </div>
-                    <div className="input-wrapper">
-                      <input
-                        className="input-description-form"
-                        type="text"
-                        name="tags"
-                        placeholder="ex)#김수영, #1집"
-                      />
-                      {this.state.tags}
+                  </form>
+                </div>
+              ) : (
+                <div className="upload-detail-main-content-input-form-cover">
+                  <div className="input-error">{this.state.input_error}</div>
+                  <form onSubmit={this.posting.bind(this)}>
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">설명</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <textarea
+                          className="input-description-form"
+                          type="text"
+                          name="description"
+                          placeholder="문구 입력..."
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="input-btn-wrapper">
-                    <button type="submit" className="input-btn">
-                      공유하기
-                    </button>
-                  </div>
-                </form>
-              </div>
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">컨텐츠 제작자</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="maker"
+                          placeholder="이름을 입력해주세요."
+                        />
+                      </div>
+                    </div>
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">장소</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="location"
+                          placeholder="ex)상상마당, 언플러그드"
+                        />
+                      </div>
+                    </div>
+                    <div className="input-cover-wrapper">
+                      <div className="text-wrapper">
+                        <label className="text">태그</label>
+                      </div>
+                      <div className="input-wrapper">
+                        <input
+                          className="input-description-form"
+                          type="text"
+                          name="tags"
+                          placeholder="ex)#김수영, #1집"
+                        />
+                        {this.state.tags}
+                      </div>
+                    </div>
+                    <div className="input-btn-wrapper">
+                      <button type="submit" className="input-btn">
+                        공유하기
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import "./Profile.scss";
 import myPage from "../../images/myPage2.png";
 
 class Profile extends Component {
   render() {
     return (
-      <div className="user-profile-wrapper">
+      <NavLink to="mypage" className="user-profile-wrapper">
         <div className="user-profile-photo-wrapper">
           {this.props.user ? (
             <img
@@ -30,7 +31,7 @@ class Profile extends Component {
             {this.props.user.user_name}
           </div>
         </div>
-      </div>
+      </NavLink>
     );
   }
 }

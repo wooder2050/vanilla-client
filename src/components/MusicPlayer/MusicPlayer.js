@@ -1,9 +1,18 @@
 import React, { Component } from "react";
 import "./MusicPlayer.scss";
-import mp from "../../images/경제환 - 니가 돌아올 희망은 없다는 걸 알아 official MV.mp3";
 import cover from "../../images/ex1.jpg";
 import { Progress } from "antd";
 import "antd/dist/antd.css";
+import play from "../../images/played.png";
+import pause from "../../images/pause.png";
+import stop from "../../images/stop.png";
+import next from "../../images/next.png";
+import prev from "../../images/prev.png";
+import footerplay from "../../images/footer-play.png";
+import footerpause from "../../images/footer-pause.png";
+import footerstop from "../../images/footer-stop.png";
+import footernext from "../../images/footer-next.png";
+import footerprev from "../../images/footer-prev.png";
 
 class MusicPlayer extends Component {
   constructor(props) {
@@ -17,29 +26,16 @@ class MusicPlayer extends Component {
       startTime: 0
     };
     this.timerId = 0;
-    this.url = mp;
+    this.url = null;
     this.audio = new Audio(this.url);
   }
-
   componentDidMount() {
     this.timerId = setInterval(e => {
       this.tick();
     }, 1000);
-    console.log(
-      "componentDidMount : ",
-      this.state.startTime,
-      this.state.curTime,
-      this.audio.currentTime
-    );
   }
   componentWillUnmount() {
     clearInterval(this.timerId);
-    console.log(
-      "componentWillUnmount : ",
-      this.state.startTime,
-      this.state.curTime,
-      this.audio.currentTime
-    );
   }
   tick() {
     if (this.state.isLive) {
@@ -58,12 +54,6 @@ class MusicPlayer extends Component {
       isLive: true
     });
     this.audio.play();
-    console.log(
-      "play : ",
-      this.state.startTime,
-      this.state.curTime,
-      this.audio.currentTime
-    );
   }
 
   pause() {
@@ -76,12 +66,6 @@ class MusicPlayer extends Component {
         curTime: 0,
         startTime: 0
       });
-    console.log(
-      "pause : ",
-      this.state.startTime,
-      this.state.curTime,
-      this.audio.currentTime
-    );
   }
 
   stop() {
@@ -95,24 +79,13 @@ class MusicPlayer extends Component {
         curTime: 0,
         startTime: 0
       });
-    console.log(
-      "stop : ",
-      this.state.startTime,
-      this.state.curTime,
-      this.audio.currentTime,
-      this.state.duration
+    this.per = Math.floor(
+      (Math.floor(this.audio.currentTime) / Math.floor(this.state.duration)) *
+        1000
     );
   }
 
   render() {
-    console.log(
-      "render : ",
-      this.state.startTime,
-      this.state.curTime,
-      this.audio.currentTime,
-      this.state.duration
-    );
-
     function getTime(time) {
       if (!isNaN(time)) {
         return (
@@ -120,25 +93,6 @@ class MusicPlayer extends Component {
         );
       }
     }
-    var lyricsText = [
-      {
-        text: "[Intro: Polina]",
-        timeIn: "00:00.00",
-        duration: 460
-      },
-      {
-        text:
-          "Tell me where to go, tell me what to do, I'll be right there for you",
-        timeIn: "00:00.46",
-        duration: 5500
-      },
-      {
-        text:
-          "Tell me what to say, no matter if it's true, I'll say it all for you",
-        timeIn: "00:05.96",
-        duration: 6940
-      }
-    ];
 
     const currentTime = getTime(Math.floor(this.audio.currentTime));
     const per = Math.floor(
@@ -147,67 +101,182 @@ class MusicPlayer extends Component {
     );
     const duration = getTime(this.state.duration);
     const tempStyle = {
-      position: "absolute",
-      top: "350px",
-      left: "100px",
-      width: `${(per / 10) * 2}px`,
-      height: "10px",
-      background: "orange",
-      zIndex: "2"
+      width: `${(per / 10) * 3}px`
     };
     const tempStyle2 = {
-      position: "absolute",
-      top: "-2px",
-      right: "-5px",
-      width: "10px",
-      height: "10px",
-      background: "white",
-      border: "2px solid blue",
-      borderRadius: "5px",
-      zIndex: "3"
+      width: `${(per / 10) * 2}px`
     };
     const coverStyle = {
-      background: `center / cover no-repeat url(${cover})`
+      background: `center / cover no-repeat url(${
+        this.props.currentMusic ? this.props.currentMusic.cover_url : cover
+      })`
     };
+    if (this.props.currentMusic) {
+      if (this.url !== this.props.currentMusic.post_url) {
+        this.url = this.props.currentMusic.post_url;
+        this.audio = new Audio(this.url);
+      }
+    }
     return (
       <>
-        <div className="player-background"></div>
-        <div className="player-content-wrapper">
-          <div className="player-wrapper">
-            <div className="cover">
-              <div
-                style={coverStyle}
-                className={`cover-img ${this.state.play ? "cover-play" : ""}`}
-              ></div>
-              <Progress
-                type="circle"
-                width="230px"
-                strokeWidth="3"
-                strokeColor={{
-                  "0%": "#fee5a5",
-                  "100%": "#486d87"
-                }}
-                percent={per / 10}
-              />
-              <div>
-                {currentTime}/{duration}
-              </div>
-              {per ? per / 10 : ""}
-              <br></br>
-              <button onClick={this.play.bind(this)}>Play</button>
-              <button onClick={this.pause.bind(this)}>Pause</button>
-              <button onClick={this.stop.bind(this)}>Stop</button>
-              <button>Prev</button>
-              <button>Next</button>
-              <div style={tempStyle}>
-                <div style={tempStyle2}></div>
-              </div>
-              <div className="play-bar"></div>
+        {this.props.musicPlayState === "bodyPlay" ? (
+          <div className="main">
+            <div
+              onClick={this.props.changePlayMode.bind(
+                this,
+                this.props.musicPlayState
+              )}
+              className="player-background"
+            ></div>
+            <div className="player-content-wrapper">
+              <div className="player-wrapper">
+                <div className="cover">
+                  <div
+                    onClick={this.props.closeMusicPlayer.bind(this)}
+                    className="close-modal"
+                  >
+                    X
+                  </div>
+                  <div className="title-cover">
+                    <div className="title">{this.props.currentMusic.title}</div>
+                  </div>
+                  <div className="singer-cover">
+                    <div className="singer">
+                      {this.props.currentMusic.singer}
+                    </div>
+                  </div>
+                  <div
+                    style={coverStyle}
+                    className={`cover-img ${
+                      this.state.play ? "cover-play" : ""
+                    }`}
+                  ></div>
+                  <Progress
+                    type="circle"
+                    width="230px"
+                    strokeWidth="3"
+                    strokeColor={{
+                      "0%": "#fee5a5",
+                      "100%": "#486d87"
+                    }}
+                    percent={per / 10}
+                  />
+                  <div className="play-btn-cover-wrapper">
+                    <div className="play-btn-cover">
+                      <img className="play-btn" src={prev} />
+                    </div>
+                    {this.state.play ? (
+                      <div
+                        className="play-btn-cover"
+                        onClick={this.pause.bind(this)}
+                      >
+                        <img className="play-btn" src={pause} />
+                      </div>
+                    ) : (
+                      <div
+                        className="play-btn-cover"
+                        onClick={this.play.bind(this)}
+                      >
+                        <img className="play-btn" src={play} />
+                      </div>
+                    )}
 
-              <div></div>
+                    <div
+                      className="play-btn-cover"
+                      onClick={this.stop.bind(this)}
+                    >
+                      <img className="play-btn" src={stop} />
+                    </div>
+
+                    <div className="play-btn-cover">
+                      <img className="play-btn" src={next} />
+                    </div>
+                  </div>
+                  <div className="playing-bar" style={tempStyle}>
+                    <div className="playing-ball"></div>
+                  </div>
+                  <div className="current-time">{currentTime}</div>
+                  <div className="duration">{duration}</div>
+                  <div className="play-bar"></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div
+            className={
+              this.props.musicPlayState === "off"
+                ? "footer-wrapper display-none"
+                : "footer-wrapper"
+            }
+          >
+            {" "}
+            <div
+              onClick={this.props.changePlayMode.bind(
+                this,
+                this.props.musicPlayState
+              )}
+              className="footer-cover-trigger"
+            ></div>
+            <div className="footer-cover">
+              <div
+                style={coverStyle}
+                className={`footer-cover-img ${
+                  this.state.play ? "cover-play" : ""
+                }`}
+              ></div>
+              <div className="footer-text-cover">
+                <div className="footer-title">
+                  {this.props.currentMusic ? this.props.currentMusic.title : ""}
+                </div>
+                <div className="footer-singer">
+                  {this.props.currentMusic
+                    ? this.props.currentMusic.singer
+                    : ""}
+                </div>
+              </div>
+
+              <div className="footer-play-state-cover">
+                <div className="footer-playing-bar" style={tempStyle2}>
+                  <div className="footer-playing-ball"></div>
+                </div>
+                <div className="footer-play-bar"></div>
+              </div>
+
+              <div className="footer-btn-cover">
+                <div className="footer-play-btn-cover">
+                  <img className="footer-play-btn" src={footerprev} />
+                </div>
+                {this.state.play ? (
+                  <div
+                    className="footer-play-btn-cover"
+                    onClick={this.pause.bind(this)}
+                  >
+                    <img className="footer-play-btn" src={footerpause} />
+                  </div>
+                ) : (
+                  <div
+                    className="footer-play-btn-cover"
+                    onClick={this.play.bind(this)}
+                  >
+                    <img className="footer-play-btn" src={footerplay} />
+                  </div>
+                )}
+
+                <div
+                  className="footer-play-btn-cover"
+                  onClick={this.stop.bind(this)}
+                >
+                  <img className="footer-play-btn" src={footerstop} />
+                </div>
+
+                <div className="footer-play-btn-cover">
+                  <img className="footer-play-btn" src={footernext} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </>
     );
   }

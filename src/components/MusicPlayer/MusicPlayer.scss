@@ -7,6 +7,7 @@ $color5: #789db7;
 .player-background {
   width: 100%;
   height: 100vh;
+  cursor: pointer;
   position: fixed;
   background: $color5;
   top: 0;
@@ -15,11 +16,11 @@ $color5: #789db7;
   z-index: 998;
 }
 .player-content-wrapper {
-  width: 100%;
-  height: 100vh;
-  position: fixed;
+  width: 400px;
+  height: 500px;
+  position: absolute;
   top: 0;
-  left: 0;
+  left: 200px;
   z-index: 999;
   .player-wrapper {
     margin: 250px auto;
@@ -31,9 +32,61 @@ $color5: #789db7;
     .cover {
       width: 100%;
       position: relative;
+      .close-modal {
+        color: $color4;
+        position: absolute;
+        font-size: 16px;
+        cursor: pointer;
+        top: 10px;
+        right: 15px;
+      }
+      .title-cover {
+        position: absolute;
+        top: 20px;
+        left: 50px;
+        width: 300px;
+        text-align: center;
+        .title {
+          color: $color4;
+          font-size: 20px;
+          font-weight: bold;
+        }
+      }
+      .singer-cover {
+        position: absolute;
+        top: 60px;
+        left: 75px;
+        width: 250px;
+        text-align: center;
+        .singer {
+          color: $color5;
+          font-size: 16px;
+          font-weight: 300;
+        }
+      }
+      .play-btn-cover-wrapper {
+        width: 200px;
+        position: absolute;
+        top: 420px;
+        left: 105px;
+        .play-btn-cover {
+          float: left;
+          width: 40px;
+          margin: 0 5px;
+          cursor: pointer;
+          .play-btn {
+            width: 100%;
+          }
+        }
+      }
+      .play-btn-cover-wrapper::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
       .ant-progress {
         position: absolute;
-        top: 85px;
+        top: 115px;
         left: 80px;
         z-index: 998;
         .ant-progress-text {
@@ -42,7 +95,7 @@ $color5: #789db7;
       }
       .cover-img {
         position: absolute;
-        top: 100px;
+        top: 130px;
         right: 100px;
         display: block;
         width: 200px;
@@ -50,7 +103,48 @@ $color5: #789db7;
         border-radius: 100px;
       }
       .cover-play {
-        animation: spin 5s linear infinite;
+        animation: spin 3s linear infinite;
+      }
+      .playing-bar {
+        position: absolute;
+        top: 380px;
+        left: 50px;
+        height: 10px;
+        background: $color1;
+        border-radius: 3px;
+        z-index: 999;
+      }
+      .play-bar {
+        position: absolute;
+        top: 380px;
+        left: 50px;
+        width: 300px;
+        height: 10px;
+        border-radius: 3px;
+        background: $color5;
+      }
+      .playing-ball {
+        position: absolute;
+        top: -1px;
+        right: -5px;
+        width: 10px;
+        height: 10px;
+        background: $color3;
+        border: 1px solid $color4;
+        border-radius: 5px;
+        z-index: 3;
+      }
+      .current-time {
+        color: $color4;
+        position: absolute;
+        top: 395px;
+        left: 40px;
+      }
+      .duration {
+        color: $color4;
+        position: absolute;
+        top: 395px;
+        left: 330px;
       }
     }
   }
@@ -65,14 +159,7 @@ $color5: #789db7;
   position: absolute;
   border: 4px solid black;
 }
-.play-bar {
-  position: absolute;
-  top: 350px;
-  left: 100px;
-  width: 200px;
-  height: 10px;
-  background: black;
-}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -80,4 +167,123 @@ $color5: #789db7;
   100% {
     transform: rotate(360deg);
   }
+}
+.footer-wrapper {
+  display: block;
+  width: 100%;
+  height: 100px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  .footer-cover-trigger{
+    cursor: pointer;
+    position: absolute;
+    left: 85px;
+    width: 1024px;
+    height: 100px;
+    z-index: 998;
+  }
+  .footer-cover {
+    position: relative;
+    width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+    background: $color5;
+    cursor: pointer;
+  }
+  .footer-cover-img {
+    float: left;
+    border: 1px solid $color1;
+    margin: 10px 0 0 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  .cover-play {
+    animation: spin 3s linear infinite;
+  }
+  .footer-text-cover {
+    float: left;
+    text-align: left;
+    margin: 20px 0 0 30px;
+    .footer-title {
+      font-size: 20px;
+      font-weight: 100;
+      letter-spacing: 1px;
+      color: $color3;
+    }
+    .footer-singer {
+      font-size: 16px;
+      font-weight: bold;
+      color: $color1;
+      margin: 5px 0 0 0;
+    }
+  }
+  .footer-btn-cover {
+    width: 250px;
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    z-index: 999;
+    .footer-play-btn-cover {
+      float: left;
+      width: 50px;
+      margin: 0 10px 0 0;
+      .footer-play-btn {
+        width: 100%;
+      }
+    }
+  }
+  .footer-btn-cover::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .footer-play-state-cover {
+    position: relative;
+    float: left;
+    width: 220px;
+    padding: 40px 0 0 0;
+    box-sizing: border-box;
+    height: 100px;
+    margin: 0 0 0 30px;
+    .footer-playing-bar {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      height: 5px;
+      background: $color2;
+      border-radius: 3px;
+      z-index: 2;
+    }
+    .footer-play-bar {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      width: 200px;
+      height: 5px;
+      border-radius: 3px;
+      background: $color1;
+    }
+    .footer-playing-ball {
+      position: absolute;
+      top: -2px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      background: $color3;
+      border: 1px solid $color2;
+      border-radius: 5px;
+      z-index: 3;
+    }
+  }
+}
+.footer-wrapper::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.display-none {
+  display: none;
 }

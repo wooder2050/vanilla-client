@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR|Roboto&display=swap");
+$color1: #ffb838;
+$color2: #fee5a5;
+$color3: #f7f6ee;
+$color4: #486d87;
+$color5: #789db7;
+
+.post-detail-cover-wrapper {
+  width: 1024px;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  z-index: 997;
+  .post-background {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    z-index: 998;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .post-detail-wrapper {
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    z-index: 999;
+    width: 700px;
+    height: 500px;
+    background: $color3;
+    z-index: 999;
+    .post-detail-content{
+      float: left;
+      width: 400px;
+      border: 4px solid red;
+    }
+  }
+  .post-detail-wrapper::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}

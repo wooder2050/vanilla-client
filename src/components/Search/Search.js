@@ -15,7 +15,6 @@ class Search extends Component {
   }
   searchUser(event) {
     event.preventDefault();
-    console.log(event.target.username.value);
     const username = event.target.username.value;
     if (username === "") {
       this.setState({
@@ -53,7 +52,6 @@ class Search extends Component {
     });
   }
   render() {
-    console.log(this.state.users);
     return (
       <div
         className="search-page-content-wrapper"
@@ -116,11 +114,33 @@ class Search extends Component {
           <div className="search-page-content-cover">
             {this.props.newPosts ? (
               this.props.newPosts.map((post, i) => {
-                return (
-                  <div className="search-page-content-box">
-                    <img className="search-page-content" src={post.cover_url} />
-                  </div>
-                );
+                if (post.post_type === "music") {
+                  return (
+                    <div
+                      key={i}
+                      onClick={this.props.startMusicPlayer.bind(this, post)}
+                      className="search-page-content-box"
+                    >
+                      <img
+                        className="search-page-content"
+                        src={post.cover_url}
+                      />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={i} className="search-page-content-box">
+                      <img
+                        className="search-page-content"
+                        src={
+                          post.post_type === "photo"
+                            ? post.post_url
+                            : post.cover_url
+                        }
+                      />
+                    </div>
+                  );
+                }
               })
             ) : (
               <div></div>

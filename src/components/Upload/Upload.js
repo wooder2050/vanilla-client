@@ -19,6 +19,57 @@ class Upload extends Component {
       select_post: null
     };
   }
+
+  uploadSingle(event) {
+    event.preventDefault();
+    const postContent = event.target.post_content.files[0];
+    const formData = new FormData();
+    formData.append("imgfile", postContent);
+    if (postContent) {
+      fetch("http://localhost:5000/upload/single", {
+        method: "POST",
+        body: formData
+      })
+        .then(response => {
+          if (response.status === 200 || response.status === 401)
+            return response.json();
+          throw new Error("failed to upload");
+        })
+        .then(responseJosn => {
+          const postContentURL = responseJosn.profile_url;
+          fetch("http://localhost:5000/upload/databasepost", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": true
+            },
+            body: JSON.stringify({
+              post_url: postContentURL,
+              email: this.props.user.email,
+              post_type: this.props.veiw
+            })
+          })
+            .then(response => {
+              if (response.status === 200) return response.json();
+              throw new Error("failed to upload");
+            })
+            .then(responseJosn => {
+              this.setState({
+                assets: responseJosn.assets
+              });
+            });
+        });
+      this.setState({
+        modal: !this.state.modal
+      });
+    } else {
+      this.setState({
+        inputError: "Please be sure to enter all items."
+      });
+    }
+  }
+
   upload(event) {
     event.preventDefault();
     const postContent = event.target.post_content.files[0];
@@ -164,7 +215,11 @@ class Upload extends Component {
                     >
                       <img
                         className="upload-post-content"
-                        src={asset.cover_url}
+                        src={
+                          asset.type === "photo"
+                            ? asset.url
+                            : asset.cover_url
+                        }
                       />
                       {this.props.veiw !== "photo" ? (
                         <div className="player-btn-wrapper">
@@ -193,7 +248,11 @@ class Upload extends Component {
                     >
                       <img
                         className="upload-post-content"
-                        src={asset.cover_url}
+                        src={
+                          asset.type === "photo"
+                            ? asset.url
+                            : asset.cover_url
+                        }
                       />
                       {this.props.veiw !== "photo" ? (
                         <div className="player-btn-wrapper">
@@ -213,7 +272,13 @@ class Upload extends Component {
           <div className="modal-body-upload">
             <div className="modal-upload-wrapper">
               <div className="modal-upload">
-                <form onSubmit={this.upload.bind(this)}>
+                <form
+                  onSubmit={
+                    this.props.veiw === "photo"
+                      ? this.uploadSingle.bind(this)
+                      : this.upload.bind(this)
+                  }
+                >
                   <div
                     className="close-modal"
                     onClick={this.clickModal.bind(this)}
@@ -228,14 +293,18 @@ class Upload extends Component {
                       name="post_content"
                     />
                   </div>
-                  <div className="upload-wrapper">
-                    <div className="input-upload-label">COVER UPLOAD</div>
-                    <input
-                      className="input-upload-form"
-                      type="file"
-                      name="post_cover"
-                    />
-                  </div>
+                  {this.props.veiw === "photo" ? (
+                    <div></div>
+                  ) : (
+                    <div className="upload-wrapper">
+                      <div className="input-upload-label">COVER UPLOAD</div>
+                      <input
+                        className="input-upload-form"
+                        type="file"
+                        name="post_cover"
+                      />
+                    </div>
+                  )}
                   <div className="input-errorr">{this.state.inputError}</div>
                   <div className="input-upload-btn-wrapper">
                     <button className="input-upload-btn">완료</button>
