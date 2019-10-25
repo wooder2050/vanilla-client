@@ -1,17 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./Login.scss";
 import icon from "../../images/Google-Plus-icon.png";
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      login_user: {},
-      login_error: null,
-      login_authenticated: false
-    };
-  }
   render() {
     return (
       <div className="login-session">

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./RecommendFeed.scss";
 import myPage from "../../images/myPage2.png";
 

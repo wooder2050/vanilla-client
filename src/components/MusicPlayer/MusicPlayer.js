@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import "./MusicPlayer.scss";
 import cover from "../../images/ex1.jpg";
 import { Progress } from "antd";
@@ -141,9 +142,16 @@ class MusicPlayer extends Component {
                     <div className="title">{this.props.currentMusic.title}</div>
                   </div>
                   <div className="singer-cover">
-                    <div className="singer">
+                    <NavLink
+                      to={
+                        this.props.currentMusic
+                          ? `${this.props.currentMusic.poster_id}`
+                          : ""
+                      }
+                      className="singer"
+                    >
                       {this.props.currentMusic.singer}
-                    </div>
+                    </NavLink>
                   </div>
                   <div
                     style={coverStyle}
@@ -229,11 +237,18 @@ class MusicPlayer extends Component {
                 <div className="footer-title">
                   {this.props.currentMusic ? this.props.currentMusic.title : ""}
                 </div>
-                <div className="footer-singer">
+                <NavLink
+                  to={
+                    this.props.currentMusic
+                      ? `${this.props.currentMusic.poster_id}`
+                      : ""
+                  }
+                  className="footer-singer"
+                >
                   {this.props.currentMusic
                     ? this.props.currentMusic.singer
                     : ""}
-                </div>
+                </NavLink>
               </div>
 
               <div className="footer-play-state-cover">

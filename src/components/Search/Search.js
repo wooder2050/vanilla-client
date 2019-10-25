@@ -1,64 +1,18 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Search.scss";
 import search from "../../images/search.png";
 import profile from "../../images/profile.png";
 
 class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      search_error: null,
-      users: [],
-      searchState: false
-    };
-  }
-  searchUser(event) {
-    event.preventDefault();
-    const username = event.target.username.value;
-    if (username === "") {
-      this.setState({
-        search_error: "Please enter at least 2 characters."
-      });
-    } else {
-      this.setState({
-        search_error: null
-      });
-      fetch(`http://localhost:5000/search/${username}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        }
-      })
-        .then(response => {
-          if (response.status === 200 || response.status === 401)
-            return response.json();
-          throw new Error("failed to authenticate user");
-        })
-        .then(responseJson => {
-          this.setState({
-            users: responseJson.users,
-            searchState: true
-          });
-        })
-        .catch(error => {});
-    }
-  }
-  changeSearchState() {
-    this.setState({
-      searchState: false
-    });
-  }
   render() {
     return (
       <div
         className="search-page-content-wrapper"
-        onClick={this.changeSearchState.bind(this)}
+        onClick={this.props.changeSearchState.bind(this)}
       >
         <div className="search-page-header-wrapper">
-          <form onSubmit={this.searchUser.bind(this)}>
+          <form onSubmit={this.props.searchUser.bind(this)}>
             <div className="search-bar-wrapper">
               <div className="search-icon-wrapper">
                 <img className="search-icon" src={search} />
@@ -76,18 +30,18 @@ class Search extends Component {
             </div>
           </form>
           <div className="search-bar-error-wrapper">
-            <div className="search-bar-error">{this.state.search_error}</div>
+            <div className="search-bar-error">{this.props.searchError}</div>
           </div>
         </div>
         <div className="search-page-content-wraper">
           <div
             className={
-              this.state.searchState
+              this.props.searchState
                 ? "search-page-result-wraper display"
                 : "search-page-result-wraper"
             }
           >
-            {this.state.users.map((user, i) => {
+            {this.props.searchUsers.map((user, i) => {
               return (
                 <NavLink
                   className="search-page-result-user-wrapper"

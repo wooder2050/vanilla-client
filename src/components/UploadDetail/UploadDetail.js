@@ -1,167 +1,164 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./UploadDetail.scss";
 import "antd/dist/antd.css";
 
 class UploadDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false,
-      assets: null,
-      select_asset: null,
-      input_error: null
-    };
-  }
-  componentDidMount() {
-    fetch(
-      `http://localhost:5000/upload/${this.props.routeProps.match.params.assetId}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        }
-      }
-    )
-      .then(response => {
-        if (response.status === 200 || response.status === 401)
-          return response.json();
-        throw new Error("failed to authenticate user");
-      })
-      .then(responseJson => {
-        this.setState({
-          select_asset: responseJson.asset
-        });
-      })
-      .catch(error => {});
-  }
-  posting(event) {
-    event.preventDefault();
-    const postDescription = event.target.description.value;
-    const postMaker = event.target.maker.value;
-    const postLocation = event.target.location.value;
-    const postTags = event.target.tags.value;
-    var tagsArray = postTags.split(",");
-    var notTags = true;
-    for (var i = 0; i < tagsArray.length; i++) {
-      if (tagsArray[i][0] !== "#") notTags = false;
-    }
-    if (
-      notTags &&
-      postDescription !== null &&
-      postMaker !== null &&
-      postLocation !== null &&
-      tagsArray.length !== 0
-    ) {
-      this.setState({
-        input_error: null
-      });
-      fetch("http://localhost:5000/upload/posting", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        },
-        body: JSON.stringify({
-          email: this.props.user.email,
-          _id: this.props.user._id,
-          user_display_name: this.props.user.user_display_name,
-          profile_url: this.props.user.profile_url,
-          post_type: this.props.veiw,
-          assetId: this.props.routeProps.match.params.assetId,
-          description: postDescription,
-          maker: postMaker,
-          location: postLocation,
-          tags: tagsArray
-        })
-      }).then(response => {
-        this.props.routeProps.history.push("/");
-      });
-    } else {
-      this.setState({
-        input_error: "Please enter all items."
-      });
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     modal: false,
+  //     assets: null,
+  //     select_asset: null,
+  //     input_error: null
+  //   };
+  // }
+  // componentDidMount() {
+  //   fetch(
+  //     `http://localhost:5000/assets/${this.props.routeProps.match.params.assetId}`,
+  //     {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Credentials": true
+  //       }
+  //     }
+  //   )
+  //     .then(response => {
+  //       if (response.status === 200 || response.status === 401)
+  //         return response.json();
+  //       throw new Error("failed to authenticate user");
+  //     })
+  //     .then(responseJson => {
+  //       this.setState({
+  //         select_asset: responseJson.asset
+  //       });
+  //     })
+  //     .catch(error => {});
+  // }
+  // posting(event) {
+  //   event.preventDefault();
+  //   const postDescription = event.target.description.value;
+  //   const postMaker = event.target.maker.value;
+  //   const postLocation = event.target.location.value;
+  //   const postTags = event.target.tags.value;
+  //   var tagsArray = postTags.split(",");
+  //   var notTags = true;
+  //   for (var i = 0; i < tagsArray.length; i++) {
+  //     if (tagsArray[i][0] !== "#") notTags = false;
+  //   }
+  //   if (
+  //     notTags &&
+  //     postDescription !== null &&
+  //     postMaker !== null &&
+  //     postLocation !== null &&
+  //     tagsArray.length !== 0
+  //   ) {
+  //     this.setState({
+  //       input_error: null
+  //     });
+  //     fetch("http://localhost:5000/posts/upload", {
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Credentials": true
+  //       },
+  //       body: JSON.stringify({
+  //         email: this.props.user.email,
+  //         _id: this.props.user._id,
+  //         user_display_name: this.props.user.user_display_name,
+  //         profile_url: this.props.user.profile_url,
+  //         post_type: this.props.veiw,
+  //         assetId: this.props.routeProps.match.params.assetId,
+  //         description: postDescription,
+  //         maker: postMaker,
+  //         location: postLocation,
+  //         tags: tagsArray
+  //       })
+  //     }).then(response => {
+  //       this.props.routeProps.history.push("/");
+  //     });
+  //   } else {
+  //     this.setState({
+  //       input_error: "Please enter all items."
+  //     });
+  //   }
+  // }
 
-  postingMusic(event) {
-    event.preventDefault();
-    const postDescription = event.target.description.value;
-    const postMaker = event.target.maker.value;
-    const postSinger = event.target.singer.value;
-    const postTitle = event.target.title.value;
-    const postLocation = event.target.location.value;
-    const postTags = event.target.tags.value;
-    var tagsArray = postTags.split(",");
-    var notTags = true;
-    for (var i = 0; i < tagsArray.length; i++) {
-      if (tagsArray[i][0] !== "#") notTags = false;
-    }
-    if (
-      notTags &&
-      postDescription !== null &&
-      postMaker !== null &&
-      postSinger !== null &&
-      postTitle !== null &&
-      postLocation !== null &&
-      tagsArray.length !== 0
-    ) {
-      this.setState({
-        input_error: null
-      });
-      fetch("http://localhost:5000/upload/posting", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        },
-        body: JSON.stringify({
-          email: this.props.user.email,
-          _id: this.props.user._id,
-          user_display_name: this.props.user.user_display_name,
-          profile_url: this.props.user.profile_url,
-          post_type: this.props.veiw,
-          assetId: this.props.routeProps.match.params.assetId,
-          description: postDescription,
-          maker: postMaker,
-          singer: postSinger,
-          title: postTitle,
-          location: postLocation,
-          tags: tagsArray
-        })
-      }).then(response => {
-        this.props.routeProps.history.push("/");
-      });
-    } else {
-      this.setState({
-        input_error: "Please enter all items."
-      });
-    }
-  }
+  // postingMusic(event) {
+  //   event.preventDefault();
+  //   const postDescription = event.target.description.value;
+  //   const postMaker = event.target.maker.value;
+  //   const postSinger = event.target.singer.value;
+  //   const postTitle = event.target.title.value;
+  //   const postLocation = event.target.location.value;
+  //   const postTags = event.target.tags.value;
+  //   var tagsArray = postTags.split(",");
+  //   var notTags = true;
+  //   for (var i = 0; i < tagsArray.length; i++) {
+  //     if (tagsArray[i][0] !== "#") notTags = false;
+  //   }
+  //   if (
+  //     notTags &&
+  //     postDescription !== null &&
+  //     postMaker !== null &&
+  //     postSinger !== null &&
+  //     postTitle !== null &&
+  //     postLocation !== null &&
+  //     tagsArray.length !== 0
+  //   ) {
+  //     this.setState({
+  //       input_error: null
+  //     });
+  //     fetch("http://localhost:5000/posts/upload", {
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Credentials": true
+  //       },
+  //       body: JSON.stringify({
+  //         email: this.props.user.email,
+  //         _id: this.props.user._id,
+  //         user_display_name: this.props.user.user_display_name,
+  //         profile_url: this.props.user.profile_url,
+  //         post_type: this.props.veiw,
+  //         assetId: this.props.routeProps.match.params.assetId,
+  //         description: postDescription,
+  //         maker: postMaker,
+  //         singer: postSinger,
+  //         title: postTitle,
+  //         location: postLocation,
+  //         tags: tagsArray
+  //       })
+  //     }).then(response => {
+  //       this.props.routeProps.history.push("/");
+  //     });
+  //   } else {
+  //     this.setState({
+  //       input_error: "Please enter all items."
+  //     });
+  //   }
+  // }
 
-  play() {
-    this.setState({
-      play: !this.state.play
-    });
-  }
-
-  clickModal() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
-  selectAsset(id) {
-    this.setState({
-      select_post: id
-    });
-  }
+  // clickModal() {
+  //   this.setState({
+  //     modal: !this.state.modal
+  //   });
+  // }
+  // selectAsset(id) {
+  //   this.setState({
+  //     select_post: id
+  //   });
+  // }
   render() {
-    console.log(this.props.veiw);
+    console.log(
+      this.props.uploadSelectPost,
+      this.props.uploadDetailSelectAsset
+    );
     return (
       <>
         <div className="body-upload-detail-wrapper">
@@ -180,11 +177,11 @@ class UploadDetail extends Component {
               {this.props.veiw === "photo" ? (
                 <div className="upload-detail-main-content-cover">
                   <div className="upload-detail-main-content-cover-wrapper">
-                    {this.state.select_asset ? (
+                    {this.props.uploadSelectAsset ? (
                       <div className="content-wrapper">
                         <img
                           className="upload-detail-main-content"
-                          src={this.state.select_asset[0].url}
+                          src={this.props.uploadSelectPost[0].url}
                         />
                       </div>
                     ) : (
@@ -194,28 +191,15 @@ class UploadDetail extends Component {
                       메인 컨텐츠
                     </div>
                   </div>
-                  {/* <div className="upload-detail-main-content-cover-wrapper">
-                    {this.state.select_asset ? (
-                      <div className="content-wrapper">
-                        <img
-                          className="upload-detail-main-content-cover"
-                          src={this.state.select_asset[0].cover_url}
-                        />
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    <div className="upload-detail-main-content-text">커버</div>
-                  </div> */}
                 </div>
               ) : (
                 <div className="upload-detail-main-content-cover">
                   <div className="upload-detail-main-content-cover-wrapper">
-                    {this.state.select_asset ? (
+                    {this.props.uploadSelectPost ? (
                       <div className="content-wrapper-video">
                         {this.props.veiw === "video" ? (
                           <video
-                            src={this.state.select_asset[0].url}
+                            src={this.props.uploadSelectPost[0].url}
                             width="280"
                             height="280"
                             autoPlay
@@ -224,15 +208,11 @@ class UploadDetail extends Component {
                         ) : (
                           <>
                             <img
-                              className={
-                                this.state.play
-                                  ? "upload-audio-cover cover-play"
-                                  : "upload-audio-cover"
-                              }
-                              src={this.state.select_asset[0].cover_url}
+                              className={"upload-audio-cover"}
+                              src={this.props.uploadSelectPost[0].cover_url}
                             />
                             <audio
-                              src={this.state.select_asset[0].url}
+                              src={this.props.uploadSelectPost[0].url}
                               width="250"
                               type="audio/mp3"
                               controls
@@ -248,11 +228,11 @@ class UploadDetail extends Component {
                     </div>
                   </div>
                   <div className="upload-detail-main-content-cover-wrapper">
-                    {this.state.select_asset ? (
+                    {this.props.uploadSelectPost ? (
                       <div className="content-wrapper">
                         <img
                           className="upload-detail-main-content-cover"
-                          src={this.state.select_asset[0].cover_url}
+                          src={this.props.uploadSelectPost[0].cover_url}
                         />
                       </div>
                     ) : (
@@ -264,8 +244,10 @@ class UploadDetail extends Component {
               )}
               {this.props.veiw === "music" ? (
                 <div className="upload-detail-main-content-input-form-cover">
-                  <div className="input-error">{this.state.input_error}</div>
-                  <form onSubmit={this.postingMusic.bind(this)}>
+                  <div className="input-error">
+                    {this.props.uploadDetailInputError}
+                  </div>
+                  <form onSubmit={this.props.postingMusic.bind(this)}>
                     <div className="input-cover-wrapper">
                       <div className="text-wrapper">
                         <label className="text">설명</label>
@@ -342,7 +324,6 @@ class UploadDetail extends Component {
                           name="tags"
                           placeholder="ex)#김수영, #1집"
                         />
-                        {this.state.tags}
                       </div>
                     </div>
                     <div className="input-btn-wrapper">
@@ -354,8 +335,10 @@ class UploadDetail extends Component {
                 </div>
               ) : (
                 <div className="upload-detail-main-content-input-form-cover">
-                  <div className="input-error">{this.state.input_error}</div>
-                  <form onSubmit={this.posting.bind(this)}>
+                  <div className="input-error">
+                    {this.props.uploadDetailInputError}
+                  </div>
+                  <form onSubmit={this.props.posting.bind(this)}>
                     <div className="input-cover-wrapper">
                       <div className="text-wrapper">
                         <label className="text">설명</label>
@@ -406,7 +389,6 @@ class UploadDetail extends Component {
                           name="tags"
                           placeholder="ex)#김수영, #1집"
                         />
-                        {this.state.tags}
                       </div>
                     </div>
                     <div className="input-btn-wrapper">

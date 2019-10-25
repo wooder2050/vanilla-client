@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import "./StoryFeed.scss";
 import myPage from "../../images/myPage2.png";
 
 class StoryFeed extends Component {
   render() {
-    console.log(this.props.followingUsers);
     return (
       <div className="story-wrapper">
         <div className="story-header-wrapper">
@@ -16,7 +16,7 @@ class StoryFeed extends Component {
           this.props.followingUsers.map((follower, i) => {
             return (
               <div key={i} className="story-content-wrapper">
-                <div className="story-content">
+                <NavLink to={`${follower._id}`} className="story-content">
                   <div className="story-profile-photo-wrapper">
                     {follower.profile_url ? (
                       <img
@@ -35,7 +35,7 @@ class StoryFeed extends Component {
                     </div>
                     <div>1시간전</div>
                   </div>
-                </div>
+                </NavLink>
               </div>
             );
           })}

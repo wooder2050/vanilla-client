@@ -10,6 +10,7 @@ $color5: #789db7;
   width: 100%;
   cursor: pointer;
   display: block;
+  color: $color4;
   text-decoration: none;
   .user-profile-photo-wrapper {
     float: left;
@@ -24,12 +25,16 @@ $color5: #789db7;
   .user-profile-info-wrapper {
     float: left;
     width: 120px;
+    color: $color4;
+    text-decoration: none;
     text-align: left;
     box-sizing: border-box;
     padding: 10px 10px;
     font-size: 12px;
     .user-profile-info-text {
       font-size: 16px;
+      text-decoration: none;
+      color: $color4;
       font-weight: bold;
     }
   }

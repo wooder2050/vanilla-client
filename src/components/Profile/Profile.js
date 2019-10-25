@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Profile.scss";
 import myPage from "../../images/myPage2.png";
 
 class Profile extends Component {
   render() {
     return (
-      <NavLink to="mypage" className="user-profile-wrapper">
+      <div className="user-profile-wrapper">
         <div className="user-profile-photo-wrapper">
           {this.props.user ? (
             <img
@@ -21,7 +21,7 @@ class Profile extends Component {
             <img className="user-profile-photo" src={myPage} />
           )}
         </div>
-        <div className="user-profile-info-wrapper">
+        <NavLink to="mypage" className="user-profile-info-wrapper">
           <div className="user-profile-info-text">
             {this.props.user.user_display_name
               ? this.props.user.user_display_name
@@ -30,8 +30,8 @@ class Profile extends Component {
           <div className="user-profile-info-name">
             {this.props.user.user_name}
           </div>
-        </div>
-      </NavLink>
+        </NavLink>
+      </div>
     );
   }
 }

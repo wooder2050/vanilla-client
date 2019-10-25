@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import "./PostDetail.scss";
 
 class PostDetail extends Component {
-  componentDidMount() {}
-
   render() {
     return (
       <>

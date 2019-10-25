@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./SideHeader.scss";
 import home from "../../images/home2.png";
 import search from "../../images/search2.png";

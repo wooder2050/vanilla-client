@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./MainFeedContent.scss";
 import like from "../../images/like.png";
 import comment from "../../images/comment.png";

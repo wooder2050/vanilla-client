@@ -1,108 +1,13 @@
 import React, { Component } from "react";
 import "./MyPage.scss";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Progress } from "antd";
 import profile from "../../images/profile.png";
 import arrow from "../../images/arrow.png";
 import "antd/dist/antd.css";
 
 class MyPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      veiw: "photo",
-      modal: false,
-      user_info: null,
-      followState: false,
-      listTitle: null,
-      currentFollowList: null,
-      inputError: null
-    };
-  }
-  upload(event) {
-    event.preventDefault();
-    const profilePhoto = event.target.imgfile.files[0];
-    const userDisplayName = event.target.user_display_name.value;
-    const info = event.target.info.value;
-    const userJob = event.target.user_job.value;
-    const formData = new FormData();
-    formData.append("imgfile", profilePhoto);
-    if (profilePhoto && userDisplayName && info && userJob) {
-      fetch("http://localhost:5000/upload/single", {
-        method: "POST",
-        body: formData
-      })
-        .then(response => {
-          if (response.status === 200 || response.status === 401)
-            return response.json();
-          throw new Error("failed to upload");
-        })
-        .then(responseJosn => {
-          const profileURL = responseJosn.profile_url;
-          fetch("http://localhost:5000/upload/database", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Credentials": true
-            },
-            body: JSON.stringify({
-              profile_url: profileURL,
-              info: info,
-              user_display_name: userDisplayName,
-              user_job: userJob,
-              email: this.props.user.email
-            })
-          })
-            .then(response => {
-              if (response.status === 200) return response.json();
-              throw new Error("failed to upload");
-            })
-            .then(responseJosn => {
-              this.setState({
-                user_info: responseJosn.user
-              });
-            });
-        });
-
-      this.setState({
-        modal: !this.state.modal
-      });
-    } else {
-      this.setState({
-        inputError: "Please be sure to enter all items."
-      });
-    }
-  }
-  clickPhoto() {
-    this.setState({
-      veiw: "photo"
-    });
-  }
-  clickMusic() {
-    this.setState({
-      veiw: "music"
-    });
-  }
-  clickVideo() {
-    this.setState({
-      veiw: "video"
-    });
-  }
-  clickModal() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
-  clickFollowState(list, name) {
-    this.setState({
-      followState: !this.state.followState,
-      currentFollowList: list,
-      listTitle: name
-    });
-  }
   render() {
-    console.log(this.props.followingUsers, this.props.followedUsers);
     return (
       <>
         <div className="mypage-main-content-wrapper">
@@ -114,8 +19,8 @@ class MyPage extends Component {
                     <img
                       className="mypage-main-content-header-photo-img"
                       src={
-                        this.state.user_info
-                          ? this.state.user_info.profile_url
+                        this.props.myPageUserInfo
+                          ? this.props.myPageUserInfo.profile_url
                           : this.props.user.profile_url
                       }
                     />
@@ -143,10 +48,10 @@ class MyPage extends Component {
               </div>
             </div>
             <div className="mypage-main-content-header-info-wrapper">
-              {this.state.user_info ? (
+              {this.props.myPageUserInfo ? (
                 <div className="mypage-main-content-header-info-id">
-                  {this.state.user_info.user_display_name
-                    ? this.state.user_info.user_display_name
+                  {this.props.myPageUserInfo.user_display_name
+                    ? this.props.myPageUserInfo.user_display_name
                     : this.props.user.email}
                 </div>
               ) : (
@@ -166,7 +71,7 @@ class MyPage extends Component {
                   </div>
                 </div>
                 <div
-                  onClick={this.clickFollowState.bind(
+                  onClick={this.props.myPageClickFollowState.bind(
                     this,
                     this.props.followedUsers,
                     "팔로워"
@@ -183,7 +88,7 @@ class MyPage extends Component {
                   </div>
                 </div>
                 <div
-                  onClick={this.clickFollowState.bind(
+                  onClick={this.props.myPageClickFollowState.bind(
                     this,
                     this.props.followingUsers,
                     "팔로잉"
@@ -205,14 +110,14 @@ class MyPage extends Component {
                   {this.props.user.user_name}
                 </div>
                 <div className="mypage-main-content-header-info-job">
-                  {this.state.user_info
-                    ? this.state.user_info.user_job
+                  {this.props.myPageUserInfo
+                    ? this.props.myPageUserInfo.user_job
                     : this.props.user.user_job}
                 </div>
               </div>
               <div className="mypage-main-content-header-info-text-wrapper">
-                {this.state.user_info
-                  ? this.state.user_info.info
+                {this.props.myPageUserInfo
+                  ? this.props.myPageUserInfo.info
                   : this.props.user.info}
               </div>
               <div className="mypage-main-content-header-info-detail-wrapper">
@@ -222,7 +127,7 @@ class MyPage extends Component {
               <div className="mypage-main-content-header-info-modify-wrapper">
                 <div
                   className="mypage-main-content-header-info-modify-btn"
-                  onClick={this.clickModal.bind(this)}
+                  onClick={this.props.myPageClickModal.bind(this)}
                 >
                   프로필 수정
                   <img className="arrow" src={arrow} />
@@ -234,36 +139,36 @@ class MyPage extends Component {
             <div className="mypage-main-content-inner-header-wrapper">
               <div
                 className={
-                  this.state.veiw === "photo"
+                  this.props.veiw === "photo"
                     ? "mypage-main-content-header border-bottom"
                     : "mypage-main-content-header"
                 }
-                onClick={this.clickPhoto.bind(this)}
+                onClick={this.props.clickPhoto.bind(this)}
               >
                 사진
               </div>
               <div
                 className={
-                  this.state.veiw === "music"
+                  this.props.veiw === "music"
                     ? "mypage-main-content-header border-bottom"
                     : "mypage-main-content-header"
                 }
-                onClick={this.clickMusic.bind(this)}
+                onClick={this.props.clickMusic.bind(this)}
               >
                 곡
               </div>
               <div
                 className={
-                  this.state.veiw === "video"
+                  this.props.veiw === "video"
                     ? "mypage-main-content-header border-bottom"
                     : "mypage-main-content-header"
                 }
-                onClick={this.clickVideo.bind(this)}
+                onClick={this.props.clickVideo.bind(this)}
               >
                 영상
               </div>
             </div>
-            {this.state.veiw === "photo" ? (
+            {this.props.veiw === "photo" ? (
               <div className="mypost-cover">
                 {this.props.myPosts &&
                   this.props.myPosts.map((post, i) => {
@@ -279,7 +184,7 @@ class MyPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.state.veiw === "music" ? (
+            {this.props.veiw === "music" ? (
               <div className="mypost-cover">
                 {this.props.myPosts &&
                   this.props.myPosts.map((post, i) => {
@@ -299,7 +204,7 @@ class MyPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.state.veiw === "video" ? (
+            {this.props.veiw === "video" ? (
               <div className="mypost-cover">
                 {this.props.myPosts &&
                   this.props.myPosts.map((post, i) => {
@@ -317,15 +222,15 @@ class MyPage extends Component {
             )}
           </div>
         </div>
-        {this.state.followState ? (
+        {this.props.myPageFollowState ? (
           <>
             <div
-              onClick={this.clickFollowState.bind(this)}
+              onClick={this.props.myPageClickFollowState.bind(this)}
               className="followList-background"
             ></div>
             <div className="followList-wrapper">
-              <div className="title">{this.state.listTitle}</div>
-              {this.state.currentFollowList.map((user, i) => {
+              <div className="title">{this.props.myPageListTitle}</div>
+              {this.props.myPageCurrentFollowList.map((user, i) => {
                 return (
                   <>
                     <NavLink
@@ -356,22 +261,22 @@ class MyPage extends Component {
           <div></div>
         )}
 
-        {this.state.modal ? (
+        {this.props.myPageModal ? (
           <div className="modal-body">
             <div className="modal-modify-profile-wrapper">
               <div className="modal-modify-profile">
-                <form onSubmit={this.upload.bind(this)}>
+                <form onSubmit={this.props.myPageUpload.bind(this)}>
                   <div
                     className="close-modal"
-                    onClick={this.clickModal.bind(this)}
+                    onClick={this.props.myPageClickModal.bind(this)}
                   >
                     X
                   </div>
                   <div className="current-profile">
                     <img
                       src={
-                        this.state.user_info
-                          ? this.state.user_info.profile_url
+                        this.props.myPageUserInfo
+                          ? this.props.myPageUserInfo.profile_url
                           : this.props.user.profile_url
                       }
                       className="current-profile-photo"
@@ -417,7 +322,7 @@ class MyPage extends Component {
                     Please enter your occupation."
                     />
                   </div>
-                  <div className="input-errorr">{this.state.inputError}</div>
+                  <div className="input-errorr">{this.props.inputError}</div>
                   <div className="input-profile-btn-wrapper">
                     <button className="input-profile-btn">완료</button>
                   </div>

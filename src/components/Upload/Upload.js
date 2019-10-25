@@ -1,140 +1,10 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  NavLink
-} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Upload.scss";
 import "antd/dist/antd.css";
 import play from "../../images/play.png";
 
 class Upload extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false,
-      assets: null,
-      inputError: null,
-      select_post: null
-    };
-  }
-
-  uploadSingle(event) {
-    event.preventDefault();
-    const postContent = event.target.post_content.files[0];
-    const formData = new FormData();
-    formData.append("imgfile", postContent);
-    if (postContent) {
-      fetch("http://localhost:5000/upload/single", {
-        method: "POST",
-        body: formData
-      })
-        .then(response => {
-          if (response.status === 200 || response.status === 401)
-            return response.json();
-          throw new Error("failed to upload");
-        })
-        .then(responseJosn => {
-          const postContentURL = responseJosn.profile_url;
-          fetch("http://localhost:5000/upload/databasepost", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Credentials": true
-            },
-            body: JSON.stringify({
-              post_url: postContentURL,
-              email: this.props.user.email,
-              post_type: this.props.veiw
-            })
-          })
-            .then(response => {
-              if (response.status === 200) return response.json();
-              throw new Error("failed to upload");
-            })
-            .then(responseJosn => {
-              this.setState({
-                assets: responseJosn.assets
-              });
-            });
-        });
-      this.setState({
-        modal: !this.state.modal
-      });
-    } else {
-      this.setState({
-        inputError: "Please be sure to enter all items."
-      });
-    }
-  }
-
-  upload(event) {
-    event.preventDefault();
-    const postContent = event.target.post_content.files[0];
-    const postCover = event.target.post_cover.files[0];
-    const formData = new FormData();
-    formData.append("imgfile", postContent);
-    formData.append("imgfile", postCover);
-    if (postContent && postCover) {
-      fetch("http://localhost:5000/upload/multi", {
-        method: "POST",
-        body: formData
-      })
-        .then(response => {
-          if (response.status === 200 || response.status === 401)
-            return response.json();
-          throw new Error("failed to upload");
-        })
-        .then(responseJosn => {
-          const postContentURL = responseJosn.post_url;
-          const coverURL = responseJosn.cover_url;
-          console.log(postContentURL, coverURL);
-          fetch("http://localhost:5000/upload/databasepost", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Credentials": true
-            },
-            body: JSON.stringify({
-              post_url: postContentURL,
-              cover_url: coverURL,
-              email: this.props.user.email,
-              post_type: this.props.veiw
-            })
-          })
-            .then(response => {
-              if (response.status === 200) return response.json();
-              throw new Error("failed to upload");
-            })
-            .then(responseJosn => {
-              console.log(responseJosn.assets);
-              this.setState({
-                assets: responseJosn.assets
-              });
-            });
-        });
-      this.setState({
-        modal: !this.state.modal
-      });
-    } else {
-      this.setState({
-        inputError: "Please be sure to enter all items."
-      });
-    }
-  }
-  clickModal() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
-  selectAsset(id) {
-    this.setState({
-      select_post: id
-    });
-  }
   render() {
     return (
       <>
@@ -182,14 +52,14 @@ class Upload extends Component {
               </div>
               <div
                 className="upload-main-content-header-upload-btn"
-                onClick={this.clickModal.bind(this)}
+                onClick={this.props.uploadClickModal.bind(this)}
               >
                 업로드
               </div>
               <div className="upload-main-content-header-next-btn">
                 <NavLink
                   className="upload-main-content-header-next"
-                  to={`/upload/${this.state.select_post}`}
+                  to={`/upload/${this.props.uploadSelectPost}`}
                 >
                   다음
                 </NavLink>
@@ -198,7 +68,7 @@ class Upload extends Component {
           </div>
 
           <div className="upload-main-content-list-wrapper">
-            {!this.state.assets &&
+            {!this.props.uploadAssets &&
               this.props.assets &&
               this.props.assets.map((asset, i) => {
                 if (asset.type === this.props.veiw) {
@@ -206,19 +76,17 @@ class Upload extends Component {
                     <div
                       key={i}
                       className={
-                        this.state.select_post === asset._id
+                        this.props.uploadSelectPost === asset._id
                           ? "upload-post select-post"
                           : "upload-post"
                       }
                       data-set={i}
-                      onClick={this.selectAsset.bind(this, asset._id)}
+                      onClick={this.props.uploadSelectAsset.bind(this, asset._id)}
                     >
                       <img
                         className="upload-post-content"
                         src={
-                          asset.type === "photo"
-                            ? asset.url
-                            : asset.cover_url
+                          asset.type === "photo" ? asset.url : asset.cover_url
                         }
                       />
                       {this.props.veiw !== "photo" ? (
@@ -232,26 +100,24 @@ class Upload extends Component {
                   );
                 }
               })}
-            {this.state.assets &&
-              this.state.assets.map((asset, i) => {
+            {this.props.uploadAssets &&
+              this.props.uploadAssets.map((asset, i) => {
                 if (asset.type === this.props.veiw) {
                   return (
                     <div
                       key={i}
                       className={
-                        this.state.select_post === asset._id
+                        this.props.uploadSelectPost === asset._id
                           ? "upload-post select-post"
                           : "upload-post"
                       }
                       data-set={i}
-                      onClick={this.selectAsset.bind(this, asset._id)}
+                      onClick={this.props.uploadSelectAsset.bind(this, asset._id)}
                     >
                       <img
                         className="upload-post-content"
                         src={
-                          asset.type === "photo"
-                            ? asset.url
-                            : asset.cover_url
+                          asset.type === "photo" ? asset.url : asset.cover_url
                         }
                       />
                       {this.props.veiw !== "photo" ? (
@@ -268,20 +134,20 @@ class Upload extends Component {
           </div>
         </div>
 
-        {this.state.modal ? (
+        {this.props.uploadModal ? (
           <div className="modal-body-upload">
             <div className="modal-upload-wrapper">
               <div className="modal-upload">
                 <form
                   onSubmit={
                     this.props.veiw === "photo"
-                      ? this.uploadSingle.bind(this)
-                      : this.upload.bind(this)
+                      ? this.props.uploadPhoto.bind(this)
+                      : this.props.uploadMedia.bind(this)
                   }
                 >
                   <div
                     className="close-modal"
-                    onClick={this.clickModal.bind(this)}
+                    onClick={this.props.uploadClickModal.bind(this)}
                   >
                     X
                   </div>
@@ -305,7 +171,7 @@ class Upload extends Component {
                       />
                     </div>
                   )}
-                  <div className="input-errorr">{this.state.inputError}</div>
+                  <div className="input-errorr">{this.props.uploadInputError}</div>
                   <div className="input-upload-btn-wrapper">
                     <button className="input-upload-btn">완료</button>
                   </div>

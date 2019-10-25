@@ -9,7 +9,6 @@ class UserPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      veiw: "photo",
       user_info: null,
       userPosts: null,
       following: false,
@@ -19,7 +18,7 @@ class UserPage extends Component {
   }
   componentDidMount() {
     fetch(
-      `http://localhost:5000/onload/userpage/${this.props.routeProps.match.params.id}`,
+      `http://localhost:5000/users/${this.props.routeProps.match.params.id}`,
       {
         method: "GET",
         headers: {
@@ -33,7 +32,6 @@ class UserPage extends Component {
         if (response.status === 200) return response.json();
       })
       .then(responseJson => {
-        console.log(responseJson.pageUser[0]);
         this.setState({
           user_info: responseJson.pageUser[0],
           userPosts: responseJson.pageUserPosts,
@@ -42,7 +40,6 @@ class UserPage extends Component {
         });
         if (this.props.user && this.props.user.following) {
           for (var i = 0; i < this.props.user.following.length; i++) {
-            console.log(this.props.user.following[i], this.state.user_info._id);
             if (this.props.user.following[i] === this.state.user_info._id) {
               this.setState({
                 following: true
@@ -52,23 +49,8 @@ class UserPage extends Component {
         }
       });
   }
-  clickPhoto() {
-    this.setState({
-      veiw: "photo"
-    });
-  }
-  clickMusic() {
-    this.setState({
-      veiw: "music"
-    });
-  }
-  clickVideo() {
-    this.setState({
-      veiw: "video"
-    });
-  }
   clickFollow() {
-    fetch("http://localhost:5000/upload/follow", {
+    fetch("http://localhost:5000/users/followingUpdate", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -85,25 +67,10 @@ class UserPage extends Component {
           return response.json();
         throw new Error("failed to authenticate user");
       })
-      .then(responseJson => {
-        if (responseJson.followUdate) {
-          console.log(
-            "팔로워 성공 ",
-            responseJson.follower,
-            responseJson.followee
-          );
-        } else {
-          console.log(
-            "팔로워 실패 ",
-            responseJson.follower,
-            responseJson.followee
-          );
-        }
-      })
+      .then(responseJson => {})
       .catch(error => {});
   }
   render() {
-    console.log(this.props.user.following, this.state.user_info);
     return (
       <>
         <div className="userpage-main-content-wrapper">
@@ -216,36 +183,36 @@ class UserPage extends Component {
             <div className="userpage-main-content-inner-header-wrapper">
               <div
                 className={
-                  this.state.veiw === "photo"
+                  this.props.veiw === "photo"
                     ? "userpage-main-content-header border-bottom"
                     : "userpage-main-content-header"
                 }
-                onClick={this.clickPhoto.bind(this)}
+                onClick={this.props.clickPhoto.bind(this)}
               >
                 사진
               </div>
               <div
                 className={
-                  this.state.veiw === "music"
+                  this.props.veiw === "music"
                     ? "userpage-main-content-header border-bottom"
                     : "userpage-main-content-header"
                 }
-                onClick={this.clickMusic.bind(this)}
+                onClick={this.props.clickMusic.bind(this)}
               >
                 곡
               </div>
               <div
                 className={
-                  this.state.veiw === "video"
+                  this.props.veiw === "video"
                     ? "userpage-main-content-header border-bottom"
                     : "userpage-main-content-header"
                 }
-                onClick={this.clickVideo.bind(this)}
+                onClick={this.props.clickVideo.bind(this)}
               >
                 영상
               </div>
             </div>
-            {this.state.veiw === "photo" ? (
+            {this.props.veiw === "photo" ? (
               <div className="userpost-cover">
                 {this.state.userPosts &&
                   this.state.userPosts.map((post, i) => {
@@ -261,7 +228,7 @@ class UserPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.state.veiw === "music" ? (
+            {this.props.veiw === "music" ? (
               <div className="userpost-cover">
                 {this.state.userPosts &&
                   this.state.userPosts.map((post, i) => {
@@ -281,7 +248,7 @@ class UserPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.state.veiw === "video" ? (
+            {this.props.veiw === "video" ? (
               <div className="userpost-cover">
                 {this.state.userPosts &&
                   this.state.userPosts.map((post, i) => {
