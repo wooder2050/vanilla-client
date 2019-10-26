@@ -59,7 +59,11 @@ class Upload extends Component {
               <div className="upload-main-content-header-next-btn">
                 <NavLink
                   className="upload-main-content-header-next"
-                  to={`/upload/${this.props.uploadSelectPost}`}
+                  to={`/upload/${
+                    this.props.uploadCurrnetSelectAsset
+                      ? this.props.uploadCurrnetSelectAsset._id
+                      : ""
+                  }`}
                 >
                   다음
                 </NavLink>
@@ -76,12 +80,13 @@ class Upload extends Component {
                     <div
                       key={i}
                       className={
-                        this.props.uploadSelectPost === asset._id
+                        this.props.uploadCurrnetSelectAsset &&
+                        this.props.uploadCurrnetSelectAsset._id === asset._id
                           ? "upload-post select-post"
                           : "upload-post"
                       }
                       data-set={i}
-                      onClick={this.props.uploadSelectAsset.bind(this, asset._id)}
+                      onClick={this.props.uploadSelectAsset.bind(this, asset)}
                     >
                       <img
                         className="upload-post-content"
@@ -107,12 +112,13 @@ class Upload extends Component {
                     <div
                       key={i}
                       className={
-                        this.props.uploadSelectPost === asset._id
+                        this.props.uploadCurrnetSelectAsset &&
+                        this.props.uploadCurrnetSelectAsset._id === asset._id
                           ? "upload-post select-post"
                           : "upload-post"
                       }
                       data-set={i}
-                      onClick={this.props.uploadSelectAsset.bind(this, asset._id)}
+                      onClick={this.props.uploadSelectAsset.bind(this, asset)}
                     >
                       <img
                         className="upload-post-content"
@@ -171,7 +177,9 @@ class Upload extends Component {
                       />
                     </div>
                   )}
-                  <div className="input-errorr">{this.props.uploadInputError}</div>
+                  <div className="input-errorr">
+                    {this.props.uploadInputError}
+                  </div>
                   <div className="input-upload-btn-wrapper">
                     <button className="input-upload-btn">완료</button>
                   </div>

@@ -4,161 +4,7 @@ import "./UploadDetail.scss";
 import "antd/dist/antd.css";
 
 class UploadDetail extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     modal: false,
-  //     assets: null,
-  //     select_asset: null,
-  //     input_error: null
-  //   };
-  // }
-  // componentDidMount() {
-  //   fetch(
-  //     `http://localhost:5000/assets/${this.props.routeProps.match.params.assetId}`,
-  //     {
-  //       method: "GET",
-  //       credentials: "include",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Credentials": true
-  //       }
-  //     }
-  //   )
-  //     .then(response => {
-  //       if (response.status === 200 || response.status === 401)
-  //         return response.json();
-  //       throw new Error("failed to authenticate user");
-  //     })
-  //     .then(responseJson => {
-  //       this.setState({
-  //         select_asset: responseJson.asset
-  //       });
-  //     })
-  //     .catch(error => {});
-  // }
-  // posting(event) {
-  //   event.preventDefault();
-  //   const postDescription = event.target.description.value;
-  //   const postMaker = event.target.maker.value;
-  //   const postLocation = event.target.location.value;
-  //   const postTags = event.target.tags.value;
-  //   var tagsArray = postTags.split(",");
-  //   var notTags = true;
-  //   for (var i = 0; i < tagsArray.length; i++) {
-  //     if (tagsArray[i][0] !== "#") notTags = false;
-  //   }
-  //   if (
-  //     notTags &&
-  //     postDescription !== null &&
-  //     postMaker !== null &&
-  //     postLocation !== null &&
-  //     tagsArray.length !== 0
-  //   ) {
-  //     this.setState({
-  //       input_error: null
-  //     });
-  //     fetch("http://localhost:5000/posts/upload", {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Credentials": true
-  //       },
-  //       body: JSON.stringify({
-  //         email: this.props.user.email,
-  //         _id: this.props.user._id,
-  //         user_display_name: this.props.user.user_display_name,
-  //         profile_url: this.props.user.profile_url,
-  //         post_type: this.props.veiw,
-  //         assetId: this.props.routeProps.match.params.assetId,
-  //         description: postDescription,
-  //         maker: postMaker,
-  //         location: postLocation,
-  //         tags: tagsArray
-  //       })
-  //     }).then(response => {
-  //       this.props.routeProps.history.push("/");
-  //     });
-  //   } else {
-  //     this.setState({
-  //       input_error: "Please enter all items."
-  //     });
-  //   }
-  // }
-
-  // postingMusic(event) {
-  //   event.preventDefault();
-  //   const postDescription = event.target.description.value;
-  //   const postMaker = event.target.maker.value;
-  //   const postSinger = event.target.singer.value;
-  //   const postTitle = event.target.title.value;
-  //   const postLocation = event.target.location.value;
-  //   const postTags = event.target.tags.value;
-  //   var tagsArray = postTags.split(",");
-  //   var notTags = true;
-  //   for (var i = 0; i < tagsArray.length; i++) {
-  //     if (tagsArray[i][0] !== "#") notTags = false;
-  //   }
-  //   if (
-  //     notTags &&
-  //     postDescription !== null &&
-  //     postMaker !== null &&
-  //     postSinger !== null &&
-  //     postTitle !== null &&
-  //     postLocation !== null &&
-  //     tagsArray.length !== 0
-  //   ) {
-  //     this.setState({
-  //       input_error: null
-  //     });
-  //     fetch("http://localhost:5000/posts/upload", {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Credentials": true
-  //       },
-  //       body: JSON.stringify({
-  //         email: this.props.user.email,
-  //         _id: this.props.user._id,
-  //         user_display_name: this.props.user.user_display_name,
-  //         profile_url: this.props.user.profile_url,
-  //         post_type: this.props.veiw,
-  //         assetId: this.props.routeProps.match.params.assetId,
-  //         description: postDescription,
-  //         maker: postMaker,
-  //         singer: postSinger,
-  //         title: postTitle,
-  //         location: postLocation,
-  //         tags: tagsArray
-  //       })
-  //     }).then(response => {
-  //       this.props.routeProps.history.push("/");
-  //     });
-  //   } else {
-  //     this.setState({
-  //       input_error: "Please enter all items."
-  //     });
-  //   }
-  // }
-
-  // clickModal() {
-  //   this.setState({
-  //     modal: !this.state.modal
-  //   });
-  // }
-  // selectAsset(id) {
-  //   this.setState({
-  //     select_post: id
-  //   });
-  // }
   render() {
-    console.log(
-      this.props.uploadSelectPost,
-      this.props.uploadDetailSelectAsset
-    );
     return (
       <>
         <div className="body-upload-detail-wrapper">
@@ -177,11 +23,11 @@ class UploadDetail extends Component {
               {this.props.veiw === "photo" ? (
                 <div className="upload-detail-main-content-cover">
                   <div className="upload-detail-main-content-cover-wrapper">
-                    {this.props.uploadSelectAsset ? (
+                    {this.props.uploadCurrnetSelectAsset ? (
                       <div className="content-wrapper">
                         <img
                           className="upload-detail-main-content"
-                          src={this.props.uploadSelectPost[0].url}
+                          src={this.props.uploadCurrnetSelectAsset.url}
                         />
                       </div>
                     ) : (
@@ -195,11 +41,11 @@ class UploadDetail extends Component {
               ) : (
                 <div className="upload-detail-main-content-cover">
                   <div className="upload-detail-main-content-cover-wrapper">
-                    {this.props.uploadSelectPost ? (
+                    {this.props.uploadCurrnetSelectAsset ? (
                       <div className="content-wrapper-video">
                         {this.props.veiw === "video" ? (
                           <video
-                            src={this.props.uploadSelectPost[0].url}
+                            src={this.props.uploadCurrnetSelectAsset.url}
                             width="280"
                             height="280"
                             autoPlay
@@ -209,10 +55,12 @@ class UploadDetail extends Component {
                           <>
                             <img
                               className={"upload-audio-cover"}
-                              src={this.props.uploadSelectPost[0].cover_url}
+                              src={
+                                this.props.uploadCurrnetSelectAsset.cover_url
+                              }
                             />
                             <audio
-                              src={this.props.uploadSelectPost[0].url}
+                              src={this.props.uploadCurrnetSelectAsset.url}
                               width="250"
                               type="audio/mp3"
                               controls
@@ -228,11 +76,11 @@ class UploadDetail extends Component {
                     </div>
                   </div>
                   <div className="upload-detail-main-content-cover-wrapper">
-                    {this.props.uploadSelectPost ? (
+                    {this.props.uploadCurrnetSelectAsset ? (
                       <div className="content-wrapper">
                         <img
                           className="upload-detail-main-content-cover"
-                          src={this.props.uploadSelectPost[0].cover_url}
+                          src={this.props.uploadCurrnetSelectAsset.cover_url}
                         />
                       </div>
                     ) : (

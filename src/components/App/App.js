@@ -49,8 +49,7 @@ class App extends Component {
       uploadModal: false,
       uploadAssets: null,
       uploadInputError: null,
-      uploadSelectPost: null,
-      uploadDetailModal: false,
+      uploadCurrnetSelectAsset: null,
       uploadDetailInputError: null
     };
   }
@@ -193,27 +192,6 @@ class App extends Component {
         });
       })
       .catch(error => {});
-
-    // fetch(`http://localhost:5000/assets/${this.state.uploadSelectPost}`, {
-    //   method: "GET",
-    //   credentials: "include",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Credentials": true
-    //   }
-    // })
-    //   .then(response => {
-    //     if (response.status === 200 || response.status === 401)
-    //       return response.json();
-    //     throw new Error("failed to authenticate user");
-    //   })
-    //   .then(responseJson => {
-    //     this.setState({
-    //       uploadDetailSelectAsset: responseJson.asset
-    //     });
-    //   })
-    //   .catch(error => {});
   }
 
   logout() {
@@ -572,9 +550,9 @@ class App extends Component {
       uploadModal: !this.state.uploadModal
     });
   }
-  uploadSelectAsset(id) {
+  uploadSelectAsset(asset) {
     this.setState({
-      uploadSelectPost: id
+      uploadCurrnetSelectAsset: asset
     });
   }
 
@@ -683,18 +661,7 @@ class App extends Component {
     }
   }
 
-  uploadDetailClickModal() {
-    this.setState({
-      uploadModal: !this.state.uploadModal
-    });
-  }
-  uploadDetailSelectAsset(id) {
-    this.setState({
-      uploadDetailSelectPost: id
-    });
-  }
   render() {
-    console.log(this.state.uploadSelectAsset);
     return (
       <Router>
         <div className="App">
@@ -766,36 +733,22 @@ class App extends Component {
                     />
                   )}
                 />
-                <Route
-                  path="/upload/:assetId"
-                  render={routeProps => (
-                    <UploadDetail
-                      authenticated={this.state.authenticated}
-                      user={this.state.user}
-                      veiw={this.state.veiw}
-                      clickPhoto={this.clickPhoto.bind(this)}
-                      clickMusic={this.clickMusic.bind(this)}
-                      clickVideo={this.clickVideo.bind(this)}
-                      routeProps={routeProps}
-                      uploadDetailModal={this.state.uploadDetailModal}
-                      uploadDetailInputError={this.stateuploadDetailInputError}
-                      posting={this.posting.bind(this)}
-                      uploadDetailClickModal={this.uploadDetailClickModal.bind(
-                        this
-                      )}
-                      uploadDetailSelectAsset={
-                        this.state.uploadDetailSelectAsset
-                      }
-                      postingMusic={this.postingMusic.bind(this)}
-                      uploadSelectPost={this.state.uploadSelectPost}
-                    />
-                  )}
-                ></Route>
+                <Route path="/upload/:assetId">
+                  <UploadDetail
+                    authenticated={this.state.authenticated}
+                    veiw={this.state.veiw}
+                    uploadDetailInputError={this.stateuploadDetailInputError}
+                    posting={this.posting.bind(this)}
+                    postingMusic={this.postingMusic.bind(this)}
+                    uploadCurrnetSelectAsset={
+                      this.state.uploadCurrnetSelectAsset
+                    }
+                  />
+                </Route>
                 <Route path="/upload">
                   <Upload
                     authenticated={this.state.authenticated}
                     assets={this.state.assets}
-                    user={this.state.user}
                     veiw={this.state.veiw}
                     clickPhoto={this.clickPhoto.bind(this)}
                     clickMusic={this.clickMusic.bind(this)}
@@ -803,11 +756,13 @@ class App extends Component {
                     uploadModal={this.state.uploadModal}
                     uploadAssets={this.state.uploadAssets}
                     uploadInputError={this.state.uploadInputError}
-                    uploadSelectPost={this.state.uploadSelectPost}
                     uploadPhoto={this.uploadPhoto.bind(this)}
                     uploadMedia={this.uploadMedia.bind(this)}
                     uploadClickModal={this.uploadClickModal.bind(this)}
                     uploadSelectAsset={this.uploadSelectAsset.bind(this)}
+                    uploadCurrnetSelectAsset={
+                      this.state.uploadCurrnetSelectAsset
+                    }
                   />
                 </Route>
                 <Route
