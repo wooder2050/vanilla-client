@@ -13,7 +13,7 @@ class Upload extends Component {
             <div className="upload-header-content-header-wrapper">
               <div
                 className={
-                  this.props.veiw === "photo"
+                  this.props.view === "photo"
                     ? "upload-header-content-header border-bottom"
                     : "upload-header-content-header"
                 }
@@ -23,7 +23,7 @@ class Upload extends Component {
               </div>
               <div
                 className={
-                  this.props.veiw === "music"
+                  this.props.view === "music"
                     ? "upload-header-content-header border-bottom"
                     : "upload-header-content-header"
                 }
@@ -33,7 +33,7 @@ class Upload extends Component {
               </div>
               <div
                 className={
-                  this.props.veiw === "video"
+                  this.props.view === "video"
                     ? "upload-header-content-header border-bottom"
                     : "upload-header-content-header"
                 }
@@ -75,7 +75,7 @@ class Upload extends Component {
             {!this.props.uploadAssets &&
               this.props.assets &&
               this.props.assets.map((asset, i) => {
-                if (asset.type === this.props.veiw) {
+                if (asset.type === this.props.view) {
                   return (
                     <div
                       key={i}
@@ -94,7 +94,7 @@ class Upload extends Component {
                           asset.type === "photo" ? asset.url : asset.cover_url
                         }
                       />
-                      {this.props.veiw !== "photo" ? (
+                      {this.props.view !== "photo" ? (
                         <div className="player-btn-wrapper">
                           <img className="player-btn-wrapper" src={play} />
                         </div>
@@ -107,7 +107,7 @@ class Upload extends Component {
               })}
             {this.props.uploadAssets &&
               this.props.uploadAssets.map((asset, i) => {
-                if (asset.type === this.props.veiw) {
+                if (asset.type === this.props.view) {
                   return (
                     <div
                       key={i}
@@ -126,7 +126,7 @@ class Upload extends Component {
                           asset.type === "photo" ? asset.url : asset.cover_url
                         }
                       />
-                      {this.props.veiw !== "photo" ? (
+                      {this.props.view !== "photo" ? (
                         <div className="player-btn-wrapper">
                           <img className="player-btn-wrapper" src={play} />
                         </div>
@@ -146,7 +146,7 @@ class Upload extends Component {
               <div className="modal-upload">
                 <form
                   onSubmit={
-                    this.props.veiw === "photo"
+                    this.props.view === "photo"
                       ? this.props.uploadPhoto.bind(this)
                       : this.props.uploadMedia.bind(this)
                   }
@@ -165,7 +165,7 @@ class Upload extends Component {
                       name="post_content"
                     />
                   </div>
-                  {this.props.veiw === "photo" ? (
+                  {this.props.view === "photo" ? (
                     <div></div>
                   ) : (
                     <div className="upload-wrapper">

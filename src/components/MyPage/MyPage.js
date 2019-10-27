@@ -8,6 +8,7 @@ import "antd/dist/antd.css";
 
 class MyPage extends Component {
   render() {
+    console.log("마이페이지 ", this.props.user);
     return (
       <>
         <div className="mypage-main-content-wrapper">
@@ -18,11 +19,7 @@ class MyPage extends Component {
                   {this.props.user.profile_url ? (
                     <img
                       className="mypage-main-content-header-photo-img"
-                      src={
-                        this.props.myPageUserInfo
-                          ? this.props.myPageUserInfo.profile_url
-                          : this.props.user.profile_url
-                      }
+                      src={this.props.user.profile_url}
                     />
                   ) : (
                     <img
@@ -48,19 +45,11 @@ class MyPage extends Component {
               </div>
             </div>
             <div className="mypage-main-content-header-info-wrapper">
-              {this.props.myPageUserInfo ? (
-                <div className="mypage-main-content-header-info-id">
-                  {this.props.myPageUserInfo.user_display_name
-                    ? this.props.myPageUserInfo.user_display_name
-                    : this.props.user.email}
-                </div>
-              ) : (
-                <div className="mypage-main-content-header-info-id">
-                  {this.props.user.user_display_name
-                    ? this.props.user.user_display_name
-                    : this.props.user.email}
-                </div>
-              )}
+              <div className="mypage-main-content-header-info-id">
+                {this.props.user.user_display_name
+                  ? this.props.user.user_display_name
+                  : this.props.user.email}
+              </div>
               <div className="mypage-main-content-header-info-number-wrapper">
                 <div className="mypage-main-content-header-info-number-cover">
                   <div className="mypage-main-content-header-info-title">
@@ -110,15 +99,11 @@ class MyPage extends Component {
                   {this.props.user.user_name}
                 </div>
                 <div className="mypage-main-content-header-info-job">
-                  {this.props.myPageUserInfo
-                    ? this.props.myPageUserInfo.user_job
-                    : this.props.user.user_job}
+                  {this.props.user.user_job}
                 </div>
               </div>
               <div className="mypage-main-content-header-info-text-wrapper">
-                {this.props.myPageUserInfo
-                  ? this.props.myPageUserInfo.info
-                  : this.props.user.info}
+                {this.props.user.info}
               </div>
               <div className="mypage-main-content-header-info-detail-wrapper">
                 상세정보
@@ -127,7 +112,10 @@ class MyPage extends Component {
               <div className="mypage-main-content-header-info-modify-wrapper">
                 <div
                   className="mypage-main-content-header-info-modify-btn"
-                  onClick={this.props.myPageClickModal.bind(this)}
+                  onClick={this.props.myPageClickModal.bind(
+                    this,
+                    this.props.myPageModal
+                  )}
                 >
                   프로필 수정
                   <img className="arrow" src={arrow} />
@@ -139,7 +127,7 @@ class MyPage extends Component {
             <div className="mypage-main-content-inner-header-wrapper">
               <div
                 className={
-                  this.props.veiw === "photo"
+                  this.props.view === "photo"
                     ? "mypage-main-content-header border-bottom"
                     : "mypage-main-content-header"
                 }
@@ -149,7 +137,7 @@ class MyPage extends Component {
               </div>
               <div
                 className={
-                  this.props.veiw === "music"
+                  this.props.view === "music"
                     ? "mypage-main-content-header border-bottom"
                     : "mypage-main-content-header"
                 }
@@ -159,7 +147,7 @@ class MyPage extends Component {
               </div>
               <div
                 className={
-                  this.props.veiw === "video"
+                  this.props.view === "video"
                     ? "mypage-main-content-header border-bottom"
                     : "mypage-main-content-header"
                 }
@@ -168,7 +156,7 @@ class MyPage extends Component {
                 영상
               </div>
             </div>
-            {this.props.veiw === "photo" ? (
+            {this.props.view === "photo" ? (
               <div className="mypost-cover">
                 {this.props.myPosts &&
                   this.props.myPosts.map((post, i) => {
@@ -184,7 +172,7 @@ class MyPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.props.veiw === "music" ? (
+            {this.props.view === "music" ? (
               <div className="mypost-cover">
                 {this.props.myPosts &&
                   this.props.myPosts.map((post, i) => {
@@ -204,7 +192,7 @@ class MyPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.props.veiw === "video" ? (
+            {this.props.view === "video" ? (
               <div className="mypost-cover">
                 {this.props.myPosts &&
                   this.props.myPosts.map((post, i) => {
@@ -265,20 +253,24 @@ class MyPage extends Component {
           <div className="modal-body">
             <div className="modal-modify-profile-wrapper">
               <div className="modal-modify-profile">
-                <form onSubmit={this.props.myPageUpload.bind(this)}>
+                <div
+                  onSubmit={this.props.myPageUpload.bind(
+                    this,
+                    this.props.user.email
+                  )}
+                >
                   <div
                     className="close-modal"
-                    onClick={this.props.myPageClickModal.bind(this)}
+                    onClick={this.props.myPageClickModal.bind(
+                      this,
+                      this.props.myPageModal
+                    )}
                   >
                     X
                   </div>
                   <div className="current-profile">
                     <img
-                      src={
-                        this.props.myPageUserInfo
-                          ? this.props.myPageUserInfo.profile_url
-                          : this.props.user.profile_url
-                      }
+                      src={this.props.user.profile_url}
                       className="current-profile-photo"
                     />
                   </div>
@@ -326,7 +318,7 @@ class MyPage extends Component {
                   <div className="input-profile-btn-wrapper">
                     <button className="input-profile-btn">완료</button>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>

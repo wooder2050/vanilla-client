@@ -183,7 +183,7 @@ class UserPage extends Component {
             <div className="userpage-main-content-inner-header-wrapper">
               <div
                 className={
-                  this.props.veiw === "photo"
+                  this.props.view === "photo"
                     ? "userpage-main-content-header border-bottom"
                     : "userpage-main-content-header"
                 }
@@ -193,7 +193,7 @@ class UserPage extends Component {
               </div>
               <div
                 className={
-                  this.props.veiw === "music"
+                  this.props.view === "music"
                     ? "userpage-main-content-header border-bottom"
                     : "userpage-main-content-header"
                 }
@@ -203,7 +203,7 @@ class UserPage extends Component {
               </div>
               <div
                 className={
-                  this.props.veiw === "video"
+                  this.props.view === "video"
                     ? "userpage-main-content-header border-bottom"
                     : "userpage-main-content-header"
                 }
@@ -212,7 +212,7 @@ class UserPage extends Component {
                 영상
               </div>
             </div>
-            {this.props.veiw === "photo" ? (
+            {this.props.view === "photo" ? (
               <div className="userpost-cover">
                 {this.state.userPosts &&
                   this.state.userPosts.map((post, i) => {
@@ -228,7 +228,7 @@ class UserPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.props.veiw === "music" ? (
+            {this.props.view === "music" ? (
               <div className="userpost-cover">
                 {this.state.userPosts &&
                   this.state.userPosts.map((post, i) => {
@@ -248,7 +248,7 @@ class UserPage extends Component {
             ) : (
               <div></div>
             )}
-            {this.props.veiw === "video" ? (
+            {this.props.view === "video" ? (
               <div className="userpost-cover">
                 {this.state.userPosts &&
                   this.state.userPosts.map((post, i) => {

@@ -20,7 +20,7 @@ class UploadDetail extends Component {
               </div>
             </div>
             <div className="upload-detail-main-content-wrapper">
-              {this.props.veiw === "photo" ? (
+              {this.props.view === "photo" ? (
                 <div className="upload-detail-main-content-cover">
                   <div className="upload-detail-main-content-cover-wrapper">
                     {this.props.uploadCurrnetSelectAsset ? (
@@ -43,7 +43,7 @@ class UploadDetail extends Component {
                   <div className="upload-detail-main-content-cover-wrapper">
                     {this.props.uploadCurrnetSelectAsset ? (
                       <div className="content-wrapper-video">
-                        {this.props.veiw === "video" ? (
+                        {this.props.view === "video" ? (
                           <video
                             src={this.props.uploadCurrnetSelectAsset.url}
                             width="280"
@@ -90,7 +90,7 @@ class UploadDetail extends Component {
                   </div>
                 </div>
               )}
-              {this.props.veiw === "music" ? (
+              {this.props.view === "music" ? (
                 <div className="upload-detail-main-content-input-form-cover">
                   <div className="input-error">
                     {this.props.uploadDetailInputError}

@@ -28,7 +28,7 @@ class App extends Component {
       followingPosts: null,
       followingUsers: null,
       followedUsers: null,
-      veiw: "photo",
+      view: "photo",
       musicPlayState: "off",
       currentMusic: null,
       currentPost: null,
@@ -55,6 +55,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.props.onLoad();
     fetch("http://localhost:5000/login/success", {
       method: "GET",
       credentials: "include",
@@ -73,6 +74,12 @@ class App extends Component {
         if (responseJson.authenticated) {
           this.setState({
             authenticated: true,
+            assets: responseJson.assets,
+            myPosts: responseJson.posts,
+            newPosts: responseJson.newPosts,
+            followingPosts: responseJson.followingPosts,
+            followingUsers: responseJson.followingUsers,
+            followedUsers: responseJson.followedUsers,
             user: responseJson.user
           });
         } else {
@@ -88,241 +95,64 @@ class App extends Component {
           error: "Failed to authenticate user"
         });
       });
-
-    fetch("http://localhost:5000/assets", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
-      .then(response => {
-        if (response.status === 200) return response.json();
-        throw new Error("failed to onload asset");
-      })
-      .then(responseJson => {
-        this.setState({
-          assets: responseJson.assets
-        });
-      });
-
-    fetch("http://localhost:5000/posts/myPost", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
-      .then(response => {
-        if (response.status === 200 || response.status === 401)
-          return response.json();
-        throw new Error("failed to onload post");
-      })
-      .then(responseJson => {
-        this.setState({
-          myPosts: responseJson.posts
-        });
-      })
-      .catch(error => {});
-
-    fetch("http://localhost:5000/posts/newPost", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
-      .then(response => {
-        if (response.status === 200 || response.status === 401)
-          return response.json();
-        throw new Error("failed to onload post");
-      })
-      .then(responseJson => {
-        this.setState({
-          newPosts: responseJson.newPosts
-        });
-      })
-      .catch(error => {});
-
-    fetch("http://localhost:5000/posts/followingPost", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
-      .then(response => {
-        if (response.status === 200 || response.status === 401)
-          return response.json();
-        throw new Error("failed to onload post");
-      })
-      .then(responseJson => {
-        this.setState({
-          followingPosts: responseJson.followingPosts
-        });
-      })
-      .catch(error => {});
-
-    fetch("http://localhost:5000/users/followingUsers", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
-      .then(response => {
-        if (response.status === 200 || response.status === 401)
-          return response.json();
-        throw new Error("failed to onload post");
-      })
-      .then(responseJson => {
-        this.setState({
-          followingUsers: responseJson.followingUsers,
-          followedUsers: responseJson.followedUsers
-        });
-      })
-      .catch(error => {});
   }
 
-  logout() {
-    fetch("http://localhost:5000/logout", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
-      .then(response => {
-        if (response.status === 200) return response.json();
-        throw new Error("failed to logout");
-      })
-      .then(responseJson => {
-        this.setState({
-          authenticated: responseJson.authenticated
-        });
-      });
-  }
-  clickPhoto() {
-    this.setState({
-      veiw: "photo"
-    });
-  }
-  clickMusic() {
-    this.setState({
-      veiw: "music"
-    });
-  }
-  clickVideo() {
-    this.setState({
-      veiw: "video"
-    });
-  }
-  startMusicPlayer(music) {
-    this.setState({
-      musicPlayState: "bodyPlay",
-      currentMusic: music
-    });
-  }
-  closeMusicPlayer() {
-    this.setState({
-      musicPlayState: "off",
-      currentMusic: null
-    });
-  }
-  changePlayMode(state) {
-    if (state === "bodyPlay") {
-      this.setState({
-        musicPlayState: "footPlay"
-      });
-    } else {
-      this.setState({
-        musicPlayState: "bodyPlay"
-      });
-    }
-  }
-  clickPost(post) {
-    this.setState({
-      currentPost: post,
-      postViewState: "on"
-    });
-  }
-  closePost() {
-    this.setState({
-      currentPost: null,
-      postViewState: "off"
-    });
-  }
-  movePage(page) {
-    this.setState({
-      loginPage: page
-    });
-  }
-  myPageUpload(event) {
-    event.preventDefault();
-    const profilePhoto = event.target.imgfile.files[0];
-    const userDisplayName = event.target.user_display_name.value;
-    const info = event.target.info.value;
-    const userJob = event.target.user_job.value;
-    const formData = new FormData();
-    formData.append("imgfile", profilePhoto);
-    if (profilePhoto && userDisplayName && info && userJob) {
-      fetch("http://localhost:5000/assets/upload/photo", {
-        method: "POST",
-        body: formData
-      })
-        .then(response => {
-          if (response.status === 200 || response.status === 401)
-            return response.json();
-          throw new Error("failed to upload");
-        })
-        .then(responseJosn => {
-          const profileURL = responseJosn.profile_url;
-          fetch("http://localhost:5000/users/update", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Credentials": true
-            },
-            body: JSON.stringify({
-              profile_url: profileURL,
-              info: info,
-              user_display_name: userDisplayName,
-              user_job: userJob,
-              email: this.props.user.email
-            })
-          })
-            .then(response => {
-              if (response.status === 200) return response.json();
-              throw new Error("failed to upload");
-            })
-            .then(responseJosn => {
-              this.setState({
-                user_info: responseJosn.user
-              });
-            });
-        });
+  // myPageUpload(event) {
+  //   event.preventDefault();
+  //   const profilePhoto = event.target.imgfile.files[0];
+  //   const userDisplayName = event.target.user_display_name.value;
+  //   const info = event.target.info.value;
+  //   const userJob = event.target.user_job.value;
+  //   const formData = new FormData();
+  //   formData.append("imgfile", profilePhoto);
+  //   if (profilePhoto && userDisplayName && info && userJob) {
+  //     fetch("http://localhost:5000/assets/upload/photo", {
+  //       method: "POST",
+  //       body: formData
+  //     })
+  //       .then(response => {
+  //         if (response.status === 200 || response.status === 401)
+  //           return response.json();
+  //         throw new Error("failed to upload");
+  //       })
+  //       .then(responseJosn => {
+  //         const profileURL = responseJosn.profile_url;
+  //         fetch("http://localhost:5000/users/update", {
+  //           method: "POST",
+  //           headers: {
+  //             Accept: "application/json",
+  //             "Content-Type": "application/json",
+  //             "Access-Control-Allow-Credentials": true
+  //           },
+  //           body: JSON.stringify({
+  //             profile_url: profileURL,
+  //             info: info,
+  //             user_display_name: userDisplayName,
+  //             user_job: userJob,
+  //             email: this.props.user.email
+  //           })
+  //         })
+  //           .then(response => {
+  //             if (response.status === 200) return response.json();
+  //             throw new Error("failed to upload");
+  //           })
+  //           .then(responseJosn => {
+  //             this.setState({
+  //               user_info: responseJosn.user
+  //             });
+  //           });
+  //       });
 
-      this.setState({
-        modal: !this.state.modal
-      });
-    } else {
-      this.setState({
-        inputError: "Please be sure to enter all items."
-      });
-    }
-  }
+  //     this.setState({
+  //       modal: !this.state.modal
+  //     });
+  //   } else {
+  //     this.setState({
+  //       inputError: "Please be sure to enter all items."
+  //     });
+  //   }
+  // }
+
   myPageClickModal() {
     this.setState({
       myPageModal: !this.state.myPageModal
@@ -470,7 +300,7 @@ class App extends Component {
             body: JSON.stringify({
               post_url: postContentURL,
               email: this.state.user.email,
-              post_type: this.state.veiw
+              post_type: this.props.view
             })
           })
             .then(response => {
@@ -523,7 +353,7 @@ class App extends Component {
               post_url: postContentURL,
               cover_url: coverURL,
               email: this.state.user.email,
-              post_type: this.state.veiw
+              post_type: this.props.view
             })
           })
             .then(response => {
@@ -589,7 +419,7 @@ class App extends Component {
           _id: this.state.user._id,
           user_display_name: this.state.user.user_display_name,
           profile_url: this.state.user.profile_url,
-          post_type: this.state.veiw,
+          post_type: this.props.view,
           assetId: this.state.routeProps.match.params.assetId,
           description: postDescription,
           maker: postMaker,
@@ -642,7 +472,7 @@ class App extends Component {
           _id: this.state.user._id,
           user_display_name: this.state.user.user_display_name,
           profile_url: this.state.user.profile_url,
-          post_type: this.state.veiw,
+          post_type: this.props.view,
           assetId: this.state.uploadDetailSelectAsset,
           description: postDescription,
           maker: postMaker,
@@ -662,6 +492,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("시작 ", this.props);
     return (
       <Router>
         <div className="App">
@@ -670,73 +501,64 @@ class App extends Component {
               <header>
                 <Header
                   authenticated={this.state.authenticated}
-                  logout={this.logout.bind(this)}
+                  logout={this.props.logout.bind(this)}
                 />
                 <SideHeader user={this.state.user} />
               </header>
               <Switch>
                 <Route path="/login">
                   <LoginWrapper
-                    loginPage={this.state.loginPage}
-                    movePage={this.movePage.bind(this)}
+                    loginPage={this.props.loginPage}
+                    movePage={this.props.movePage.bind(this)}
                     verification={this.verification.bind(this)}
                     register_error={this.state.register_error}
                     pwdError={this.state.pwdError}
                     emailError={this.state.emailError}
                   />
                 </Route>
-                <Route
-                  path="/search"
-                  render={routeProps => (
-                    <Search
-                      authenticated={this.state.authenticated}
-                      user={this.state.user}
-                      newPosts={this.state.newPosts}
-                      startMusicPlayer={this.startMusicPlayer.bind(this)}
-                      clickPost={this.clickPost.bind(this)}
-                      searchError={this.state.searchError}
-                      searchUsers={this.state.searchUsers}
-                      searchState={this.state.searchState}
-                      searchUser={this.searchUser.bind(this)}
-                      changeSearchState={this.changeSearchState.bind(this)}
-                    />
-                  )}
-                ></Route>
-                <Route
-                  path="/mypage"
-                  render={routeProps => (
-                    <MyPage
-                      authenticated={this.state.authenticated}
-                      user={this.state.user}
-                      myPosts={this.state.myPosts}
-                      startMusicPlayer={this.startMusicPlayer.bind(this)}
-                      clickPost={this.clickPost.bind(this)}
-                      clickPhoto={this.clickPhoto.bind(this)}
-                      clickMusic={this.clickMusic.bind(this)}
-                      clickVideo={this.clickVideo.bind(this)}
-                      veiw={this.state.veiw}
-                      followingUsers={this.state.followingUsers}
-                      followedUsers={this.state.followedUsers}
-                      myPageUpload={this.myPageUpload.bind(this)}
-                      myPageUserInfo={this.state.myPageUserInfo}
-                      myPageModal={this.state.myPageModal}
-                      myPageinputError={this.state.myPageinputError}
-                      myPageClickModal={this.myPageClickModal.bind(this)}
-                      myPageClickFollowState={this.myPageClickFollowState.bind(
-                        this
-                      )}
-                      myPageFollowState={this.state.myPageFollowState}
-                      myPageListTitle={this.state.myPageListTitle}
-                      myPageCurrentFollowList={
-                        this.state.myPageCurrentFollowList
-                      }
-                    />
-                  )}
-                />
+                <Route path="/search">
+                  <Search
+                    authenticated={this.state.authenticated}
+                    user={this.state.user}
+                    newPosts={this.state.newPosts}
+                    startMusicPlayer={this.props.startMusicPlayer.bind(this)}
+                    clickPost={this.props.clickPost.bind(this)}
+                    searchError={this.state.searchError}
+                    searchUsers={this.state.searchUsers}
+                    searchState={this.state.searchState}
+                    searchUser={this.searchUser.bind(this)}
+                    changeSearchState={this.changeSearchState.bind(this)}
+                  />
+                </Route>
+                <Route path="/mypage">
+                  <MyPage
+                    authenticated={this.state.authenticated}
+                    user={this.props.user}
+                    myPosts={this.state.myPosts}
+                    startMusicPlayer={this.props.startMusicPlayer.bind(this)}
+                    clickPost={this.props.clickPost.bind(this)}
+                    clickPhoto={this.props.clickPhoto.bind(this)}
+                    clickMusic={this.props.clickMusic.bind(this)}
+                    clickVideo={this.props.clickVideo.bind(this)}
+                    view={this.props.view}
+                    followingUsers={this.state.followingUsers}
+                    followedUsers={this.state.followedUsers}
+                    myPageUpload={this.props.myPageUpload.bind(this)}
+                    myPageModal={this.props.modal}
+                    myPageinputError={this.props.inputError}
+                    myPageClickModal={this.props.clickModal.bind(this)}
+                    myPageClickFollowState={this.myPageClickFollowState.bind(
+                      this
+                    )}
+                    myPageFollowState={this.state.myPageFollowState}
+                    myPageListTitle={this.state.myPageListTitle}
+                    myPageCurrentFollowList={this.state.myPageCurrentFollowList}
+                  />
+                </Route>
                 <Route path="/upload/:assetId">
                   <UploadDetail
                     authenticated={this.state.authenticated}
-                    veiw={this.state.veiw}
+                    view={this.props.view}
                     uploadDetailInputError={this.stateuploadDetailInputError}
                     posting={this.posting.bind(this)}
                     postingMusic={this.postingMusic.bind(this)}
@@ -749,10 +571,10 @@ class App extends Component {
                   <Upload
                     authenticated={this.state.authenticated}
                     assets={this.state.assets}
-                    veiw={this.state.veiw}
-                    clickPhoto={this.clickPhoto.bind(this)}
-                    clickMusic={this.clickMusic.bind(this)}
-                    clickVideo={this.clickVideo.bind(this)}
+                    view={this.props.view}
+                    clickPhoto={this.props.clickPhoto.bind(this)}
+                    clickMusic={this.props.clickMusic.bind(this)}
+                    clickVideo={this.props.clickVideo.bind(this)}
                     uploadModal={this.state.uploadModal}
                     uploadAssets={this.state.uploadAssets}
                     uploadInputError={this.state.uploadInputError}
@@ -771,12 +593,12 @@ class App extends Component {
                     <UserPage
                       authenticated={this.state.authenticated}
                       user={this.state.user}
-                      startMusicPlayer={this.startMusicPlayer.bind(this)}
-                      clickPost={this.clickPost.bind(this)}
-                      veiw={this.state.veiw}
-                      clickPhoto={this.clickPhoto.bind(this)}
-                      clickMusic={this.clickMusic.bind(this)}
-                      clickVideo={this.clickVideo.bind(this)}
+                      startMusicPlayer={this.props.startMusicPlayer.bind(this)}
+                      clickPost={this.props.clickPost.bind(this)}
+                      view={this.props.view}
+                      clickPhoto={this.props.clickPhoto.bind(this)}
+                      clickMusic={this.props.clickMusic.bind(this)}
+                      clickVideo={this.props.clickVideo.bind(this)}
                       routeProps={routeProps}
                     />
                   )}
@@ -788,21 +610,21 @@ class App extends Component {
                     posts={this.state.myPosts}
                     followingUsers={this.state.followingUsers}
                     followingPosts={this.state.followingPosts}
-                    startMusicPlayer={this.startMusicPlayer.bind(this)}
-                    clickPost={this.clickPost.bind(this)}
+                    startMusicPlayer={this.props.startMusicPlayer.bind(this)}
+                    clickPost={this.props.clickPost.bind(this)}
                   />
                 </Route>
               </Switch>
               <MusicPlayer
-                musicPlayState={this.state.musicPlayState}
-                currentMusic={this.state.currentMusic}
-                closeMusicPlayer={this.closeMusicPlayer.bind(this)}
-                changePlayMode={this.changePlayMode.bind(this)}
+                musicPlayState={this.props.musicPlayState}
+                currentMusic={this.props.currentMusic}
+                closeMusicPlayer={this.props.closeMusicPlayer.bind(this)}
+                changePlayMode={this.props.changePlayMode.bind(this)}
               />
               <PostDetail
-                currentPost={this.state.currentPost}
-                postViewState={this.state.postViewState}
-                closePost={this.closePost.bind(this)}
+                currentPost={this.props.currentPost}
+                postViewState={this.props.postViewState}
+                closePost={this.props.closePost.bind(this)}
               />
             </div>
           </div>
