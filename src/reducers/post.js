@@ -7,7 +7,6 @@ const initialState = {
 function postReducers(state = initialState, action) {
   switch (action.type) {
     case "POSTS_ONLOAD":
-      console.log("POSTS_ONLOAD ", action);
       return Object.assign(
         { ...state },
         {

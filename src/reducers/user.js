@@ -4,13 +4,14 @@ const initialState = {
   followedUsers: null,
   myPageUserInfo: null,
   myPageCurrentFollowList: null,
-  searchUsers: []
+  searchUsers: [],
+  myPageFollowState: false,
+  myPageListTitle: null
 };
 
 function usersReducers(state = initialState, action) {
   switch (action.type) {
     case "USERS_ONLOAD":
-      console.log("USERS_ONLOAD ", action);
       return Object.assign(
         { ...state },
         {
@@ -20,11 +21,26 @@ function usersReducers(state = initialState, action) {
         }
       );
     case "USERINFO_UPDATE":
-      console.log("USERINFO_UPDATE ", action);
       return Object.assign(
         { ...state },
         {
           user: action.responseJson.user
+        }
+      );
+    case "CLICK_FOLLOW_MYPAGE_MODAL":
+      return Object.assign(
+        { ...state },
+        {
+          myPageFollowState: !action.state,
+          myPageListTitle: action.name,
+          myPageCurrentFollowList: action.list
+        }
+      );
+    case "SEARCH_USERS":
+      return Object.assign(
+        { ...state },
+        {
+          searchUsers: action.searchUsers
         }
       );
     default:

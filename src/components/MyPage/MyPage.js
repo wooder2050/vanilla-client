@@ -7,8 +7,17 @@ import arrow from "../../images/arrow.png";
 import "antd/dist/antd.css";
 
 class MyPage extends Component {
+  constructor(props) {
+    super(props);
+    this.fileInput = React.createRef();
+    this.displayNameInput = React.createRef();
+    this.infoInput = React.createRef();
+    this.jobInput = React.createRef();
+  }
+  componentDidMount() {
+    this.props.closeModal();
+  }
   render() {
-    console.log("마이페이지 ", this.props.user);
     return (
       <>
         <div className="mypage-main-content-wrapper">
@@ -62,6 +71,7 @@ class MyPage extends Component {
                 <div
                   onClick={this.props.myPageClickFollowState.bind(
                     this,
+                    this.props.myPageFollowState,
                     this.props.followedUsers,
                     "팔로워"
                   )}
@@ -79,6 +89,7 @@ class MyPage extends Component {
                 <div
                   onClick={this.props.myPageClickFollowState.bind(
                     this,
+                    this.props.myPageFollowState,
                     this.props.followingUsers,
                     "팔로잉"
                   )}
@@ -213,7 +224,10 @@ class MyPage extends Component {
         {this.props.myPageFollowState ? (
           <>
             <div
-              onClick={this.props.myPageClickFollowState.bind(this)}
+              onClick={this.props.myPageClickFollowState.bind(
+                this,
+                this.props.myPageFollowState
+              )}
               className="followList-background"
             ></div>
             <div className="followList-wrapper">
@@ -223,21 +237,23 @@ class MyPage extends Component {
                   <>
                     <NavLink
                       className="followList-user-wrapper"
-                      to={`${user._id}`}
+                      to={`${user[0]._id}`}
                     >
                       <div className="followList-user-profile-wrapper">
                         <img
                           className="followList-user-profile"
-                          src={user.profile_url ? user.profile_url : profile}
+                          src={
+                            user[0].profile_url ? user[0].profile_url : profile
+                          }
                         />
                       </div>
                       <div className="followList-user-text-wrapper">
                         <strong className="followList-user-id">
-                          {user.user_display_name
-                            ? user.user_display_name
-                            : user.email}
+                          {user[0].user_display_name
+                            ? user[0].user_display_name
+                            : user[0].email}
                         </strong>
-                        {user.user_name}
+                        {user[0].user_name}
                       </div>
                     </NavLink>
                   </>
@@ -253,12 +269,7 @@ class MyPage extends Component {
           <div className="modal-body">
             <div className="modal-modify-profile-wrapper">
               <div className="modal-modify-profile">
-                <div
-                  onSubmit={this.props.myPageUpload.bind(
-                    this,
-                    this.props.user.email
-                  )}
-                >
+                <div>
                   <div
                     className="close-modal"
                     onClick={this.props.myPageClickModal.bind(
@@ -281,8 +292,8 @@ class MyPage extends Component {
                     <input
                       className="input-profile-photo-form"
                       type="file"
-                      name="imgfile"
                       placeholder="example@gmail.com"
+                      ref={this.fileInput}
                     />
                   </div>
                   <div className="profile-wrapper">
@@ -292,6 +303,7 @@ class MyPage extends Component {
                       type="text"
                       name="user_display_name"
                       placeholder="영어로 입력해주세요"
+                      ref={this.displayNameInput}
                     />
                   </div>
                   <div className="profile-wrapper">
@@ -302,6 +314,7 @@ class MyPage extends Component {
                       name="info"
                       placeholder="
                     Please introduce yourself."
+                      ref={this.infoInput}
                     />
                   </div>
                   <div className="profile-wrapper">
@@ -312,11 +325,17 @@ class MyPage extends Component {
                       name="user_job"
                       placeholder="
                     Please enter your occupation."
+                      ref={this.jobInput}
                     />
                   </div>
                   <div className="input-errorr">{this.props.inputError}</div>
                   <div className="input-profile-btn-wrapper">
-                    <button className="input-profile-btn">완료</button>
+                    <button
+                      onClick={e => this.props.myPageUpload(this)}
+                      className="input-profile-btn"
+                    >
+                      완료
+                    </button>
                   </div>
                 </div>
               </div>

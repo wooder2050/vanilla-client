@@ -8,7 +8,6 @@ const initialState = {
 function clickReducers(state = initialState, action) {
   switch (action.type) {
     case "CLICK_PHOTO":
-      console.log("CLICK_PHOTO ", action);
       return Object.assign(
         { ...state },
         {
@@ -16,7 +15,6 @@ function clickReducers(state = initialState, action) {
         }
       );
     case "CLICK_MUSIC":
-      console.log("CLICK_MUSIC ", action);
       return Object.assign(
         { ...state },
         {
@@ -24,7 +22,6 @@ function clickReducers(state = initialState, action) {
         }
       );
     case "CLICK_VIDEO":
-      console.log("CLICK_VIDEO ", action);
       return Object.assign(
         { ...state },
         {
@@ -32,7 +29,6 @@ function clickReducers(state = initialState, action) {
         }
       );
     case "CLICK_POST":
-      console.log("CLICK_POST ", action);
       return Object.assign(
         { ...state },
         {
@@ -41,7 +37,6 @@ function clickReducers(state = initialState, action) {
         }
       );
     case "CLOSE_POST":
-      console.log("CLOSE_POST ", action);
       return Object.assign(
         { ...state },
         {
@@ -49,12 +44,18 @@ function clickReducers(state = initialState, action) {
           postViewState: "off"
         }
       );
-      case "CLICK_MODAL":
-      console.log("CLICK_MODAL ", action);
+    case "CLICK_MODAL":
       return Object.assign(
         { ...state },
         {
           modal: !action.state
+        }
+      );
+    case "CLOSE_MODAL":
+      return Object.assign(
+        { ...state },
+        {
+          modal: false
         }
       );
     default:

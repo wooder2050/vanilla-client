@@ -6,7 +6,6 @@ const initialState = {
 function musicPlayerReducers(state = initialState, action) {
   switch (action.type) {
     case "START_MUSICPLAYER":
-      console.log("START_MUSICPLAYER ", action);
       return Object.assign(
         { ...state },
         {
@@ -15,7 +14,6 @@ function musicPlayerReducers(state = initialState, action) {
         }
       );
     case "CLOSE_MUSICPLAYER":
-      console.log("CLOSE_MUSICPLAYER ", action);
       return Object.assign(
         { ...state },
         {
@@ -24,7 +22,6 @@ function musicPlayerReducers(state = initialState, action) {
         }
       );
     case "BODYPLAY_MUSICPLAYER":
-      console.log("BODYPLAY_MUSICPLAYER ", action);
       return Object.assign(
         { ...state },
         {
@@ -32,7 +29,6 @@ function musicPlayerReducers(state = initialState, action) {
         }
       );
     case "FOOTERPLAY_MUSICPLAYER":
-      console.log("FOOTERPLAY_MUSICPLAYER ", action);
       return Object.assign(
         { ...state },
         {

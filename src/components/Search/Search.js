@@ -5,6 +5,13 @@ import search from "../../images/search.png";
 import profile from "../../images/profile.png";
 
 class Search extends Component {
+  componentDidMount() {
+    this.props.closeModal();
+  }
+  constructor(props) {
+    super(props);
+    this.searchUserInput = React.createRef();
+  }
   render() {
     return (
       <div
@@ -12,7 +19,7 @@ class Search extends Component {
         onClick={this.props.changeSearchState.bind(this)}
       >
         <div className="search-page-header-wrapper">
-          <form onSubmit={this.props.searchUser.bind(this)}>
+          <div>
             <div className="search-bar-wrapper">
               <div className="search-icon-wrapper">
                 <img className="search-icon" src={search} />
@@ -21,14 +28,19 @@ class Search extends Component {
                 className="search-bar"
                 placeholder="Search a user"
                 name="username"
+                ref={this.searchUserInput}
               />
             </div>
             <div className="search-bar-btn-wrapper">
-              <button type="submit" className="search-bar-btn">
+              <button
+                onClick={e => this.props.searchUser(this)}
+                type="submit"
+                className="search-bar-btn"
+              >
                 검색
               </button>
             </div>
-          </form>
+          </div>
           <div className="search-bar-error-wrapper">
             <div className="search-bar-error">{this.props.searchError}</div>
           </div>

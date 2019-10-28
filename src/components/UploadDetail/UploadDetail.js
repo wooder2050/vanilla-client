@@ -4,6 +4,15 @@ import "./UploadDetail.scss";
 import "antd/dist/antd.css";
 
 class UploadDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.infoInput = React.createRef();
+    this.singerInput = React.createRef();
+    this.titleInput = React.createRef();
+    this.makerInput = React.createRef();
+    this.locationInput = React.createRef();
+    this.tagInput = React.createRef();
+  }
   render() {
     return (
       <>
@@ -90,163 +99,116 @@ class UploadDetail extends Component {
                   </div>
                 </div>
               )}
-              {this.props.view === "music" ? (
-                <div className="upload-detail-main-content-input-form-cover">
-                  <div className="input-error">
-                    {this.props.uploadDetailInputError}
-                  </div>
-                  <form onSubmit={this.props.postingMusic.bind(this)}>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">설명</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <textarea
-                          className="input-description-form"
-                          type="text"
-                          name="description"
-                          placeholder="문구 입력..."
-                        />
-                      </div>
-                    </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">가수</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="singer"
-                          placeholder="가수를 입력해주세요."
-                        />
-                      </div>
-                    </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">노래 제목</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="title"
-                          placeholder="노래 제목을 입력해주세요."
-                        />
-                      </div>
-                    </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">컨텐츠 제작자</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="maker"
-                          placeholder="이름을 입력해주세요."
-                        />
-                      </div>
-                    </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">장소</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="location"
-                          placeholder="ex)상상마당, 언플러그드"
-                        />
-                      </div>
-                    </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">태그</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="tags"
-                          placeholder="ex)#김수영, #1집"
-                        />
-                      </div>
-                    </div>
-                    <div className="input-btn-wrapper">
-                      <button type="submit" className="input-btn">
-                        공유하기
-                      </button>
-                    </div>
-                  </form>
+
+              <div className="upload-detail-main-content-input-form-cover">
+                <div className="input-error">
+                  {this.props.uploadDetailInputError}
                 </div>
-              ) : (
-                <div className="upload-detail-main-content-input-form-cover">
-                  <div className="input-error">
-                    {this.props.uploadDetailInputError}
+                <div>
+                  <div className="input-cover-wrapper">
+                    <div className="text-wrapper">
+                      <label className="text">설명</label>
+                    </div>
+                    <div className="input-wrapper">
+                      <textarea
+                        className="input-description-form"
+                        type="text"
+                        name="description"
+                        placeholder="문구 입력..."
+                        ref={this.infoInput}
+                      />
+                    </div>
                   </div>
-                  <form onSubmit={this.props.posting.bind(this)}>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">설명</label>
+                  {this.props.view === "music" ? (
+                    <>
+                      <div className="input-cover-wrapper">
+                        <div className="text-wrapper">
+                          <label className="text">가수</label>
+                        </div>
+                        <div className="input-wrapper">
+                          <input
+                            className="input-description-form"
+                            type="text"
+                            name="singer"
+                            placeholder="가수를 입력해주세요."
+                            ref={this.singerInput}
+                          />
+                        </div>
                       </div>
-                      <div className="input-wrapper">
-                        <textarea
-                          className="input-description-form"
-                          type="text"
-                          name="description"
-                          placeholder="문구 입력..."
-                        />
+                      <div className="input-cover-wrapper">
+                        <div className="text-wrapper">
+                          <label className="text">노래 제목</label>
+                        </div>
+                        <div className="input-wrapper">
+                          <input
+                            className="input-description-form"
+                            type="text"
+                            name="title"
+                            placeholder="노래 제목을 입력해주세요."
+                            ref={this.titleInput}
+                          />
+                        </div>
                       </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  <div className="input-cover-wrapper">
+                    <div className="text-wrapper">
+                      <label className="text">컨텐츠 제작자</label>
                     </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">컨텐츠 제작자</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="maker"
-                          placeholder="이름을 입력해주세요."
-                        />
-                      </div>
+                    <div className="input-wrapper">
+                      <input
+                        className="input-description-form"
+                        type="text"
+                        name="maker"
+                        placeholder="이름을 입력해주세요."
+                        ref={this.makerInput}
+                      />
                     </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">장소</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="location"
-                          placeholder="ex)상상마당, 언플러그드"
-                        />
-                      </div>
+                  </div>
+                  <div className="input-cover-wrapper">
+                    <div className="text-wrapper">
+                      <label className="text">장소</label>
                     </div>
-                    <div className="input-cover-wrapper">
-                      <div className="text-wrapper">
-                        <label className="text">태그</label>
-                      </div>
-                      <div className="input-wrapper">
-                        <input
-                          className="input-description-form"
-                          type="text"
-                          name="tags"
-                          placeholder="ex)#김수영, #1집"
-                        />
-                      </div>
+                    <div className="input-wrapper">
+                      <input
+                        className="input-description-form"
+                        type="text"
+                        name="location"
+                        placeholder="ex)상상마당, 언플러그드"
+                        ref={this.locationInput}
+                      />
                     </div>
-                    <div className="input-btn-wrapper">
-                      <button type="submit" className="input-btn">
-                        공유하기
-                      </button>
+                  </div>
+                  <div className="input-cover-wrapper">
+                    <div className="text-wrapper">
+                      <label className="text">태그</label>
                     </div>
-                  </form>
+                    <div className="input-wrapper">
+                      <input
+                        className="input-description-form"
+                        type="text"
+                        name="tags"
+                        placeholder="ex)#김수영, #1집"
+                        ref={this.tagInput}
+                      />
+                    </div>
+                  </div>
+                  <div className="input-btn-wrapper">
+                    <button
+                      onClick={
+                        this.props.view === "music"
+                          ? e => this.props.postingMusic(this)
+                          : e => this.props.posting(this)
+                      }
+                      className="input-btn"
+                    >
+                      공유하기
+                    </button>
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

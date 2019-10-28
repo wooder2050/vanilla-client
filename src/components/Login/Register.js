@@ -3,6 +3,13 @@ import "./Register.scss";
 import icon from "../../images/Google-Plus-icon.png";
 
 class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.emailInput = React.createRef();
+    this.passwordInput = React.createRef();
+    this.passwordInput2 = React.createRef();
+    this.userNameInput = React.createRef();
+  }
   render() {
     return (
       <div className="login-session">
@@ -23,11 +30,9 @@ class Register extends Component {
           </div>
         </div>
         <div className="form-wrapper">
-          <form onSubmit={this.props.verification.bind(this)}>
+          <div>
             <div className="email-text-wrapper">
-              <div className="input-error">
-                {this.props.emailError}
-              </div>
+              <div className="input-error">{this.props.emailError}</div>
               <label className="email-text">이메일을 입력하세요</label>
             </div>
             <div className="email-input-wrapper">
@@ -36,6 +41,7 @@ class Register extends Component {
                 type="text"
                 name="username"
                 placeholder="example@gmail.com"
+                ref={this.emailInput}
               />
             </div>
             <div className="email-text-wrapper">
@@ -50,6 +56,7 @@ class Register extends Component {
                 type="password"
                 name="password"
                 placeholder="ex)12abc34"
+                ref={this.passwordInput}
               />
             </div>
             <div className="email-text-wrapper">
@@ -63,6 +70,7 @@ class Register extends Component {
                 type="password"
                 name="password2"
                 placeholder="ex)12abc34"
+                ref={this.passwordInput2}
               />
             </div>
             <div className="email-text-wrapper">
@@ -75,12 +83,18 @@ class Register extends Component {
                 name="user_name"
                 placeholder="ex)바닐라똥코드"
                 data-parse="uppercase"
+                ref={this.userNameInput}
               />
             </div>
             <div className="input-email-btn-wrapper">
-              <button className="input-email-btn">이메일로 가입하기</button>
+              <button
+                onClick={e => this.props.verification(this)}
+                className="input-email-btn"
+              >
+                이메일로 가입하기
+              </button>
             </div>
-          </form>
+          </div>
         </div>
         <div className="sns-border">
           <div className="sns-border-text">SNS계정으로 시작하기</div>

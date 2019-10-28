@@ -2,7 +2,17 @@ import { connect } from "react-redux";
 import App from "../components/App/App";
 import { LOG_IN } from "../contants/actionTypes";
 
-import { getAll, logoutAPI, myPageUploadAPI } from "../api";
+import {
+  getAll,
+  logoutAPI,
+  myPageUploadAPI,
+  verificationAPI,
+  searchUserAPI,
+  uploadPhotoAPI,
+  uploadMediaAPI,
+  postingAPI,
+  postingMusicAPI
+} from "../api";
 
 const mapStateToProps = state => {
   const { authenticated, loginPage } = state.login;
@@ -12,13 +22,23 @@ const mapStateToProps = state => {
     followedUsers,
     myPageUserInfo,
     myPageCurrentFollowList,
-    searchUsers
+    searchUsers,
+    myPageFollowState,
+    myPageListTitle
   } = state.users;
-  const { assets } = state.asset;
+  const { assets, selectAsset } = state.asset;
   const { myPosts, newPosts, followingPosts } = state.post;
   const { view, currentPost, postViewState, modal } = state.click;
   const { musicPlayState, currentMusic } = state.musicPlayer;
-  const { inputError } = state.error;
+  const {
+    inputError,
+    emailError,
+    pwdError,
+    register_error,
+    searchError,
+    uploadInputError,
+    uploadDetailInputError
+  } = state.error;
 
   return {
     authenticated,
@@ -29,7 +49,10 @@ const mapStateToProps = state => {
     myPageUserInfo,
     myPageCurrentFollowList,
     searchUsers,
+    myPageFollowState,
+    myPageListTitle,
     assets,
+    selectAsset,
     myPosts,
     newPosts,
     followingPosts,
@@ -38,54 +61,52 @@ const mapStateToProps = state => {
     postViewState,
     modal,
     musicPlayState,
-    currentMusic
+    currentMusic,
+    inputError,
+    emailError,
+    pwdError,
+    register_error,
+    searchError,
+    uploadInputError,
+    uploadDetailInputError
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoad() {
-      console.log("온로드");
       getAll(dispatch);
     },
     logout() {
-      console.log("로그아웃");
       logoutAPI(dispatch);
     },
     clickPhoto() {
-      console.log("클릭포토");
       dispatch({
         type: "CLICK_PHOTO"
       });
     },
     clickMusic() {
-      console.log("클릭뮤직");
       dispatch({
         type: "CLICK_MUSIC"
       });
     },
     clickVideo() {
-      console.log("클릭비디오");
       dispatch({
         type: "CLICK_VIDEO"
       });
     },
     startMusicPlayer(music) {
-      console.log("스타트뮤직플레이어");
       dispatch({
         type: "START_MUSICPLAYER",
         music
       });
     },
-
     closeMusicPlayer() {
-      console.log("뮤직플레이어 닫기");
       dispatch({
         type: "CLOSE_MUSICPLAYER"
       });
     },
     changePlayMode(state) {
-      console.log("뮤직플레이어 모드 변경");
       if (state === "bodyPlay") {
         dispatch({
           type: "BODYPLAY_MUSICPLAYER"
@@ -97,41 +118,68 @@ const mapDispatchToProps = dispatch => {
       }
     },
     clickPost(post) {
-      console.log("포스트 클릭");
       dispatch({
         type: "CLICK_POST",
         post
       });
     },
     closePost() {
-      console.log("포스트 닫기");
       dispatch({
         type: "CLOSE_POST"
       });
     },
     movePage(page) {
-      console.log("로그인 페이지 이동");
       dispatch({
         type: "MOVE_PAGE",
         page
       });
     },
-    myPageUpload(event, email) {
-      console.log("마이페이지 업로드", event, email);
-      myPageUploadAPI(dispatch, event, email);
+    myPageUpload(event) {
+      myPageUploadAPI(dispatch, event);
     },
     clickModal(state) {
       dispatch({
         type: "CLICK_MODAL",
         state
       });
+    },
+    myPageClickFollowState(state, list, name) {
+      dispatch({
+        type: "CLICK_FOLLOW_MYPAGE_MODAL",
+        state,
+        list,
+        name
+      });
+    },
+    verification(event) {
+      verificationAPI(dispatch, event);
+    },
+    searchUser(event) {
+      searchUserAPI(dispatch, event);
+    },
+    closeModal() {
+      dispatch({
+        type: "CLOSE_MODAL"
+      });
+    },
+    ClickAsset(asset) {
+      dispatch({
+        type: "SELECT_ASSET",
+        asset
+      });
+    },
+    uploadPhoto(event) {
+      uploadPhotoAPI(dispatch, event);
+    },
+    uploadMedia(event) {
+      uploadMediaAPI(dispatch, event);
+    },
+    posting(event) {
+      postingAPI(dispatch, event);
+    },
+    postingMusic(event) {
+      postingMusicAPI(dispatch, event);
     }
-
-    // verification(event) {
-    //   dispatch({
-    //     type: LOG_IN
-    //   });
-    // }
   };
 };
 

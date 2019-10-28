@@ -14,7 +14,7 @@ class LoginWrapper extends Component {
           ) : (
             <Register
               movePage={this.props.movePage}
-              verification={this.props.verification}
+              verification={this.props.verification.bind(this)}
               register_error={this.props.register_error}
               pwdError={this.props.pwdError}
               emailError={this.props.emailError}
