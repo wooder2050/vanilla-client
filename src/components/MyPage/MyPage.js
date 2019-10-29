@@ -239,7 +239,7 @@ class MyPage extends Component {
                       className="followList-user-wrapper"
                       to={`${user[0]._id}`}
                     >
-                      <div className="followList-user-profile-wrapper">
+                      <div key={i} className="followList-user-profile-wrapper">
                         <img
                           className="followList-user-profile"
                           src={

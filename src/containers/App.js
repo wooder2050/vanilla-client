@@ -11,7 +11,9 @@ import {
   uploadPhotoAPI,
   uploadMediaAPI,
   postingAPI,
-  postingMusicAPI
+  postingMusicAPI,
+  onLoadUserPageAPI,
+  userPageclickFollowAPI
 } from "../api";
 
 const mapStateToProps = state => {
@@ -24,7 +26,17 @@ const mapStateToProps = state => {
     myPageCurrentFollowList,
     searchUsers,
     myPageFollowState,
-    myPageListTitle
+    myPageListTitle,
+    userPageInfo,
+    userPagePosts,
+    userPagefollower,
+    userPagefollowing,
+    following,
+    userPageFollowState,
+    userPageListTitle,
+    userPageCurrentFollowList,
+    userPagefollowingUsers,
+    userPagefollowedUsers
   } = state.users;
   const { assets, selectAsset } = state.asset;
   const { myPosts, newPosts, followingPosts } = state.post;
@@ -51,6 +63,16 @@ const mapStateToProps = state => {
     searchUsers,
     myPageFollowState,
     myPageListTitle,
+    userPageInfo,
+    userPagePosts,
+    userPagefollower,
+    userPagefollowing,
+    following,
+    userPageFollowState,
+    userPageListTitle,
+    userPageCurrentFollowList,
+    userPagefollowingUsers,
+    userPagefollowedUsers,
     assets,
     selectAsset,
     myPosts,
@@ -179,6 +201,20 @@ const mapDispatchToProps = dispatch => {
     },
     postingMusic(event) {
       postingMusicAPI(dispatch, event);
+    },
+    onLoadUserPage(event) {
+      onLoadUserPageAPI(dispatch, event);
+    },
+    userPageclickFollow(event) {
+      userPageclickFollowAPI(dispatch, event);
+    },
+    userPageClickFollowState(state, list, name) {
+      dispatch({
+        type: "CLICK_FOLLOW_USERPAGE_MODAL",
+        state,
+        list,
+        name
+      });
     }
   };
 };

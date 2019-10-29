@@ -14,6 +14,9 @@ import PostDetail from "../PostDetail/PostDetail";
 import "./App.scss";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.onLoad();
+  }
   render() {
     return (
       <Router>
@@ -25,7 +28,7 @@ class App extends Component {
                   authenticated={this.props.authenticated}
                   logout={this.props.logout.bind(this)}
                 />
-                <SideHeader user={this.state.user} />
+                <SideHeader user={this.props.user} />
               </header>
               <Switch>
                 <Route path="/login">
@@ -93,7 +96,6 @@ class App extends Component {
                       postingMusic={this.props.postingMusic.bind(this)}
                       uploadCurrnetSelectAsset={this.props.selectAsset}
                       routeProps={routeProps}
-                      I
                     />
                   )}
                 />
@@ -129,6 +131,25 @@ class App extends Component {
                       clickMusic={this.props.clickMusic.bind(this)}
                       clickVideo={this.props.clickVideo.bind(this)}
                       routeProps={routeProps}
+                      onLoadUserPage={this.props.onLoadUserPage.bind(this)}
+                      userPageInfo={this.props.userPageInfo}
+                      userPagePosts={this.props.userPagePosts}
+                      userPagefollower={this.props.userPagefollower}
+                      userPagefollowing={this.props.userPagefollowing}
+                      following={this.props.following}
+                      userPageclickFollow={this.props.userPageclickFollow.bind(
+                        this
+                      )}
+                      userPageClickFollowState={this.props.userPageClickFollowState.bind(
+                        this
+                      )}
+                      userPageFollowState={this.props.userPageFollowState}
+                      userPageListTitle={this.props.userPageListTitle}
+                      userPageCurrentFollowList={
+                        this.props.userPageCurrentFollowList
+                      }
+                      userPagefollowingUsers={this.props.userPagefollowingUsers}
+                      userPagefollowedUsers={this.props.userPagefollowedUsers}
                     />
                   )}
                 />

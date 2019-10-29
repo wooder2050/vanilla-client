@@ -538,3 +538,67 @@ export const postingMusicAPI = (dispatch, event) => {
     }
   });
 };
+
+export const onLoadUserPageAPI = (dispatch, event) => {
+  return new Promise(() => {
+    if (event.props.routeProps) {
+      fetch(
+        `http://localhost:5000/users/${event.props.routeProps.match.params.id}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true
+          }
+        }
+      )
+        .then(response => {
+          if (response.status === 200) return response.json();
+        })
+        .then(responseJson => {
+          dispatch({
+            type: "USERPAGE_ONLOAD",
+            responseJson
+          });
+
+          if (event.props.user && event.props.user.following) {
+            for (var i = 0; i < event.props.user.following.length; i++) {
+              if (
+                event.props.user.following[i] === event.props.userPageInfo._id
+              ) {
+                dispatch({
+                  type: "FOLLOWING_STATE"
+                });
+              }
+            }
+          }
+        });
+    }
+  });
+};
+export const userPageclickFollowAPI = (dispatch, event) => {
+  return new Promise(() => {
+    if (event.props.userPageInfo) {
+      fetch("http://localhost:5000/users/followingUpdate", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true
+        },
+        body: JSON.stringify({
+          following: event.props.user._id,
+          followed: event.props.userPageInfo._id
+        })
+      })
+        .then(response => {
+          if (response.status === 200 || response.status === 401)
+            return response.json();
+          throw new Error("failed to authenticate user");
+        })
+        .then(responseJson => {})
+        .catch(error => {});
+    }
+  });
+};

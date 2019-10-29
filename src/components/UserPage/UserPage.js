@@ -1,76 +1,22 @@
 import React, { Component } from "react";
 import "./UserPage.scss";
+import { NavLink } from "react-router-dom";
 import { Progress } from "antd";
 import arrow from "../../images/arrow.png";
 import profile from "../../images/profile.png";
 import "antd/dist/antd.css";
 
 class UserPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user_info: null,
-      userPosts: null,
-      following: false,
-      followingNumber: 0,
-      followerNumber: 0
-    };
-  }
   componentDidMount() {
-    fetch(
-      `http://localhost:5000/users/${this.props.routeProps.match.params.id}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        }
-      }
-    )
-      .then(response => {
-        if (response.status === 200) return response.json();
-      })
-      .then(responseJson => {
-        this.setState({
-          user_info: responseJson.pageUser[0],
-          userPosts: responseJson.pageUserPosts,
-          followerNumber: responseJson.pageUser[0].follower.length,
-          followingNumber: responseJson.pageUser[0].following.length
-        });
-        if (this.props.user && this.props.user.following) {
-          for (var i = 0; i < this.props.user.following.length; i++) {
-            if (this.props.user.following[i] === this.state.user_info._id) {
-              this.setState({
-                following: true
-              });
-            }
-          }
-        }
-      });
+    this.props.onLoadUserPage(this);
   }
-  clickFollow() {
-    fetch("http://localhost:5000/users/followingUpdate", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      },
-      body: JSON.stringify({
-        following: this.props.user._id,
-        followed: this.state.user_info._id
-      })
-    })
-      .then(response => {
-        if (response.status === 200 || response.status === 401)
-          return response.json();
-        throw new Error("failed to authenticate user");
-      })
-      .then(responseJson => {})
-      .catch(error => {});
-  }
+
   render() {
+    console.log(
+      this.props.userPageInfo,
+      this.props.userPagefollowing,
+      this.props.userPagefollower
+    );
     return (
       <>
         <div className="userpage-main-content-wrapper">
@@ -78,12 +24,12 @@ class UserPage extends Component {
             <div className="userpage-main-content-header-photo-wrapper">
               <div className="userpage-main-content-header-photo-border">
                 <div className="userpage-main-content-header-photo">
-                  {this.state.user_info ? (
+                  {this.props.userPageInfo ? (
                     <img
                       className="userpage-main-content-header-photo-img"
                       src={
-                        this.state.user_info.profile_url
-                          ? this.state.user_info.profile_url
+                        this.props.userPageInfo.profile_url
+                          ? this.props.userPageInfo.profile_url
                           : profile
                       }
                     />
@@ -111,15 +57,15 @@ class UserPage extends Component {
               </div>
             </div>
             <div className="userpage-main-content-header-info-wrapper">
-              {this.state.user_info ? (
+              {this.props.userPageInfo ? (
                 <div className="userpage-main-content-header-info-id">
-                  {this.state.user_info.user_display_name
-                    ? this.state.user_info.user_display_name
-                    : this.state.user_info.email}
+                  {this.props.userPageInfo.user_display_name
+                    ? this.props.userPageInfo.user_display_name
+                    : this.props.userPageInfo.email}
                 </div>
               ) : (
                 <div className="userpage-main-content-header-info-id">
-                  {this.state.user_info ? this.state.user_info.email : ""}
+                  {this.props.userPageInfo ? this.props.userPageInfo.email : ""}
                 </div>
               )}
               <div className="userpage-main-content-header-info-number-wrapper">
@@ -128,50 +74,84 @@ class UserPage extends Component {
                     게시물
                   </div>
                   <div className="userpage-main-content-header-info-number">
-                    {this.state.userPosts ? this.state.userPosts.length : 0}
+                    {this.props.userPagePosts
+                      ? this.props.userPagePosts.length
+                      : 0}
                   </div>
                 </div>
-                <div className="userpage-main-content-header-info-number-cover">
+                <div
+                  onClick={
+                    this.props.userPageInfo
+                      ? this.props.userPageClickFollowState.bind(
+                          this,
+                          this.props.userPageFollowState,
+                          this.props.userPagefollowedUsers,
+                          "팔로워"
+                        )
+                      : ""
+                  }
+                  className="userpage-main-content-header-info-number-cover"
+                >
                   <div className="userpage-main-content-header-info-title">
                     팔로워
                   </div>
                   <div className="userpage-main-content-header-info-number">
-                    {this.state.followerNumber}
+                    {this.props.userPagefollower
+                      ? this.props.userPagefollower.length
+                      : 0}
                   </div>
                 </div>
-                <div className="userpage-main-content-header-info-number-cover">
+                <div
+                  onClick={
+                    this.props.userPageInfo
+                      ? this.props.userPageClickFollowState.bind(
+                          this,
+                          this.props.userPageFollowState,
+                          this.props.userPagefollowingUsers,
+                          "팔로잉"
+                        )
+                      : ""
+                  }
+                  className="userpage-main-content-header-info-number-cover"
+                >
                   <div className="userpage-main-content-header-info-title">
                     팔로잉
                   </div>
                   <div className="userpage-main-content-header-info-number">
-                    {this.state.followingNumber}
+                    {this.props.userPagefollowing
+                      ? this.props.userPagefollowing.length
+                      : 0}
                   </div>
                 </div>
               </div>
               <div className="userpage-main-content-header-info-name-wrapper">
                 <div className="userpage-main-content-header-info-name">
-                  {this.state.user_info ? this.state.user_info.user_name : ""}
+                  {this.props.userPageInfo
+                    ? this.props.userPageInfo.user_name
+                    : ""}
                 </div>
                 <div className="userpage-main-content-header-info-job">
-                  {this.state.user_info ? this.state.user_info.user_job : ""}
+                  {this.props.userPageInfo
+                    ? this.props.userPageInfo.user_job
+                    : ""}
                 </div>
               </div>
               <div className="userpage-main-content-header-info-text-wrapper">
-                {this.state.user_info ? this.state.user_info.info : ""}
+                {this.props.userPageInfo ? this.props.userPageInfo.info : ""}
               </div>
               <div className="userpage-main-content-header-info-detail-wrapper">
                 상세정보
                 <img className="arrow" src={arrow} />
               </div>
               <div className="userpage-main-content-header-info-modify-wrapper">
-                {this.state.following ? (
+                {this.props.following ? (
                   <div className="userpage-main-content-header-info-modify-btn-following">
                     팔로잉
                   </div>
                 ) : (
                   <div
                     className="userpage-main-content-header-info-modify-btn"
-                    onClick={this.clickFollow.bind(this)}
+                    onClick={e => this.props.userPageclickFollow(this)}
                   >
                     팔로우
                   </div>
@@ -214,8 +194,8 @@ class UserPage extends Component {
             </div>
             {this.props.view === "photo" ? (
               <div className="userpost-cover">
-                {this.state.userPosts &&
-                  this.state.userPosts.map((post, i) => {
+                {this.props.userPagePosts &&
+                  this.props.userPagePosts.map((post, i) => {
                     if (post.post_type === "photo") {
                       return (
                         <div key={i} className="userpost-wrapper">
@@ -230,8 +210,8 @@ class UserPage extends Component {
             )}
             {this.props.view === "music" ? (
               <div className="userpost-cover">
-                {this.state.userPosts &&
-                  this.state.userPosts.map((post, i) => {
+                {this.props.userPagePosts &&
+                  this.props.userPagePosts.map((post, i) => {
                     if (post.post_type === "music") {
                       return (
                         <div
@@ -250,8 +230,8 @@ class UserPage extends Component {
             )}
             {this.props.view === "video" ? (
               <div className="userpost-cover">
-                {this.state.userPosts &&
-                  this.state.userPosts.map((post, i) => {
+                {this.props.userPagePosts &&
+                  this.props.userPagePosts.map((post, i) => {
                     if (post.post_type === "video") {
                       return (
                         <div className="userpost-wrapper">
@@ -266,6 +246,49 @@ class UserPage extends Component {
             )}
           </div>
         </div>
+        {this.props.userPageFollowState ? (
+          <>
+            <div
+              onClick={this.props.userPageClickFollowState.bind(
+                this,
+                this.props.userPageFollowState
+              )}
+              className="followList-background"
+            ></div>
+            <div className="followList-wrapper">
+              <div className="title">{this.props.userPageListTitle}</div>
+              {this.props.userPageCurrentFollowList.map((user, i) => {
+                return (
+                  <>
+                    <NavLink
+                      className="followList-user-wrapper"
+                      to={`${user[0]._id}`}
+                    >
+                      <div key={i} className="followList-user-profile-wrapper">
+                        <img
+                          className="followList-user-profile"
+                          src={
+                            user[0].profile_url ? user[0].profile_url : profile
+                          }
+                        />
+                      </div>
+                      <div className="followList-user-text-wrapper">
+                        <strong className="followList-user-id">
+                          {user[0].user_display_name
+                            ? user[0].user_display_name
+                            : user[0].email}
+                        </strong>
+                        {user[0].user_name}
+                      </div>
+                    </NavLink>
+                  </>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div></div>
+        )}
       </>
     );
   }

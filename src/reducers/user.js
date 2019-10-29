@@ -6,7 +6,17 @@ const initialState = {
   myPageCurrentFollowList: null,
   searchUsers: [],
   myPageFollowState: false,
-  myPageListTitle: null
+  myPageListTitle: null,
+  userPageInfo: null,
+  userPagePosts: null,
+  userPagefollower: null,
+  userPagefollowing: null,
+  following: false,
+  userPageFollowState: false,
+  userPageListTitle: null,
+  userPageCurrentFollowList: null,
+  userPagefollowingUsers: null,
+  userPagefollowedUsers: null
 };
 
 function usersReducers(state = initialState, action) {
@@ -41,6 +51,34 @@ function usersReducers(state = initialState, action) {
         { ...state },
         {
           searchUsers: action.searchUsers
+        }
+      );
+    case "USERPAGE_ONLOAD":
+      return Object.assign(
+        { ...state },
+        {
+          userPageInfo: action.responseJson.pageUser[0],
+          userPagePosts: action.responseJson.pageUserPosts,
+          userPagefollower: action.responseJson.pageUser[0].follower,
+          userPagefollowing: action.responseJson.pageUser[0].following,
+          userPagefollowingUsers: action.responseJson.userPagefollowingUsers,
+          userPagefollowedUsers: action.responseJson.userPagefollowedUsers
+        }
+      );
+    case "FOLLOWING_STATE":
+      return Object.assign(
+        { ...state },
+        {
+          following: true
+        }
+      );
+    case "CLICK_FOLLOW_USERPAGE_MODAL":
+      return Object.assign(
+        { ...state },
+        {
+          userPageFollowState: !action.state,
+          userPageListTitle: action.name,
+          userPageCurrentFollowList: action.list
         }
       );
     default:
