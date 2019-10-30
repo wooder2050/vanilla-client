@@ -580,7 +580,7 @@ export const onLoadUserPageAPI = (dispatch, event) => {
 export const userPageclickFollowAPI = (dispatch, event) => {
   return new Promise(() => {
     if (event.props.userPageInfo) {
-      fetch("http://localhost:5000/users/followingUpdate", {
+      fetch("http://localhost:5000/users/update/following", {
         method: "POST",
         headers: {
           Accept: "application/json",

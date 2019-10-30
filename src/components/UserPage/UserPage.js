@@ -12,11 +12,6 @@ class UserPage extends Component {
   }
 
   render() {
-    console.log(
-      this.props.userPageInfo,
-      this.props.userPagefollowing,
-      this.props.userPagefollower
-    );
     return (
       <>
         <div className="userpage-main-content-wrapper">

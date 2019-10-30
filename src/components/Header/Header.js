@@ -11,7 +11,9 @@ class Header extends Component {
           <img className="hamburg-btn" src={hamburgBtn} />
         </div>
         <div className="logo-wrapper">
-          <h1 className="header-logo">VANILLA</h1>
+          <Link className="header-logo" to="/">
+            VANILLA
+          </Link>
         </div>
         <div className="logout">
           {this.props.authenticated ? (

@@ -12,6 +12,8 @@ $color5: #789db7;
   top: 0;
   z-index: 997;
   .post-background {
+    background: $color5;
+    opacity: 0.5;
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -26,17 +28,100 @@ $color5: #789db7;
     left: 200px;
     z-index: 999;
     width: 700px;
-    height: 500px;
     background: $color3;
     z-index: 999;
-    .post-detail-content{
+    .post-detail-content {
       float: left;
-      width: 400px;
-      border: 4px solid red;
+      width: 700px;
+      overflow: hidden;
+      .post-detail-photo-wrapper {
+        float: left;
+        width: 350px;
+        .post-detail-photo {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .post-detail-info-wrapper {
+        float: left;
+        width: 50%;
+        max-height: 350px;
+        overflow-y: scroll;
+        box-sizing: border-box;
+        padding: 20px;
+        .post-detail-info-header {
+          width: 100%;
+          text-align: left;
+          .post-detail-info-profile-wrapper {
+            float: left;
+            width: 60px;
+            .post-detail-info-profile {
+              width: 100%;
+              border-radius: 50%;
+            }
+          }
+          .post-detail-info-text-wrapper {
+            float: left;
+            margin: 5px 0 0 10px;
+            .posting-user-id {
+              font-weight: 600;
+              color: $color4;
+              font-size: 16px;
+              .posting-user-id-inner {
+                color: $color4;
+                text-decoration: none;
+                font-size: 16px;
+              }
+            }
+            .posting-location-date {
+              font-weight: 100;
+              color: $color4;
+              font-size: 12px;
+            }
+          }
+        }
+        .post-detail-info-header::after {
+          content: "";
+          display: block;
+          clear: both;
+        }
+        .posting-content-text-wrapper {
+          box-sizing: border-box;
+          padding: 20px;
+          display: inline;
+          .posting-content-text {
+            color: $color4;
+            text-align: left;
+            .posting-content-text-id {
+              font-weight: bold;
+              margin: 0 20px 0 0;
+              font-size: 16px;
+              display: inline;
+            }
+            .posting-content-text-description {
+              display: inline;
+              font-size: 14px;
+            }
+            .posting-content-tags {
+              display: inline;
+              letter-spacing: 1px;
+              margin: 0 5px 0 0;
+              color: $color1;
+              font-weight: bold;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+    .post-detail-content::after {
+      content: "";
+      display: block;
+      clear: both;
     }
   }
   .post-detail-wrapper::after {
-    content: '';
+    content: "";
     display: block;
     clear: both;
   }

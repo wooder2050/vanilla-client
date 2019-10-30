@@ -18,6 +18,7 @@ class App extends Component {
     this.props.onLoad();
   }
   render() {
+    console.log(this.props);
     return (
       <Router>
         <div className="App">
@@ -28,7 +29,10 @@ class App extends Component {
                   authenticated={this.props.authenticated}
                   logout={this.props.logout.bind(this)}
                 />
-                <SideHeader user={this.props.user} />
+                <SideHeader
+                  authenticated={this.props.authenticated}
+                  user={this.props.user}
+                />
               </header>
               <Switch>
                 <Route path="/login">

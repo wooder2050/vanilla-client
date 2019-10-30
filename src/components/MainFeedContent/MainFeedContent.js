@@ -117,7 +117,10 @@ class MainFeedContent extends Component {
               })}
           </>
         ) : (
-          <div className="main-feed-content-wrapper">로그인이 필요합니다.</div>
+          <div className="main-feed-content-wrapper-unlogin">
+            <p className="main-feed-content-text-unlogin">로그인이 필요합니다.</p>
+            <NavLink className="main-feed-content-btn-unlogin" to="/login">로그인</NavLink>
+          </div>
         )}
       </>
     );
