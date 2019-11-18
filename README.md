@@ -5,6 +5,8 @@
 
 VANILLA는 "뮤지션들의 공연 정보와 예매 서비스를 제공하고 음원과 비발매곡을 들 수 있으며, 함께 하지 못한 공연의 영상과 뮤지션의 일상을 공유"하는 웹 SNS 어플리케이션입니다.
 
+![](https://algo111.s3.ap-northeast-2.amazonaws.com/readme.gif)
+
 ![](https://algo111.s3.ap-northeast-2.amazonaws.com/vanilla.gif)
 
 ![](https://algo111.s3.ap-northeast-2.amazonaws.com/vanilla2.gif)
