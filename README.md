@@ -1,68 +1,89 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# VANILLA
 
-## Available Scripts
 
-In the project directory, you can run:
+## Introduction
 
-### `npm start`
+VANILLA는 "뮤지션들의 공연 정보와 예매 서비스를 제공하고 음원과 비발매곡을 들 수 있으며, 함께 하지 못한 공연의 영상과 뮤지션의 일상을 공유"하는 웹 SNS 어플리케이션입니다.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![](https://algo111.s3.ap-northeast-2.amazonaws.com/vanilla.gif)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+![](https://algo111.s3.ap-northeast-2.amazonaws.com/vanilla2.gif)
 
-### `npm test`
+## Content
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Requirements
+* Installation
+* Features
+* Skills
+* Project management
+* Things To Do
 
-### `npm run build`
+## Requirements
+* 1024px 이상의 큰 브라우저 환경에서 실행해야 합니다.
+* 브라우저는 최신 버전 크롭을 사용해야 합니다.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Client
+<pre>
+git clone https://github.com/wooder2050/vanilla-client.git
+cd vanilla-client
+npm install
+npm start
+</pre>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Client
+<pre>
+git clone https://github.com/wooder2050/vanilla-server.git
+cd vanilla-server
+npm install
+npm start
+</pre>
 
-### `npm run eject`
+## Features
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* passport.js를 이용한 로컬 로그인과 소셜 로그인 구현(구글)
+* 팔로우, 팔로잉 기능 구현
+* 팔로잉한 유저 포스트만 SNS 피드 보이는 기능 구현
+* AMAZON WEB SERVICES S3를 이용해 이미지, 영상, 음원 업로드 기능 구현
+* 정규식을 활용해 유저 찾기 기능 구현(자동 완성)
+* 음악 플레이어 구현 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Skills
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Client
+* ES2015+
+* React
+* React Router
+* Redux 
+* Sass
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Server
+* Node.js
+* Express
+* ES2015+
+* Passport.js
+* AMAZON WEB SERVICES S3
+* MongoDB
+* Mongoose
+* Atlas
 
-## Learn More
+## Project management
+* Git, Github
+* Trello를 이용한 일정관리
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Challenges
+* 첫 프로젝트여서 시간관리를 제대로 하지 못했습니다. 생각보다 기능 구현 속도가 많이 늦어져서 처음 계획보다 많은 기능을 추가하지 못 했습니다. 다음 프로젝트에는 일정관리를 잘할 수 있도록 객관적으로 일정을 계획할 것입니다.  
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* 이번 프로젝트에서 처음으로 AMAZON WEB SERVICES S3를 사용해 영상과 음원을 업로드해 보았습니다. AWS S3에서 영상과 음원을 저장하고 URL를 받아 Datebase를 입력하는 방식으로 서버를 설계하였습니다. 실행은 잘 되었지만 브라우저에서 실행되는 속도가 느렸습니다. multer 모듈과 서버의 로직 개선을 통해 이 문제점을 개선할 예정입니다.
 
-### Code Splitting
+* 팔로우, 팔로잉 기능을 구현하면서 Database Schema 설계의 중요성을 알게 되었습니다. 팔로우, 팔로잉 상태에 따라서 보여지는 정보가 달라지기 때문에 잘 설계된 Schema가 아닐 경우 기능을 추가할 때마다 Database 구조를 뒤집어야 했습니다. 다음 프로젝트부터는 기능을 고려한 Database Schema 설계해서 Datebase를 뒤집는 작업을 하지 않도록 할 것입니다. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Things To Do
+* 테스트 작성
+* 클라이언트와 서버 배포
+* 좋아요와 댓글 기능 추가
+* 스토리 기능 추가
+* 라이브 채팅 기능 추가(socket.io)
+* 언팔로우 기능과 삭제 기능 추가

@@ -18,6 +18,7 @@ class MyPage extends Component {
     this.props.closeModal();
   }
   render() {
+    console.log(this.props);
     return (
       <>
         <div className="mypage-main-content-wrapper">

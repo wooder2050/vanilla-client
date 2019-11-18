@@ -23,7 +23,7 @@ class Login extends Component {
           </div>
         </div>
         <div className="form-wrapper">
-          <form action="/login" method="POST">
+          <form action="http://localhost:5000/login" method="POST">
             <div className="email-text-wrapper">
               <label className="email-text">이메일을 입력하세요</label>
             </div>
