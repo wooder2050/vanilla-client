@@ -7,7 +7,7 @@ VANILLA는 "뮤지션들의 공연 정보와 예매 서비스를 제공하고 �
 
 ![](https://algo111.s3.ap-northeast-2.amazonaws.com/ezgif.com-resize.gif)
 
-![](https://algo111.s3.ap-northeast-2.amazonaws.com/ezgif.com-resize+(1).gif)
+![](https://algo111.s3.ap-northeast-2.amazonaws.com/ezgif.com-resize+(2).gif)
 
 
 ## Content
