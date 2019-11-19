@@ -10,12 +10,12 @@ VANILLA는 "뮤지션들의 공연 정보와 예매 서비스를 제공하고 �
 
 ## Content
 
-* Requirements
-* Installation
-* Features
-* Skills
-* Project management
-* Things To Do
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Features](#features)
+* [Skills](#skills)
+* [Project management](#project-management)
+* [Things To Do](#things-to-do)
 
 ## Requirements
 * 1024px 이상의 큰 브라우저 환경에서 실행해야 합니다.
