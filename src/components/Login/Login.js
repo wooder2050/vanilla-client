@@ -23,7 +23,7 @@ class Login extends Component {
           </div>
         </div>
         <div className="form-wrapper">
-          <form action="http://localhost:5000/login" method="POST">
+          <form action="https://www.thevanillamusic.info/login" method="POST">
             <div className="email-text-wrapper">
               <label className="email-text">이메일을 입력하세요</label>
             </div>
@@ -61,7 +61,7 @@ class Login extends Component {
         <div className="input-google-wrapper">
           <a
             className="input-google-text"
-            href="http://localhost:5000/login/google"
+            href="https://www.thevanillamusic.info/login/google"
           >
             <img className="google-logo" src={icon} />
             구글로 로그인하기

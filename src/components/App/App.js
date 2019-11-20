@@ -18,7 +18,6 @@ class App extends Component {
     this.props.onLoad();
   }
   render() {
-    console.log(this.props);
     return (
       <Router>
         <div className="App">
