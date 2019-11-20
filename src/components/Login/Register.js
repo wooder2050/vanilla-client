@@ -102,7 +102,7 @@ class Register extends Component {
         <div className="input-google-wrapper">
           <a
             className="input-google-text"
-            href="https://www.thevanillamusic.info/login/google"
+            href="https://api.thevanillamusic.info/login/google"
           >
             <img className="google-logo" src={icon} />
             구글로 로그인하기
