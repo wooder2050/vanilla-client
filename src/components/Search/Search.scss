@@ -145,11 +145,12 @@ $color5: #789db7;
       overflow-y: scroll;
       .search-page-content-box {
         float: left;
-        width: 300px;
-        height: 300px;
+        width: 270px;
+        height: 270px;
+        border: 1px solid rgba(200, 200, 200, 0.5);
         overflow: hidden;
         box-sizing: border-box;
-        margin: 0 2px;
+        margin: 2px;
         padding: 10px;
         cursor: pointer;
         .search-page-content {
