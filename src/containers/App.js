@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import App from "../components/App/App";
-import { LOG_IN } from "../contants/actionTypes";
 
 import {
   getAll,
