@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import { LOG_IN } from "../contants/actionTypes.js";
 import usersReducers from "./user";
 import loginReducers from "./login";
 import assetReducers from "./asset";
