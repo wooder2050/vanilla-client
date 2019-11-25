@@ -1,4 +1,4 @@
-import { SERVER_URL } from '../constants';
+import { SERVER_URL } from '../constants/actionTypes';
 
 export const getAll = dispatch => {
   return new Promise(() => {
