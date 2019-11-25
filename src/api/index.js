@@ -1,7 +1,8 @@
+import { SERVER_URL } from '../constants';
+
 export const getAll = dispatch => {
   return new Promise(() => {
-    fetch("https://api.thevanillamusic.info/login/success", {
-      // fetch("http://localhost:5000/login/success", {
+    fetch(`${SERVER_URL}/login/success`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -45,8 +46,7 @@ export const getAll = dispatch => {
 
 export const logoutAPI = dispatch => {
   return new Promise(() => {
-    fetch("https://api.thevanillamusic.info/logout", {
-      // fetch("http://localhost:5000/logout", {
+    fetch(`${SERVER_URL}/logout`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -84,8 +84,7 @@ export const myPageUploadAPI = (dispatch, event) => {
         var info = event.infoInput.current.value;
         var job = event.jobInput.current.value;
         var email = event.props.user.email;
-        fetch("https://api.thevanillamusic.info/upload/photo/s3", {
-          // fetch("http://localhost:5000/assets/upload/photo/s3", {
+        fetch(`${SERVER_URL}/upload/photo/s3`, {
           method: "POST",
           body: formData
         })
@@ -96,8 +95,7 @@ export const myPageUploadAPI = (dispatch, event) => {
           })
           .then(responseJosn => {
             const profileURL = responseJosn.profile_url;
-            fetch("https://api.thevanillamusic.info/users/update", {
-              // fetch("http://localhost:5000/users/update", {
+            fetch(`${SERVER_URL}/users/update`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
@@ -177,8 +175,7 @@ export const verificationAPI = (dispatch, event) => {
           emailError,
           pwdError
         });
-        fetch("https://api.thevanillamusic.info/register", {
-          // fetch("http://localhost:5000/register", {
+        fetch(`${SERVER_URL}/register`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -254,8 +251,7 @@ export const searchUserAPI = (dispatch, event) => {
           type: "SEARCH_ERROR",
           searchError
         });
-        fetch(`https://api.thevanillamusic.info/users/search/${username}`, {
-          // fetch(`http://localhost:5000/users/search/${username}`, {
+        fetch(`${SERVER_URL}/users/search/${username}`, {
           method: "GET",
           headers: {
             Accept: "application/json",
@@ -292,8 +288,7 @@ export const uploadPhotoAPI = (dispatch, event) => {
       const formData = new FormData();
       formData.append("imgfile", postContent);
       if (postContent) {
-        fetch(`https://api.thevanillamusic.info/assets/upload/photo/s3`, {
-          // fetch("http://localhost:5000/assets/upload/photo/s3", {
+        fetch(`${SERVER_URL}/assets/upload/photo/s3`, {
           method: "POST",
           body: formData
         })
@@ -304,8 +299,7 @@ export const uploadPhotoAPI = (dispatch, event) => {
           })
           .then(responseJosn => {
             const postContentURL = responseJosn.profile_url;
-            fetch(`https://api.thevanillamusic.info/assets/upload/photo/db`, {
-              // fetch("http://localhost:5000/assets/upload/photo/db", {
+            fetch(`${SERVER_URL}/assets/upload/photo/db`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
@@ -357,8 +351,7 @@ export const uploadMediaAPI = (dispatch, event) => {
       formData.append("imgfile", postContent);
       formData.append("imgfile", postCover);
       if (postContent && postCover) {
-        fetch(`https://api.thevanillamusic.info/assets/upload/media/s3`, {
-          // fetch("http://localhost:5000/assets/upload/media/s3", {
+        fetch(`${SERVER_URL}/assets/upload/media/s3`, {
           method: "POST",
           body: formData
         })
@@ -370,8 +363,7 @@ export const uploadMediaAPI = (dispatch, event) => {
           .then(responseJosn => {
             const postContentURL = responseJosn.post_url;
             const coverURL = responseJosn.cover_url;
-            fetch(`https://api.thevanillamusic.info/assets/upload/media/db`, {
-              // fetch("http://localhost:5000/assets/upload/media/db", {
+            fetch(`${SERVER_URL}/assets/upload/media/db`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
@@ -444,8 +436,7 @@ export const postingAPI = (dispatch, event) => {
           type: "POSTING_INPUT_ERROR",
           error
         });
-        fetch(`https://api.thevanillamusic.info/posts/upload`, {
-          // fetch("http://localhost:5000/posts/upload", {
+        fetch(`${SERVER_URL}/posts/upload`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -513,8 +504,7 @@ export const postingMusicAPI = (dispatch, event) => {
           type: "POSTING_INPUT_ERROR",
           error
         });
-        fetch(`https://api.thevanillamusic.info/posts/upload`, {
-          // fetch("http://localhost:5000/posts/upload", {
+        fetch(`${SERVER_URL}/posts/upload`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -553,11 +543,8 @@ export const onLoadUserPageAPI = (dispatch, event) => {
   return new Promise(() => {
     if (event.props.routeProps) {
       fetch(
-        `https://api.thevanillamusic.info/users/${event.props.routeProps.match.params.id}`,
+        `${SERVER_URL}/users/${event.props.routeProps.match.params.id}`,
         {
-          // fetch(
-          //   `http://localhost:5000/users/${event.props.routeProps.match.params.id}`,
-          //   {
           method: "GET",
           headers: {
             Accept: "application/json",
@@ -594,9 +581,8 @@ export const userPageclickFollowAPI = (dispatch, event) => {
   return new Promise(() => {
     if (event.props.userPageInfo) {
       fetch(
-        `https://api.thevanillamusic.info/users/update/following`,
+        `${SERVER_URL}/users/update/following`,
         {
-      // fetch("http://localhost:5000/users/update/following", {
         method: "POST",
         headers: {
           Accept: "application/json",
