@@ -96,6 +96,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLoad() {
+      console.log("getall start");
       getAll(dispatch);
     },
     logout() {
