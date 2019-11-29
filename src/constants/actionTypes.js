@@ -3,7 +3,7 @@ const localClientDomain = `http://localhost:3000`;
 const cloudClientDomain = 'https://www.thevanillamusic.info';
 
 const localServerDomain = `http://localhost:5000`;
-const cloudServerDomain = 'https://www.thevanillamusic.info';
+const cloudServerDomain = 'https://api.thevanillamusic.info';
 
 const SERVER_URL =
   process.env.NODE_ENV === 'development'
