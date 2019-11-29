@@ -16,6 +16,7 @@ export const getAll = dispatch => {
         throw new Error("failed to authenticate user");
       })
       .then(responseJson => {
+        console.log(responseJson);
         if (responseJson.authenticated) {
           dispatch({
             type: "LOGIN_SUCCESS",
